@@ -1,0 +1,84 @@
+[gd_scene load_steps=6 format=3 uid="uid://bit2t82mmllyc"]
+
+[ext_resource type="Script" path="res://example_player_scene.gd" id="1_7vd71"]
+[ext_resource type="Texture2D" uid="uid://d26noug6scdpk" path="res://icon.svg" id="1_b54lx"]
+
+[sub_resource type="Animation" id="Animation_erks5"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_18052"]
+resource_name = "move_RL"
+length = 3.0
+loop_mode = 2
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 352, -0.25, 0, 0.25, 0, 2192, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 1.5, 3)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, -752, -0.25, 0, 0.25, 0, -224, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 1.5, 3)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_pjlgk"]
+_data = {
+"RESET": SubResource("Animation_erks5"),
+"move": SubResource("Animation_18052")
+}
+
+[node name="example_playerScene" type="Node2D"]
+script = ExtResource("1_7vd71")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_b54lx")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_pjlgk")
+}
+speed_scale = 0.1
+
+[node name="Label" type="Label" parent="."]
+offset_left = -448.0
+offset_top = 64.0
+offset_right = 448.0
+offset_bottom = 128.0
+theme_override_font_sizes/font_size = 46
+text = "stuff spawns around this player object"
+horizontal_alignment = 1
+vertical_alignment = 1
