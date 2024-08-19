@@ -7,14 +7,16 @@ func _ready() -> void:
 	RenderingServer.set_default_clear_color(Color.BLACK)
 	$meme_mode_timer.start()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
+var deleteThis_anim_cancel = false
 func _process(delta: float) -> void:
 	#DELETE THIS ITS JUST FOR SHOWING HOW IT SPAWNS AROUND A PLAYER NODE SO
 	#THAT YOU CAN HAVE THIS ON DURING GAMEPLAY BECAUSE UHHHHHH
 	if camera_zoomOut:
 		$Camera2D.zoom = $Camera2D.zoom.move_toward(Vector2(0.3, 0.3), delta)
-		spawn_around_this_node.animplayer.play("move")
-		spawn_around_this_node.visible = true
+		if not deleteThis_anim_cancel:
+			spawn_around_this_node.animplayer.play("move")
+			spawn_around_this_node.visible = true
+			deleteThis_anim_cancel = true
 	else:
 		$Camera2D.zoom = $Camera2D.zoom.move_toward(Vector2(1, 1), delta)
 		spawn_around_this_node.animplayer.play("RESET")
