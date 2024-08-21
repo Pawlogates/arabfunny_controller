@@ -1,42 +1,39 @@
 extends Node2D
 
-@onready var spawn_around_this_node = $example_playerScene
+@onready var player = $example_playerScene
+@onready var arabfunny_controller = $arabfunny_controller
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	RenderingServer.set_default_clear_color(Color.BLACK)
-	$meme_mode_timer.start()
 
 var deleteThis_anim_cancel = false
 func _process(delta: float) -> void:
 	#DELETE THIS ITS JUST FOR SHOWING HOW IT SPAWNS AROUND A PLAYER NODE SO
 	#THAT YOU CAN HAVE THIS ON DURING GAMEPLAY BECAUSE UHHHHHH
 	if camera_zoomOut:
-		$Camera2D.zoom = $Camera2D.zoom.move_toward(Vector2(0.3, 0.3), delta)
+		$deleteThis_Camera2D.zoom = $deleteThis_Camera2D.zoom.move_toward(Vector2(0.3, 0.3), delta)
 		if not deleteThis_anim_cancel:
-			spawn_around_this_node.animplayer.play("move")
-			spawn_around_this_node.visible = true
+			player.animplayer.play("move")
+			player.visible = true
 			deleteThis_anim_cancel = true
 	else:
-		$Camera2D.zoom = $Camera2D.zoom.move_toward(Vector2(1, 1), delta)
-		spawn_around_this_node.animplayer.play("RESET")
-		spawn_around_this_node.visible = false
-
-func _on_meme_mode_timer_timeout():
-	var meme_spawner = preload("res://Meme Mode/memeMode_image_spawner.tscn").instantiate()
-	meme_spawner.randomize_all = true
-	print(spawn_around_this_node.position)
-	meme_spawner.position = Vector2(spawn_around_this_node.position.x + randi_range(-800, 800), spawn_around_this_node.position.y + randi_range(-500, 500))
-	add_child(meme_spawner)
+		$deleteThis_Camera2D.zoom = $deleteThis_Camera2D.zoom.move_toward(Vector2(1, 1), delta)
+		player.animplayer.play("RESET")
+		player.visible = false
 	
-	$meme_mode_timer.wait_time = randf_range(0.5, 6)
-	$meme_mode_timer.start()
+	if Input.is_action_just_pressed("ui_cancel"):
+		if get_tree().paused == true:
+			get_tree().paused = false
+		elif get_tree().paused == false:
+			get_tree().paused = true
 
 
 var camera_zoomOut = false
 func _on_delete_this_camera_zoom_delay_timeout() -> void:
 	camera_zoomOut = true
-
+	arabfunny_controller.show_spawners = true
 
 func _on_delete_this_camera_back_delay_timeout() -> void:
 	camera_zoomOut = false
+	arabfunny_controller.show_spawners = false

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dmclk32rssbbp"
+path="res://.godot/imported/25.mp3-385928db86c6851985dcfd0208782ffb.mp3str"
+
+[deps]
+
+source_file="res://Meme Mode/audio/25.mp3"
+dest_files=["res://.godot/imported/25.mp3-385928db86c6851985dcfd0208782ffb.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

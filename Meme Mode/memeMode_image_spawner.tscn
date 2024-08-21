@@ -4,7 +4,7 @@
 [ext_resource type="AudioStream" uid="uid://bkk6dteci8psp" path="res://Meme Mode/audio/music/1.mp3" id="2_mlvv0"]
 
 [node name="memeMode_image_spawner" type="Node2D"]
-z_index = 50
+z_index = 25
 script = ExtResource("1_f1a7f")
 
 [node name="Timer" type="Timer" parent="."]
@@ -19,6 +19,14 @@ one_shot = true
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("2_mlvv0")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+offset_left = -64.0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 64.0
+color = Color(1, 0, 0, 1)
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="timeout" from="Timer2" to="." method="_on_timer_2_timeout"]

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://tmkkck1b5efd"]
 
 [node name="memeMode_video" type="VideoStreamPlayer"]
-z_index = 100
+z_index = 50
 offset_right = 40.0
 offset_bottom = 40.0
 autoplay = true

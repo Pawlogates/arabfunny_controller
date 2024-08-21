@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dejcx3rt8jp2m"
+path="res://.godot/imported/22.wav-8c447009eb1be113bd7db130d51d625a.sample"
+
+[deps]
+
+source_file="res://Meme Mode/audio/22.wav"
+dest_files=["res://.godot/imported/22.wav-8c447009eb1be113bd7db130d51d625a.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0
