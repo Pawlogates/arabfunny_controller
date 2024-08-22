@@ -2,7 +2,10 @@
 
 [node name="memeMode_video" type="VideoStreamPlayer"]
 z_index = 50
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = -320.0
+offset_top = -192.0
+offset_right = 320.0
+offset_bottom = 192.0
 autoplay = true
+expand = true
 loop = true

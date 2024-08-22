@@ -44,7 +44,7 @@ func _ready():
 		$AnimationPlayer.play("scaleLoop")
 		scale = Vector2(randf_range(0.8, 3), randf_range(0.8, 2.4))
 	
-	if not anim_scale_loop and not is_video:
+	if not anim_scale_loop and not is_video and not is_video_quick:
 		if not scale_down:
 			scale = Vector2(0.01, 0.01)
 	
@@ -114,16 +114,17 @@ func _ready():
 					video_total -= 1
 		
 		var video = video_scene.instantiate()
-		video.position += Vector2(-50, -50)
+		video.position += Vector2(-350, -200)
 		video.scale = Vector2(randf_range(0.8, 2), randf_range(0.8, 2))
 		video.stream = load(video_filepath)
-		video.volume_db = randi_range(-30, 0)
+		video.volume_db = randi_range(-10, 20)
+		video.pivot_offset = Vector2(video.size.x / 2, video.size.y / 2)
 		if video_foreground : video.z_index = randi_range(50, 125)
 		$image.add_child(video)
 		$image.self_modulate.a = 0
 	
 	if is_video_quick:
-		await get_tree().create_timer(randf_range(1, 6), false).timeout
+		await get_tree().create_timer(randf_range(1, 8), false).timeout
 	else:
 		await get_tree().create_timer(randf_range(5, 30), false).timeout
 	
@@ -134,16 +135,18 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if anim_scale_loop or is_video:
+	if anim_scale_loop or is_video or is_video_quick:
 		return
 		
 	if fall_down:
 		velocity.y += gravity / 2 * delta
 	
 	if scale_down:
-		scale = scale.move_toward(Vector2(0, 0), delta / 2)
+		scale = scale.move_toward(Vector2(0.01, 0.01), delta / 2)
 	else:
-		scale = scale.move_toward(Vector2(0.6, 0.6), delta)
+		scale = scale.move_toward(Vector2(0.6 * scale_x, 0.6 * scale_y), delta)
+	
+	if scale.x < 0.03 and scale.y < 0.03 : queue_free()
 	
 	if opacity_fade_out:
 		modulate.a = move_toward(modulate.a, 0, delta / 5)

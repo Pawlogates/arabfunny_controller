@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://dues7c2js6d68"]
+[gd_scene load_steps=5 format=3 uid="uid://dues7c2js6d68"]
 
 [ext_resource type="Script" path="res://example_root_scene.gd" id="1_0m63u"]
 [ext_resource type="PackedScene" uid="uid://bit2t82mmllyc" path="res://example_player_scene.tscn" id="1_b6n0f"]
 [ext_resource type="PackedScene" uid="uid://defq0xnr3tmi6" path="res://arabfunny_controller.tscn" id="2_520pw"]
+[ext_resource type="PackedScene" uid="uid://cupokd1r3227d" path="res://background_video_player.tscn" id="4_nvwlq"]
 
 [node name="example_rootScene" type="Node2D"]
 process_mode = 3
@@ -13,17 +14,48 @@ script = ExtResource("1_0m63u")
 [node name="example_playerScene" parent="." instance=ExtResource("1_b6n0f")]
 visible = false
 
-[node name="deleteThis_Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="background_video_player" parent="." instance=ExtResource("4_nvwlq")]
 
 [node name="deleteThis_cameraZoom_delay" type="Timer" parent="."]
 wait_time = 30.0
 one_shot = true
-autostart = true
 
 [node name="deleteThis_cameraBack_delay" type="Timer" parent="."]
 wait_time = 75.0
 one_shot = true
 autostart = true
+
+[node name="deleteThis_info" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -384.0
+offset_top = -358.5
+offset_right = 384.0
+offset_bottom = 358.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 32
+text = "ESC = pause,
+ESC WHILE HOLDING UP ARROW = restart
+--------------------------------------
+Delete the \"deleteThis\" timers to skip the
+zooming out the camera part. 
+--------------------------------------
+To replace randomized files, and the amount of
+files the randomizer chooses from, just find the
+script that contains the path to the folder the
+specific type of rolled files are in.
+There will be a single \"filetype_total\" variable
+which corresponds to the amount
+of files in the folder.
+You can replace the files as long as the name
+remains the same (\"1.png\", \"2.png\", etc.)."
+horizontal_alignment = 1
 
 [connection signal="timeout" from="deleteThis_cameraZoom_delay" to="." method="_on_delete_this_camera_zoom_delay_timeout"]
 [connection signal="timeout" from="deleteThis_cameraBack_delay" to="." method="_on_delete_this_camera_back_delay_timeout"]

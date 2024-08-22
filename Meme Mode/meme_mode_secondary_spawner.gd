@@ -78,7 +78,7 @@ func _ready():
 		$Timer3.start()
 		
 		
-		var sfx_total = 38
+		var sfx_total = 36
 		var rolled_sfx = randi_range(1, sfx_total)
 		while sfx_total > 0:
 			if rolled_sfx == sfx_total:

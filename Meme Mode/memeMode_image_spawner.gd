@@ -62,8 +62,8 @@ func _ready():
 		else:
 			is_video = false
 		
-		var rolled_video_quick = randi_range(0, 2)
-		if rolled_video_quick == 2:
+		var rolled_video_quick = randi_range(0, 1)
+		if rolled_video_quick == 1:
 			is_video_quick = true
 		else:
 			is_video_quick = false
@@ -91,7 +91,7 @@ func _ready():
 		$Timer3.wait_time = randf_range(0.1, 0.3)
 		$Timer3.start()
 		
-		var img_total = 108
+		var img_total = 107
 		var rolled_img = randi_range(1, img_total)
 		while img_total > 0:
 			if rolled_img == img_total:
@@ -110,7 +110,7 @@ func _ready():
 			img_total -= 1
 		
 		
-		var sfx_total = 38
+		var sfx_total = 36
 		var rolled_sfx = randi_range(1, sfx_total)
 		while sfx_total > 0:
 			if rolled_sfx == sfx_total:

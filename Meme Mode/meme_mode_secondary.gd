@@ -29,7 +29,6 @@ func _ready():
 		$arrow.visible = true
 		
 		var x = randi_range(0, 3)
-		print(x)
 		if x != 3 : $image.visible = false
 		
 		rotate_deg = randi_range(0, 360)
@@ -78,7 +77,11 @@ func _ready():
 	
 	$image.texture = image_filepath
 	
-	await get_tree().create_timer(randf_range(1, 12), false).timeout
+	await get_tree().create_timer(randf_range(0.5, 4), false).timeout
+	$AnimationPlayer.speed_scale = randf_range(0.25, 12)
+	$AnimationPlayer2.speed_scale = randf_range(0.25, 4)
+	
+	await get_tree().create_timer(randf_range(0.5, 8), false).timeout
 	queue_free()
 
 
