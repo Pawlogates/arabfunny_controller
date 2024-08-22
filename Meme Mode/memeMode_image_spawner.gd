@@ -95,17 +95,17 @@ func _ready():
 		var rolled_img = randi_range(1, img_total)
 		while img_total > 0:
 			if rolled_img == img_total:
-				var folder_path = "res://Meme Mode/pictures/" + str(img_total)
+				var file_path = "res://Meme Mode/pictures/" + str(img_total)
 				var file_type : String
-				if ResourceLoader.exists(folder_path + ".png"):
+				if ResourceLoader.exists(file_path + ".png"):
 					file_type = ".png"
-				elif ResourceLoader.exists(folder_path + ".jpg"):
+				elif ResourceLoader.exists(file_path + ".jpg"):
 					file_type = ".jpg"
-				elif ResourceLoader.exists(folder_path + ".jpeg"):
+				elif ResourceLoader.exists(file_path + ".jpeg"):
 					file_type = ".jpeg"
 				
-				print("loading file: " + folder_path + file_type)
-				image_filepath = folder_path + file_type
+				print("loading file: " + file_path + file_type)
+				image_filepath = file_path + file_type
 			
 			img_total -= 1
 		
@@ -114,15 +114,15 @@ func _ready():
 		var rolled_sfx = randi_range(1, sfx_total)
 		while sfx_total > 0:
 			if rolled_sfx == sfx_total:
-				var folder_path = "res://Meme Mode/audio/" + str(sfx_total)
+				var file_path = "res://Meme Mode/audio/" + str(sfx_total)
 				var file_type : String
-				if ResourceLoader.exists(folder_path + ".mp3"):
+				if ResourceLoader.exists(file_path + ".mp3"):
 					file_type = ".mp3"
-				elif ResourceLoader.exists(folder_path + ".wav"):
+				elif ResourceLoader.exists(file_path + ".wav"):
 					file_type = ".wav"
 				
-				print("loading file: " + folder_path + file_type)
-				sound_filepath = folder_path + file_type
+				print("loading file: " + file_path + file_type)
+				sound_filepath = file_path + file_type
 			
 			sfx_total -= 1
 		
@@ -131,21 +131,21 @@ func _ready():
 		var rolled_music = randi_range(1, music_total)
 		while music_total > 0:
 			if rolled_music == music_total:
-				var folder_path = "res://Meme Mode/audio/music/" + str(music_total)
+				var file_path = "res://Meme Mode/audio/music/" + str(music_total)
 				var file_type : String
-				if ResourceLoader.exists(folder_path + ".mp3"):
+				if ResourceLoader.exists(file_path + ".mp3"):
 					file_type = ".mp3"
-				elif ResourceLoader.exists(folder_path + ".wav"):
+				elif ResourceLoader.exists(file_path + ".wav"):
 					file_type = ".wav"
 				
-				print("loading file: " + folder_path + file_type)
-				music_filepath = folder_path + file_type
+				print("loading file: " + file_path + file_type)
+				music_filepath = file_path + file_type
 			
 			music_total -= 1
 		
 		$AudioStreamPlayer2D.stream = load(music_filepath)
 		$AudioStreamPlayer2D.pitch_scale = randf_range(0.9, 1.1)
-		$AudioStreamPlayer2D.volume_db = randf_range(-10, 20)
+		$AudioStreamPlayer2D.volume_db = randf_range(-10, 30)
 		$AudioStreamPlayer2D.play()
 		print("PLAYING MUSIC")
 		

@@ -21,6 +21,7 @@ visible = false
 [node name="deleteThis_cameraZoom_delay" type="Timer" parent="."]
 wait_time = 30.0
 one_shot = true
+autostart = true
 
 [node name="deleteThis_cameraBack_delay" type="Timer" parent="."]
 wait_time = 75.0

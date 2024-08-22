@@ -62,6 +62,7 @@ _data = {
 }
 
 [node name="example_playerScene" type="Node2D"]
+z_index = 250
 script = ExtResource("1_7vd71")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

@@ -25,6 +25,8 @@ var rotate_left = false
 
 var rotate_direction = 1
 
+var frozen = false
+
 var anim_scale_loop = false
 
 var is_video = false
@@ -71,17 +73,21 @@ func _ready():
 			var rolled_video = randi_range(1, video_total)
 			while video_total > 0:
 				if rolled_video == video_total:
-					var folder_path = "res://Meme Mode/videos/" + str(video_total)
+					var file_path = "res://Meme Mode/videos/" + str(video_total)
 					var file_type : String
-					if ResourceLoader.exists(folder_path + ".ogv"):
+					if ResourceLoader.exists(file_path + ".ogv"):
 						file_type = ".ogv"
 					
-					print("loading file: " + folder_path + file_type)
-					video_filepath = folder_path + file_type
+					print("loading file: " + file_path + file_type)
+					video_filepath = file_path + file_type
 				
 				video_total -= 1
 	
-	if is_video_quick:
+	if is_video_quick and not is_video:
+		var rolled_frozen = randi_range(0, 1)
+		if rolled_frozen:
+			frozen = true
+		
 		if video_randomize:
 			var x = randi_range(0, 2)
 			if x != 2:
@@ -89,13 +95,13 @@ func _ready():
 				var rolled_video = randi_range(1, video_total)
 				while video_total > 0:
 					if rolled_video == video_total:
-						var folder_path = "res://Meme Mode/videos/gifs/" + str(video_total)
+						var file_path = "res://Meme Mode/videos/gifs/" + str(video_total)
 						var file_type : String
-						if ResourceLoader.exists(folder_path + ".ogv"):
+						if ResourceLoader.exists(file_path + ".ogv"):
 							file_type = ".ogv"
 						
-						print("loading file: " + folder_path + file_type)
-						video_filepath = folder_path + file_type
+						print("loading file: " + file_path + file_type)
+						video_filepath = file_path + file_type
 					
 					video_total -= 1
 			else:
@@ -103,16 +109,17 @@ func _ready():
 				var rolled_video = randi_range(1, video_total)
 				while video_total > 0:
 					if rolled_video == video_total:
-						var folder_path = "res://Meme Mode/videos/greenscreens/" + str(video_total)
+						var file_path = "res://Meme Mode/videos/greenscreens/" + str(video_total)
 						var file_type : String
-						if ResourceLoader.exists(folder_path + ".ogv"):
+						if ResourceLoader.exists(file_path + ".ogv"):
 							file_type = ".ogv"
 						
-						print("loading file: " + folder_path + file_type)
-						video_filepath = folder_path + file_type
+						print("loading file: " + file_path + file_type)
+						video_filepath = file_path + file_type
 					
 					video_total -= 1
-		
+	
+	if is_video or is_video_quick:
 		var video = video_scene.instantiate()
 		video.position += Vector2(-350, -200)
 		video.scale = Vector2(randf_range(0.8, 2), randf_range(0.8, 2))
@@ -123,7 +130,7 @@ func _ready():
 		$image.add_child(video)
 		$image.self_modulate.a = 0
 	
-	if is_video_quick:
+	if is_video_quick and not is_video:
 		await get_tree().create_timer(randf_range(1, 8), false).timeout
 	else:
 		await get_tree().create_timer(randf_range(5, 30), false).timeout
@@ -135,9 +142,11 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if anim_scale_loop or is_video or is_video_quick:
+	if frozen:
 		return
-		
+	if anim_scale_loop or is_video:
+		return
+	
 	if fall_down:
 		velocity.y += gravity / 2 * delta
 	

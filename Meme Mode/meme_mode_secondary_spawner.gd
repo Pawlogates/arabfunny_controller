@@ -82,15 +82,15 @@ func _ready():
 		var rolled_sfx = randi_range(1, sfx_total)
 		while sfx_total > 0:
 			if rolled_sfx == sfx_total:
-				var folder_path = "res://Meme Mode/audio/" + str(sfx_total)
+				var file_path = "res://Meme Mode/audio/" + str(sfx_total)
 				var file_type : String
-				if ResourceLoader.exists(folder_path + ".mp3"):
+				if ResourceLoader.exists(file_path + ".mp3"):
 					file_type = ".mp3"
-				elif ResourceLoader.exists(folder_path + ".wav"):
+				elif ResourceLoader.exists(file_path + ".wav"):
 					file_type = ".wav"
 				
-				print("loading file: " + folder_path + file_type)
-				sound_filepath = load(folder_path + file_type)
+				print("loading file: " + file_path + file_type)
+				sound_filepath = load(file_path + file_type)
 			
 			sfx_total -= 1
 		
@@ -99,15 +99,15 @@ func _ready():
 		var rolled_music = randi_range(1, music_total)
 		while music_total > 0:
 			if rolled_music == music_total:
-				var folder_path = "res://Meme Mode/audio/music/" + str(music_total)
+				var file_path = "res://Meme Mode/audio/music/" + str(music_total)
 				var file_type : String
-				if ResourceLoader.exists(folder_path + ".mp3"):
+				if ResourceLoader.exists(file_path + ".mp3"):
 					file_type = ".mp3"
-				elif ResourceLoader.exists(folder_path + ".wav"):
+				elif ResourceLoader.exists(file_path + ".wav"):
 					file_type = ".wav"
 				
-				print("loading file: " + folder_path + file_type)
-				music_filepath = load(folder_path + file_type)
+				print("loading file: " + file_path + file_type)
+				music_filepath = load(file_path + file_type)
 			
 			music_total -= 1
 		
