@@ -50,9 +50,11 @@ func _process(delta: float) -> void:
 
 var camera_zoomOut = false
 func _on_delete_this_camera_zoom_delay_timeout() -> void:
-	camera_zoomOut = true
-	arabfunny_controller.show_spawners = true
+	if not disable_showcase:
+		camera_zoomOut = true
+		arabfunny_controller.show_spawners = true
 
 func _on_delete_this_camera_back_delay_timeout() -> void:
-	camera_zoomOut = false
-	arabfunny_controller.show_spawners = false
+	if not disable_showcase:
+		camera_zoomOut = false
+		arabfunny_controller.show_spawners = false
