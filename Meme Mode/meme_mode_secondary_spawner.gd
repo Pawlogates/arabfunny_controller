@@ -7,17 +7,21 @@ var meme_scene = preload("res://Meme Mode/memeMode_secondary.tscn")
 var randomize_all = false
 
 var is_arrow = false
+var is_text = false
+
 var only_one = true
+var sfx_only_one = true
 
 var sound_filepath = preload("res://Meme Mode/audio/1.mp3")
 var music_filepath = preload("res://Meme Mode/audio/music/1.mp3")
 
+var anim_scale_loop = false
 var anim_opacity_loop = true
 
 var scale_up_forever = false
 var rotates = false
 
-var rotate_deg = 0
+var rotated_deg = 0
 
 var scale_x = 1
 var scale_y = 1
@@ -29,10 +33,6 @@ var fall_down = true
 
 var rotate_speed = 1
 var rotate_left = false
-
-var anim_scale_loop = false
-
-var sfx_only_one = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -47,6 +47,16 @@ func _ready():
 			only_one = true
 		else:
 			only_one = false
+		
+		var rolled_is_text = randi_range(0, 2)
+		if rolled_is_text == 2:
+			is_text = true
+		else:
+			is_text = false
+		
+		if is_text:
+			handle_text()
+			only_one = true
 		
 		var rolled_is_arrow = randi_range(0, 2)
 		if rolled_is_arrow == 2:
@@ -156,6 +166,13 @@ func _process(_delta):
 	pass
 
 
+func handle_text():
+	print("spawning text")
+	var text = preload("res://Meme Mode/meme_mode_text.tscn").instantiate()
+	text.position = position
+	get_parent().add_child(text)
+
+
 func _on_timer_timeout():
 	var image = meme_scene.instantiate()
 	
@@ -163,7 +180,7 @@ func _on_timer_timeout():
 	image.position = position
 	image.anim_opacity_loop = anim_opacity_loop
 	image.scale_up_forever = scale_up_forever
-	image.rotate_deg = rotate_deg
+	image.rotated_deg = rotated_deg
 	image.scale_x = scale_x
 	image.scale_y = scale_y
 	image.rotate_speed = rotate_speed

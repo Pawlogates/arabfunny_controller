@@ -158,11 +158,12 @@ func _ready():
 		else:
 			opacity_fade_out = false
 		
-		var rolled_scale = randi_range(0, 1)
-		if rolled_scale:
-			scale_down = true
-		else:
-			scale_down = false
+		if not is_video_quick:
+			var rolled_scale = randi_range(0, 1)
+			if rolled_scale:
+				scale_down = true
+			else:
+				scale_down = false
 		
 		var rolled_rotates = randi_range(0, 3)
 		if rolled_rotates == 3:

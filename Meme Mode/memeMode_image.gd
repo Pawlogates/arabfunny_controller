@@ -89,8 +89,8 @@ func _ready():
 			frozen = true
 		
 		if video_randomize:
-			var x = randi_range(0, 2)
-			if x != 2:
+			var x = randi_range(0, 1)
+			if x:
 				var video_total = 15
 				var rolled_video = randi_range(1, video_total)
 				while video_total > 0:
@@ -127,6 +127,9 @@ func _ready():
 		video.volume_db = randi_range(-10, 20)
 		video.pivot_offset = Vector2(video.size.x / 2, video.size.y / 2)
 		if video_foreground : video.z_index = randi_range(50, 125)
+		if video_filepath.contains("greenscreens"):
+			video.material = preload("res://Meme Mode/remove_green.tres")
+			video.scale += Vector2(2, 2)
 		$image.add_child(video)
 		$image.self_modulate.a = 0
 	

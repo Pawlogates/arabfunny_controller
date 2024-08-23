@@ -4,6 +4,7 @@
 [ext_resource type="Script" path="res://background_video_player.gd" id="2_7lahl"]
 
 [node name="background_video_player" type="VideoStreamPlayer"]
+z_index = -50
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5

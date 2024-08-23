@@ -1,0 +1,42 @@
+[gd_scene load_steps=2 format=3 uid="uid://c80uohqyps63w"]
+
+[ext_resource type="Script" path="res://Meme Mode/meme_mode_text.gd" id="1_q32qa"]
+
+[node name="memeMode_text" type="Node2D"]
+z_index = 100
+script = ExtResource("1_q32qa")
+
+[node name="Label" type="Label" parent="."]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -101.0
+offset_top = -22.5
+offset_right = 101.0
+offset_bottom = 22.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 32
+text = "example text"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -101.0
+offset_top = -22.5
+offset_right = 101.0
+offset_bottom = 22.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/normal_font_size = 32
+bbcode_enabled = true
+text = "example text"
+fit_content = true
+autowrap_mode = 0

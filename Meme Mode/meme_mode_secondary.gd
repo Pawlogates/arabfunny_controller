@@ -16,7 +16,7 @@ var anim_opacity_loop = true
 var scale_x = 1
 var scale_y = 1
 
-var rotate_deg = 0
+var rotated_deg = 0
 
 var rotate_speed = 1
 var rotate_left = false
@@ -31,7 +31,7 @@ func _ready():
 		var x = randi_range(0, 3)
 		if x != 3 : $image.visible = false
 		
-		rotate_deg = randi_range(0, 360)
+		rotated_deg = randi_range(0, 360)
 		
 		$AnimationPlayer2.speed_scale = randf_range(0.5, 2)
 		
