@@ -18,12 +18,11 @@ func _ready() -> void:
 		add_theme_constant_override("outline_size", 0)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	pass
 
 
 func _on_timer_timeout() -> void:
-	print($AnimationPlayer.speed_scale)
 	if random_anim:
 		var rolled_anim = randi_range(0, 2)
 		if rolled_anim == 0:

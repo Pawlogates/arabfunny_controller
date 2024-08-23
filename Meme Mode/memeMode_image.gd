@@ -69,7 +69,7 @@ func _ready():
 	
 	if is_video:
 		if video_randomize:
-			var video_total = 13
+			var video_total = 23
 			var rolled_video = randi_range(1, video_total)
 			while video_total > 0:
 				if rolled_video == video_total:
@@ -91,7 +91,7 @@ func _ready():
 		if video_randomize:
 			var x = randi_range(0, 1)
 			if x:
-				var video_total = 15
+				var video_total = 39
 				var rolled_video = randi_range(1, video_total)
 				while video_total > 0:
 					if rolled_video == video_total:
@@ -105,7 +105,7 @@ func _ready():
 					
 					video_total -= 1
 			else:
-				var video_total = 16
+				var video_total = 36
 				var rolled_video = randi_range(1, video_total)
 				while video_total > 0:
 					if rolled_video == video_total:
@@ -134,7 +134,7 @@ func _ready():
 		$image.self_modulate.a = 0
 	
 	if is_video_quick and not is_video:
-		await get_tree().create_timer(randf_range(1, 8), false).timeout
+		await get_tree().create_timer(randf_range(2, 12), false).timeout
 	else:
 		await get_tree().create_timer(randf_range(5, 30), false).timeout
 	

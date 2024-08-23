@@ -91,7 +91,7 @@ func _ready():
 		$Timer3.wait_time = randf_range(0.1, 0.3)
 		$Timer3.start()
 		
-		var img_total = 107
+		var img_total = 127
 		var rolled_img = randi_range(1, img_total)
 		while img_total > 0:
 			if rolled_img == img_total:
@@ -110,7 +110,7 @@ func _ready():
 			img_total -= 1
 		
 		
-		var sfx_total = 36
+		var sfx_total = 78
 		var rolled_sfx = randi_range(1, sfx_total)
 		while sfx_total > 0:
 			if rolled_sfx == sfx_total:
@@ -127,7 +127,7 @@ func _ready():
 			sfx_total -= 1
 		
 		
-		var music_total = 5
+		var music_total = 31
 		var rolled_music = randi_range(1, music_total)
 		while music_total > 0:
 			if rolled_music == music_total:

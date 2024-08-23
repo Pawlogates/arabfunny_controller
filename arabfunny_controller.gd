@@ -38,5 +38,5 @@ func _on_meme_mode_timer_2_timeout() -> void:
 	#debug
 	add_child(meme_spawner2)
 	
-	$meme_mode_timer2.wait_time = randf_range(0.5, 6) # default: 4, 20
+	$meme_mode_timer2.wait_time = randf_range(0.5, 6) # default: 0.5, 6
 	$meme_mode_timer2.start()

@@ -72,8 +72,9 @@ _data = {
 }
 
 [node name="memeMode_singleLetter" type="Label"]
+custom_minimum_size = Vector2(0, 200)
 offset_right = 19.0
-offset_bottom = 45.0
+offset_bottom = 200.0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 8
 theme_override_font_sizes/font_size = 32

@@ -8,7 +8,6 @@
 [node name="example_rootScene" type="Node2D"]
 process_mode = 3
 script = ExtResource("1_0m63u")
-disable_showcase = true
 
 [node name="arabfunny_controller" parent="." instance=ExtResource("2_520pw")]
 
@@ -36,18 +35,23 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -384.0
-offset_top = -358.5
+offset_top = -478.5
 offset_right = 384.0
-offset_bottom = 358.5
+offset_bottom = 478.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 32
 text = "ESC = pause,
-ESC WHILE HOLDING UP ARROW = restart
---------------------------------------
+ESC WHILE HOLDING UP ARROW = restart,
+ENTER = spawn main meme container,
+ENTER WHILE HOLDING UP ARROW = spawn
+a secondary meme container.
+------------------------------------
 Delete the \"deleteThis\" timers to skip the
-zooming out the camera part. 
---------------------------------------
+zooming out the camera part.
+Or just click on the root node and toggle
+the disable_showcase property.
+------------------------------------------
 To replace randomized files, and the amount of
 files the randomizer chooses from, just find the
 script that contains the path to the folder the
