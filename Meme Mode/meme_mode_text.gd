@@ -97,16 +97,16 @@ func handleText_advanced():
 		effect_closer = "[/wave]"
 	elif rolled_effect == 2:
 		effect_code = "[tornado radius=" + str(randf_range(1, 50)) + " freq=" + str(randf_range(1, 50)) + " connected=1]"
-		effect_closer = "[/wave]"
+		effect_closer = "[/tornado]"
 	elif rolled_effect == 3:
 		effect_code = "[shake rate=" + str(randf_range(1, 50)) + " level=" + str(randf_range(1, 50)) + " connected=1]"
-		effect_closer = "[/wave]"
+		effect_closer = "[/shake]"
 	elif rolled_effect == 4:
 		effect_code = "[fade start=" + str(randf_range(1, 50)) + " length=" + str(randf_range(1, 50)) + "]"
-		effect_closer = "[/wave]"
+		effect_closer = "[/fade]"
 	elif rolled_effect == 5:
 		effect_code = "[rainbow freq=" + str(randf_range(1, 50)) + " sat=" + str(randf_range(1, 50)) + " val=" + str(randf_range(1, 50)) + "]"
-		effect_closer = "[/wave]"
+		effect_closer = "[/rainbow]"
 	
 	$RichTextLabel.text = effect_code + text_main + effect_closer
 	$RichTextLabel.set_visible(true)

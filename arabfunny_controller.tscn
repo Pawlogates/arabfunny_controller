@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://defq0xnr3tmi6"]
+[gd_scene load_steps=3 format=3 uid="uid://defq0xnr3tmi6"]
 
 [ext_resource type="Script" path="res://arabfunny_controller.gd" id="1_uyb0v"]
+[ext_resource type="Script" path="res://manual_spawner.gd" id="2_jqytg"]
 
 [node name="arabfunny_controller" type="Node2D"]
 process_mode = 1
@@ -16,5 +17,15 @@ wait_time = 2.0
 one_shot = true
 autostart = true
 
+[node name="meme_mode_timer3" type="Timer" parent="."]
+wait_time = 12.0
+one_shot = true
+autostart = true
+
+[node name="manual_spawner" type="Node2D" parent="."]
+process_mode = 3
+script = ExtResource("2_jqytg")
+
 [connection signal="timeout" from="meme_mode_timer" to="." method="_on_meme_mode_timer_timeout"]
 [connection signal="timeout" from="meme_mode_timer2" to="." method="_on_meme_mode_timer_2_timeout"]
+[connection signal="timeout" from="meme_mode_timer3" to="." method="_on_meme_mode_timer_3_timeout"]

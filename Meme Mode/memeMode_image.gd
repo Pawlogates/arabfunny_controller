@@ -105,7 +105,7 @@ func _ready():
 					
 					video_total -= 1
 			else:
-				var video_total = 36
+				var video_total = 35
 				var rolled_video = randi_range(1, video_total)
 				while video_total > 0:
 					if rolled_video == video_total:

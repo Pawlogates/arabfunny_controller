@@ -40,3 +40,21 @@ func _on_meme_mode_timer_2_timeout() -> void:
 	
 	$meme_mode_timer2.wait_time = randf_range(0.5, 6) # default: 0.5, 6
 	$meme_mode_timer2.start()
+
+
+var video_scene = preload("res://Meme Mode/memeMode_video.tscn")
+var video_filepath : String
+
+func _on_meme_mode_timer_3_timeout() -> void:
+	var video = video_scene.instantiate()
+	video.major = true
+	video.pivot_offset = Vector2(video.size.x / 2, video.size.y / 2)
+	video.position += Vector2(0, 0)
+	video.scale = Vector2(randf_range(0.8, 2), randf_range(0.8, 2))
+	video.volume_db = randi_range(-10, 20)
+	video.material = preload("res://Meme Mode/remove_green.tres")
+	video.scale += Vector2(2, 2)
+	get_parent().add_child(video)
+	
+	$meme_mode_timer3.wait_time = randf_range(3, 24) # default: 3, 24
+	$meme_mode_timer3.start()
