@@ -42,11 +42,12 @@ offset_bottom = 478.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 32
-text = "ESC = pause,
-ESC WHILE HOLDING UP ARROW = restart,
-ENTER = spawn main meme container,
-ENTER WHILE HOLDING UP ARROW = spawn
+text = "P / ESC = pause,
+R / ESC WHILE HOLDING UP ARROW = restart,
+1 / ENTER = spawn main meme container,
+2 / ENTER WHILE HOLDING UP ARROW = spawn
 a secondary meme container.
+S / BACKSPACE = next background video.
 ------------------------------------
 Delete the \"deleteThis\" timers to skip the
 zooming out the camera part.

@@ -35,7 +35,7 @@ func _ready():
 		
 		$AnimationPlayer2.speed_scale = randf_range(0.5, 2)
 		
-		var rolled_arrow_anim = randi_range(0, 3)
+		var rolled_arrow_anim = randi_range(0, 4)
 		if rolled_arrow_anim == 0:
 			$AnimationPlayer2.play("rotate_around")
 		elif rolled_arrow_anim == 1:
@@ -44,6 +44,8 @@ func _ready():
 			$AnimationPlayer2.play("rotate_around_loopBack")
 		elif rolled_arrow_anim == 3:
 			$AnimationPlayer2.play("rotate_around_2_loopBack")
+		elif rolled_arrow_anim == 4:
+			pass
 	else:
 		$arrow.visible = false
 	

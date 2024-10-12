@@ -36,7 +36,17 @@ func _process(delta: float) -> void:
 		elif get_tree().paused == false:
 			get_tree().paused = true
 	
-	if Input.is_action_just_pressed("ui_accept"):
+	elif Input.is_action_just_pressed("restart"):
+			get_tree().reload_current_scene()
+			return
+	
+	elif Input.is_action_just_pressed("pause"):
+		if get_tree().paused == true:
+			get_tree().paused = false
+		elif get_tree().paused == false:
+			get_tree().paused = true
+	
+	elif Input.is_action_just_pressed("ui_accept"):
 		if Input.is_action_pressed("ui_up"):
 			var meme_spawner2 = preload("res://Meme Mode/memeMode_secondary_spawner.tscn").instantiate()
 			meme_spawner2.randomize_all = true
@@ -47,6 +57,22 @@ func _process(delta: float) -> void:
 			meme_spawner.randomize_all = true
 			meme_spawner.position = Vector2($arabfunny_controller.spawn_around_this_node.position.x + randi_range(-800, 800), $arabfunny_controller.spawn_around_this_node.position.y + randi_range(-500, 500))
 			$arabfunny_controller.add_child(meme_spawner)
+	
+	elif Input.is_action_just_pressed("spawn1"):
+		var meme_spawner = preload("res://Meme Mode/memeMode_image_spawner.tscn").instantiate()
+		meme_spawner.randomize_all = true
+		meme_spawner.position = Vector2($arabfunny_controller.spawn_around_this_node.position.x + randi_range(-800, 800), $arabfunny_controller.spawn_around_this_node.position.y + randi_range(-500, 500))
+		$arabfunny_controller.add_child(meme_spawner)
+	
+	elif Input.is_action_just_pressed("spawn2"):
+		var meme_spawner2 = preload("res://Meme Mode/memeMode_secondary_spawner.tscn").instantiate()
+		meme_spawner2.randomize_all = true
+		meme_spawner2.position = Vector2($arabfunny_controller.spawn_around_this_node.position.x + randi_range(-800, 800), $arabfunny_controller.spawn_around_this_node.position.y + randi_range(-500, 500))
+		$arabfunny_controller.add_child(meme_spawner2)
+	
+	elif Input.is_action_just_pressed("next"):
+		$background_video_player.randomize_video()
+
 
 var camera_zoomOut = false
 func _on_delete_this_camera_zoom_delay_timeout() -> void:

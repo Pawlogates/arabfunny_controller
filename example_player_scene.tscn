@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://bit2t82mmllyc"]
 
 [ext_resource type="Script" path="res://example_player_scene.gd" id="1_7vd71"]
-[ext_resource type="Texture2D" uid="uid://d26noug6scdpk" path="res://icon.svg" id="1_b54lx"]
+[ext_resource type="Texture2D" uid="uid://drw6m3ikgboos" path="res://icon.svg" id="2_2ja63"]
 
 [sub_resource type="Animation" id="Animation_erks5"]
 length = 0.001
@@ -66,7 +66,7 @@ z_index = 250
 script = ExtResource("1_7vd71")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_b54lx")
+texture = ExtResource("2_2ja63")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

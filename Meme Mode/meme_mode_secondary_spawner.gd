@@ -42,14 +42,14 @@ func _ready():
 	#DEBUG END
 	
 	if randomize_all:
-		var rolled_only_one = randi_range(0, 3)
-		if rolled_only_one != 3:
+		var rolled_only_one = randi_range(0, 1)
+		if rolled_only_one != 1:
 			only_one = true
 		else:
 			only_one = false
 		
-		var rolled_is_text = randi_range(0, 2)
-		if rolled_is_text == 2:
+		var rolled_is_text = randi_range(0, 1)
+		if rolled_is_text == 1:
 			is_text = true
 		else:
 			is_text = false
