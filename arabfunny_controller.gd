@@ -7,8 +7,13 @@ var show_spawners = false #debug
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	$meme_mode_timer.start()
 	spawn_around_this_node = get_parent().get_node(spawnAroundThisNode_name)
+	
+	$restart_timer.wait_time = randf_range(6, 240)
+	$restart_timer.start()
+	
+	$delete_items_timer.wait_time = randf_range(3, 120)
+	$delete_items_timer.start()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -54,7 +59,29 @@ func _on_meme_mode_timer_3_timeout() -> void:
 	video.volume_db = randi_range(-10, 20)
 	video.material = preload("res://Meme Mode/remove_green.tres")
 	video.scale += Vector2(2, 2)
+	
+	var rolled_is_position_offset = randi_range(0, 3)
+	if rolled_is_position_offset == 3:
+		video.position += Vector2(randi_range(-1000, 1000), randi_range(-600, 600))
+	var rolled_is_rotated = randi_range(0, 3)
+	if rolled_is_rotated == 3:
+		video.rotation_degrees = randf_range(-360, 360)
+	var rolled_is_scaled = randi_range(0, 3)
+	if rolled_is_scaled == 3:
+		video.scale += Vector2(randf_range(-2, 1), randf_range(-2, 1))
+	
 	get_parent().add_child(video)
 	
 	$meme_mode_timer3.wait_time = randf_range(3, 24) # default: 3, 24
 	$meme_mode_timer3.start()
+
+
+func _on_restart_timer_timeout() -> void:
+	get_tree().reload_current_scene()
+
+func _on_delete_items_timer_timeout() -> void:
+	for item in get_tree().get_nodes_in_group("spawner_main") + get_tree().get_nodes_in_group("spawner_secondary") + get_tree().get_nodes_in_group("item_main") + get_tree().get_nodes_in_group("item_secondary"):
+		item.queue_free()
+	
+	$delete_items_timer.wait_time = randf_range(3, 90)
+	$delete_items_timer.start()

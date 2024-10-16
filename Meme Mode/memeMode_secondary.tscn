@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Meme Mode/meme_mode_secondary.gd" id="1_iecmg"]
 [ext_resource type="Texture2D" uid="uid://670c4dds8bgr" path="res://Meme Mode/pictures/4.png" id="2_k1166"]
-[ext_resource type="Texture2D" uid="uid://7hq5ocdt6h51" path="res://Meme Mode/pictures/secondary/arrow.png" id="3_g0hq3"]
+[ext_resource type="Texture2D" uid="uid://7hq5ocdt6h51" path="res://Meme Mode/pictures/secondary/a1.png" id="3_g0hq3"]
 
 [sub_resource type="Animation" id="Animation_15dh4"]
 length = 0.001
@@ -366,7 +366,7 @@ _data = {
 "rotate_around_loopBack": SubResource("Animation_wrywu")
 }
 
-[node name="memeMode_secondary" type="CharacterBody2D"]
+[node name="memeMode_secondary" type="CharacterBody2D" groups=["item_secondary"]]
 z_index = 175
 script = ExtResource("1_iecmg")
 

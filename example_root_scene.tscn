@@ -3,11 +3,12 @@
 [ext_resource type="Script" path="res://example_root_scene.gd" id="1_0m63u"]
 [ext_resource type="PackedScene" uid="uid://bit2t82mmllyc" path="res://example_player_scene.tscn" id="1_b6n0f"]
 [ext_resource type="PackedScene" uid="uid://defq0xnr3tmi6" path="res://arabfunny_controller.tscn" id="2_520pw"]
-[ext_resource type="PackedScene" uid="uid://cupokd1r3227d" path="res://background_video_player.tscn" id="4_nvwlq"]
+[ext_resource type="PackedScene" uid="uid://cupokd1r3227d" path="res://Meme Mode/background_video_player.tscn" id="4_nvwlq"]
 
 [node name="example_rootScene" type="Node2D"]
 process_mode = 3
 script = ExtResource("1_0m63u")
+disable_showcase = true
 
 [node name="arabfunny_controller" parent="." instance=ExtResource("2_520pw")]
 

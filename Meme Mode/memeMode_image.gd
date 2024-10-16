@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-var image_filepath : String = "res://Meme Mode/pictures/5.jpg"
+var image_filepath : String = "res://Meme Mode/pictures/1.png"
 
 var isBasicEmojiSpam = false
 
@@ -43,8 +43,34 @@ var video_scene = preload("res://Meme Mode/memeMode_video.tscn")
 func _ready():
 	if anim_scale_loop:
 		$AnimationPlayer.speed_scale = randf_range(0.2, 1.4)
-		$AnimationPlayer.play("scaleLoop")
-		scale = Vector2(randf_range(0.8, 3), randf_range(0.8, 2.4))
+		var rolled_anim = randi_range(0, 3)
+		if rolled_anim == 3:
+			$AnimationPlayer.play("scaleLoop2")
+		else:
+			$AnimationPlayer.play("scaleLoop")
+		
+		scale = Vector2(randf_range(0.8, 3.2), randf_range(0.6, 2.4))
+	
+	elif not fall_down:
+		var rolled_frozen = randi_range(0, 3)
+		if rolled_frozen == 3:
+			frozen = true
+		
+		$AnimationPlayer.speed_scale = randf_range(0.5, 2)
+		var rolled_anim_pulse_loop = randi_range(0, 2)
+		if rolled_anim_pulse_loop == 2:
+			$AnimationPlayer.play("pulseLoop")
+		else:
+			var rolled_anim_rotate_loop = randi_range(0, 1)
+			if rolled_anim_rotate_loop == 1:
+				var rolled_anim_rotate_loop_direction = randi_range(0, 1)
+				if rolled_anim_rotate_loop_direction == 1:
+					$AnimationPlayer.play("rotateLoop_R")
+				elif rolled_anim_rotate_loop_direction == 0:
+					$AnimationPlayer.play("rotateLoop_L")
+			
+		scale = Vector2(randf_range(0.4, 2), randf_range(0.4, 2))
+	
 	
 	if not anim_scale_loop and not is_video and not is_video_quick:
 		if not scale_down:
@@ -69,7 +95,7 @@ func _ready():
 	
 	if is_video:
 		if video_randomize:
-			var video_total = 23
+			var video_total = 111
 			var rolled_video = randi_range(1, video_total)
 			while video_total > 0:
 				if rolled_video == video_total:
@@ -105,7 +131,7 @@ func _ready():
 					
 					video_total -= 1
 			else:
-				var video_total = 35
+				var video_total = 52
 				var rolled_video = randi_range(1, video_total)
 				while video_total > 0:
 					if rolled_video == video_total:
@@ -125,7 +151,9 @@ func _ready():
 		video.scale = Vector2(randf_range(0.8, 2), randf_range(0.8, 2))
 		video.stream = load(video_filepath)
 		video.volume_db = randi_range(-10, 20)
-		video.pivot_offset = Vector2(video.size.x / 2, video.size.y / 2)
+		var rolled_pivot_offset = randi_range(0, 2)
+		if not rolled_pivot_offset:
+			video.pivot_offset = Vector2(video.size.x / 2, video.size.y / 2)
 		if video_foreground : video.z_index = randi_range(50, 125)
 		if video_filepath.contains("greenscreens"):
 			video.material = preload("res://Meme Mode/remove_green.tres")

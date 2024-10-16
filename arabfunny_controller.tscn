@@ -26,6 +26,14 @@ autostart = true
 process_mode = 3
 script = ExtResource("2_jqytg")
 
+[node name="restart_timer" type="Timer" parent="."]
+one_shot = true
+
+[node name="delete_items_timer" type="Timer" parent="."]
+one_shot = true
+
 [connection signal="timeout" from="meme_mode_timer" to="." method="_on_meme_mode_timer_timeout"]
 [connection signal="timeout" from="meme_mode_timer2" to="." method="_on_meme_mode_timer_2_timeout"]
 [connection signal="timeout" from="meme_mode_timer3" to="." method="_on_meme_mode_timer_3_timeout"]
+[connection signal="timeout" from="restart_timer" to="." method="_on_restart_timer_timeout"]
+[connection signal="timeout" from="delete_items_timer" to="." method="_on_delete_items_timer_timeout"]

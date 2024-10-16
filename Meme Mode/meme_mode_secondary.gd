@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
-var image_filepath = preload("res://Meme Mode/pictures/secondary/circle.png")
+var circle_filepath = "res://Meme Mode/pictures/secondary/c1.png"
+var arrow_filepath = "res://Meme Mode/pictures/secondary/a1.png"
 
 var is_arrow = false #By default it's a circle.
 
@@ -77,7 +78,55 @@ func _ready():
 	else:
 		rotate_direction = 1
 	
-	$image.texture = image_filepath
+	
+	var rolled_is_alt_circle = randi_range(0, 1)
+	if rolled_is_alt_circle:
+		
+		#randomize circle graphic
+		var circle_total = 6
+		var rolled_circle = randi_range(1, circle_total)
+		while circle_total > 0:
+			if rolled_circle == circle_total:
+				var file_path = "res://Meme Mode/pictures/secondary/c" + str(circle_total)
+				var file_type : String
+				if ResourceLoader.exists(file_path + ".png"):
+					file_type = ".png"
+				elif ResourceLoader.exists(file_path + ".jpg"):
+					file_type = ".jpg"
+				elif ResourceLoader.exists(file_path + ".jpeg"):
+					file_type = ".jpeg"
+				
+				print("loading file: " + file_path + file_type)
+				circle_filepath = file_path + file_type
+			
+			circle_total -= 1
+	
+	$image.texture = load(circle_filepath)
+	
+	var rolled_is_alt_arrow = randi_range(0, 1)
+	if rolled_is_alt_arrow:
+		
+		#randomize arrow graphic
+		var arrow_total = 10
+		var rolled_arrow = randi_range(1, arrow_total)
+		while arrow_total > 0:
+			if rolled_arrow == arrow_total:
+				var file_path = "res://Meme Mode/pictures/secondary/a" + str(arrow_total)
+				var file_type : String
+				if ResourceLoader.exists(file_path + ".png"):
+					file_type = ".png"
+				elif ResourceLoader.exists(file_path + ".jpg"):
+					file_type = ".jpg"
+				elif ResourceLoader.exists(file_path + ".jpeg"):
+					file_type = ".jpeg"
+				
+				print("loading file: " + file_path + file_type)
+				arrow_filepath = file_path + file_type
+			
+			arrow_total -= 1
+	
+	$arrow.texture = load(arrow_filepath)
+	
 	
 	await get_tree().create_timer(randf_range(0.5, 4), false).timeout
 	$AnimationPlayer.speed_scale = randf_range(0.25, 12)

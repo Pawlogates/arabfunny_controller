@@ -48,8 +48,8 @@ func _ready():
 		else:
 			only_one = false
 		
-		var rolled_is_text = randi_range(0, 1)
-		if rolled_is_text == 1:
+		var rolled_is_text = randi_range(0, 2)
+		if rolled_is_text == 2:
 			is_text = true
 		else:
 			is_text = false
@@ -82,6 +82,9 @@ func _ready():
 		else:
 			sfx_only_one = false
 		
+		
+		$Timer.wait_time = randf_range(0.5, 3)
+		$Timer.start()
 		$Timer2.wait_time = randf_range(1, 8)
 		$Timer2.start()
 		$Timer3.wait_time = randf_range(0.5, 2)
@@ -160,6 +163,7 @@ func _ready():
 			rotate_left = true
 		else:
 			rotate_left = false
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):

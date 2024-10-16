@@ -4,7 +4,7 @@ var major = false
 
 func _ready() -> void:
 	if major:
-		var video_total = 24
+		var video_total = 30
 		var rolled_video = randi_range(1, video_total)
 		while video_total > 0:
 			if rolled_video == video_total:

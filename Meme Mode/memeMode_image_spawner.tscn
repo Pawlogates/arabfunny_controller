@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Meme Mode/memeMode_image_spawner.gd" id="1_f1a7f"]
 [ext_resource type="AudioStream" uid="uid://bkk6dteci8psp" path="res://Meme Mode/audio/music/1.mp3" id="2_mlvv0"]
 
-[node name="memeMode_image_spawner" type="Node2D"]
+[node name="memeMode_image_spawner" type="Node2D" groups=["spawner_main"]]
 z_index = 25
 script = ExtResource("1_f1a7f")
 
