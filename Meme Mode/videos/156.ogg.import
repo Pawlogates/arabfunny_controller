@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://lsl1usfy28vx"
+path="res://.godot/imported/156.ogg-bc801a2b26741f335c112c0999b7f17c.oggvorbisstr"
+
+[deps]
+
+source_file="res://Meme Mode/videos/156.ogg"
+dest_files=["res://.godot/imported/156.ogg-bc801a2b26741f335c112c0999b7f17c.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

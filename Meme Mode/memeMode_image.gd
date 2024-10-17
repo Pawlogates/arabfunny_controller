@@ -39,6 +39,8 @@ var video_foreground = true
 
 var video_scene = preload("res://Meme Mode/memeMode_video.tscn")
 
+var is_rotating = false
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	if anim_scale_loop:
@@ -56,13 +58,14 @@ func _ready():
 		if rolled_frozen == 3:
 			frozen = true
 		
-		$AnimationPlayer.speed_scale = randf_range(0.5, 2)
+		$AnimationPlayer.speed_scale = randf_range(0.1, 1.5)
 		var rolled_anim_pulse_loop = randi_range(0, 2)
 		if rolled_anim_pulse_loop == 2:
 			$AnimationPlayer.play("pulseLoop")
 		else:
 			var rolled_anim_rotate_loop = randi_range(0, 1)
 			if rolled_anim_rotate_loop == 1:
+				is_rotating = true
 				var rolled_anim_rotate_loop_direction = randi_range(0, 1)
 				if rolled_anim_rotate_loop_direction == 1:
 					$AnimationPlayer.play("rotateLoop_R")
@@ -95,17 +98,24 @@ func _ready():
 	
 	if is_video:
 		if video_randomize:
-			var video_total = 111
+			var video_total = 157
 			var rolled_video = randi_range(1, video_total)
 			while video_total > 0:
 				if rolled_video == video_total:
 					var file_path = "res://Meme Mode/videos/" + str(video_total)
 					var file_type : String
+					var not_found = false
 					if ResourceLoader.exists(file_path + ".ogv"):
 						file_type = ".ogv"
-					
-					print("loading file: " + file_path + file_type)
-					video_filepath = file_path + file_type
+					else:
+						not_found = true
+						
+					if not_found:
+						print("failed loading a file: " + file_path)
+						video_filepath = "res://Meme Mode/videos/1.ogv"
+					else:
+						print("loading file: " + file_path + file_type)
+						video_filepath = file_path + file_type
 				
 				video_total -= 1
 	
@@ -117,31 +127,45 @@ func _ready():
 		if video_randomize:
 			var x = randi_range(0, 1)
 			if x:
-				var video_total = 39
+				var video_total = 124
 				var rolled_video = randi_range(1, video_total)
 				while video_total > 0:
 					if rolled_video == video_total:
 						var file_path = "res://Meme Mode/videos/gifs/" + str(video_total)
 						var file_type : String
+						var not_found = false
 						if ResourceLoader.exists(file_path + ".ogv"):
 							file_type = ".ogv"
+						else:
+							not_found = true
 						
-						print("loading file: " + file_path + file_type)
-						video_filepath = file_path + file_type
+						if not_found:
+							print("failed loading a file: " + file_path)
+							video_filepath = "res://Meme Mode/videos/1.ogv"
+						else:
+							print("loading file: " + file_path + file_type)
+							video_filepath = file_path + file_type
 					
 					video_total -= 1
 			else:
-				var video_total = 52
+				var video_total = 51
 				var rolled_video = randi_range(1, video_total)
 				while video_total > 0:
 					if rolled_video == video_total:
 						var file_path = "res://Meme Mode/videos/greenscreens/" + str(video_total)
 						var file_type : String
+						var not_found = false
 						if ResourceLoader.exists(file_path + ".ogv"):
 							file_type = ".ogv"
+						else:
+							not_found = true
 						
-						print("loading file: " + file_path + file_type)
-						video_filepath = file_path + file_type
+						if not_found:
+							print("failed loading a file: " + file_path)
+							video_filepath = "res://Meme Mode/videos/1.ogv"
+						else:
+							print("loading file: " + file_path + file_type)
+							video_filepath = file_path + file_type
 					
 					video_total -= 1
 	
@@ -151,7 +175,9 @@ func _ready():
 		video.scale = Vector2(randf_range(0.8, 2), randf_range(0.8, 2))
 		video.stream = load(video_filepath)
 		video.volume_db = randi_range(-10, 20)
-		var rolled_pivot_offset = randi_range(0, 2)
+		var rolled_pivot_offset : int
+		if is_rotating: rolled_pivot_offset = randi_range(0, 2)
+		else: rolled_pivot_offset = randi_range(0, 10)
 		if not rolled_pivot_offset:
 			video.pivot_offset = Vector2(video.size.x / 2, video.size.y / 2)
 		if video_foreground : video.z_index = randi_range(50, 125)
@@ -164,7 +190,7 @@ func _ready():
 	if is_video_quick and not is_video:
 		await get_tree().create_timer(randf_range(2, 12), false).timeout
 	else:
-		await get_tree().create_timer(randf_range(5, 30), false).timeout
+		await get_tree().create_timer(randf_range(5, 10), false).timeout
 	
 	queue_free()
 

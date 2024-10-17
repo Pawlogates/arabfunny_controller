@@ -3,11 +3,23 @@ extends Node2D
 @export var spawnAroundThisNode_name = "example_playerScene"
 var spawn_around_this_node : Node
 
+@onready var settings = $Settings
+#@onready var settings = $/root/example_rootScene/arabfunny_controller/Settings
+
 var show_spawners = false #debug
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	spawn_around_this_node = get_parent().get_node(spawnAroundThisNode_name)
+	
+	$meme_mode_timer.wait_time = randf_range(0.25, 4)
+	$meme_mode_timer.start()
+	
+	$meme_mode_timer2.wait_time = randf_range(0.5, 8)
+	$meme_mode_timer2.start()
+	
+	$meme_mode_timer3.wait_time = randf_range(1, 16)
+	$meme_mode_timer3.start()
 	
 	$restart_timer.wait_time = randf_range(6, 240)
 	$restart_timer.start()
@@ -30,7 +42,7 @@ func _on_meme_mode_timer_timeout():
 	#debug
 	add_child(meme_spawner)
 	
-	$meme_mode_timer.wait_time = randf_range(0.5, 6) # default: 0.5, 6
+	$meme_mode_timer.wait_time = randf_range(0.5, 6 * settings.main_rate) # default: 0.5, 6
 	$meme_mode_timer.start()
 
 # SECONDARY MEME SPAWNER, WHICH SPAWNS RED CIRCLES AND ARROWS, AS WELL AS VARIOUS TEXT.
@@ -43,7 +55,7 @@ func _on_meme_mode_timer_2_timeout() -> void:
 	#debug
 	add_child(meme_spawner2)
 	
-	$meme_mode_timer2.wait_time = randf_range(0.5, 6) # default: 0.5, 6
+	$meme_mode_timer2.wait_time = randf_range(0.5, 6 * settings.secondary_rate) # default: 0.5, 6
 	$meme_mode_timer2.start()
 
 
@@ -72,7 +84,7 @@ func _on_meme_mode_timer_3_timeout() -> void:
 	
 	get_parent().add_child(video)
 	
-	$meme_mode_timer3.wait_time = randf_range(3, 24) # default: 3, 24
+	$meme_mode_timer3.wait_time = randf_range(3, 24 * settings.major_greenscreen_rate) # default: 3, 24
 	$meme_mode_timer3.start()
 
 

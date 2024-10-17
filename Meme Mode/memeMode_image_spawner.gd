@@ -86,12 +86,13 @@ func _ready():
 		else:
 			sfx_only_one = false
 		
-		$Timer2.wait_time = randf_range(4, 16)
+		$Timer2.wait_time = randf_range(0.5, 12)
 		$Timer2.start()
+		
 		$Timer3.wait_time = randf_range(0.1, 0.3)
 		$Timer3.start()
 		
-		var img_total = 127
+		var img_total = 138
 		var rolled_img = randi_range(1, img_total)
 		while img_total > 0:
 			if rolled_img == img_total:
@@ -127,7 +128,7 @@ func _ready():
 			sfx_total -= 1
 		
 		
-		var music_total = 31
+		var music_total = 55
 		var rolled_music = randi_range(1, music_total)
 		while music_total > 0:
 			if rolled_music == music_total:
@@ -246,8 +247,8 @@ func _on_timer_2_timeout():
 var sfx = preload("res://Meme Mode/memeMode_sfx.tscn")
 
 func _on_timer_3_timeout():
-	var x = randi_range(0, 6)
-	if not x:
+	var x = randi_range(0, 3)
+	if not x == 3:
 		return
 	
 	var sound_effect = sfx.instantiate()

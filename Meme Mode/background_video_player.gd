@@ -16,7 +16,7 @@ func _on_finished() -> void:
 	randomize_video()
 
 func randomize_video():
-	var video_total = 69
+	var video_total = 96
 	var rolled_video = randi_range(1, video_total)
 	while video_total > 0:
 		if rolled_video == video_total:
