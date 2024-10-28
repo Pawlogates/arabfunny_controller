@@ -52,6 +52,29 @@ func _process(delta: float) -> void:
 			meme_spawner2.randomize_all = true
 			meme_spawner2.position = Vector2($arabfunny_controller.spawn_around_this_node.position.x + randi_range(-800, 800), $arabfunny_controller.spawn_around_this_node.position.y + randi_range(-500, 500))
 			$arabfunny_controller.add_child(meme_spawner2)
+		
+		elif Input.is_action_pressed("ui_down"):
+			var video = $arabfunny_controller.video_scene.instantiate()
+			video.major = true
+			video.pivot_offset = Vector2(video.size.x / 2, video.size.y / 2)
+			video.position += Vector2(0, 0)
+			video.scale = Vector2(randf_range(0.8, 2), randf_range(0.8, 2))
+			video.volume_db = randi_range(-10, 20)
+			video.material = preload("res://Meme Mode/remove_green.tres")
+			video.scale += Vector2(2, 2)
+			
+			var rolled_is_position_offset = randi_range(0, 3)
+			if rolled_is_position_offset == 3:
+				video.position += Vector2(randi_range(-1000, 1000), randi_range(-600, 600))
+			var rolled_is_rotated = randi_range(0, 3)
+			if rolled_is_rotated == 3:
+				video.rotation_degrees = randf_range(-360, 360)
+			var rolled_is_scaled = randi_range(0, 3)
+			if rolled_is_scaled == 3:
+				video.scale += Vector2(randf_range(-2, 1), randf_range(-2, 1))
+			
+			$arabfunny_controller.add_child(video)
+		
 		else:
 			var meme_spawner = preload("res://Meme Mode/memeMode_image_spawner.tscn").instantiate()
 			meme_spawner.randomize_all = true
@@ -69,6 +92,29 @@ func _process(delta: float) -> void:
 		meme_spawner2.randomize_all = true
 		meme_spawner2.position = Vector2($arabfunny_controller.spawn_around_this_node.position.x + randi_range(-800, 800), $arabfunny_controller.spawn_around_this_node.position.y + randi_range(-500, 500))
 		$arabfunny_controller.add_child(meme_spawner2)
+	
+	elif Input.is_action_just_pressed("spawn3"):
+		var video = $arabfunny_controller.video_scene.instantiate()
+		video.major = true
+		video.pivot_offset = Vector2(video.size.x / 2, video.size.y / 2)
+		video.position += Vector2(0, 0)
+		video.scale = Vector2(randf_range(0.8, 2), randf_range(0.8, 2))
+		video.volume_db = randi_range(-10, 20)
+		video.material = preload("res://Meme Mode/remove_green.tres")
+		video.scale += Vector2(2, 2)
+		
+		var rolled_is_position_offset = randi_range(0, 3)
+		if rolled_is_position_offset == 3:
+			video.position += Vector2(randi_range(-1000, 1000), randi_range(-600, 600))
+		var rolled_is_rotated = randi_range(0, 3)
+		if rolled_is_rotated == 3:
+			video.rotation_degrees = randf_range(-360, 360)
+		var rolled_is_scaled = randi_range(0, 3)
+		if rolled_is_scaled == 3:
+			video.scale += Vector2(randf_range(-2, 1), randf_range(-2, 1))
+		
+		$arabfunny_controller.add_child(video)
+	
 	
 	elif Input.is_action_just_pressed("next"):
 		$background_video_player.randomize_video()

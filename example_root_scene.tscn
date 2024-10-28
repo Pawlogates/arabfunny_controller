@@ -8,6 +8,7 @@
 [node name="example_rootScene" type="Node2D"]
 process_mode = 3
 script = ExtResource("1_0m63u")
+disable_showcase = true
 
 [node name="arabfunny_controller" parent="." instance=ExtResource("2_520pw")]
 
@@ -30,6 +31,7 @@ one_shot = true
 autostart = true
 
 [node name="deleteThis_info" type="Label" parent="."]
+visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -43,10 +45,10 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 32
 text = "P / ESC = pause,
-R / ESC WHILE HOLDING UP ARROW = restart,
-1 / ENTER = spawn main meme container,
-2 / ENTER WHILE HOLDING UP ARROW = spawn
-a secondary meme container.
+R = restart,
+1 = spawn a main meme container,
+2 = spawn a secondary meme container,
+3 = spawn a major greenscreen,
 S / BACKSPACE = next background video.
 ------------------------------------
 Delete the \"deleteThis\" timers to skip the
@@ -55,17 +57,18 @@ Or just click on the root node and toggle
 the disable_showcase property.
 ------------------------------------------
 To replace randomized files, and the amount of
-files the randomizer chooses from, just find the
-script that contains the path to the folder the
-specific type of rolled files are in.
-There will be a single \"filetype_total\" variable
-which corresponds to the amount
-of files in the folder.
+files the randomizer chooses from,
+just find the \"Settings\" node's script, which contains
+variables holding the total amount of certain files in the folders.
+There will be a \"filetype_total\" variable
+which must match the amount
+of files of a certain type in each folder.
 You can replace the files as long as the name
 remains the same (\"1.png\", \"2.png\", etc.)."
 horizontal_alignment = 1
 
 [node name="deleteThis_info2" type="Label" parent="."]
+visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5

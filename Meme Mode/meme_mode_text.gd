@@ -26,9 +26,18 @@ func _ready() -> void:
 	else:
 		handleText_advanced()
 	
+	if not randi_range(0, 3):
+		$AnimationPlayer.speed_scale = randf_range(0.1, 2)
+		
+		var rolled_anim_scale_reverse = randi_range(0, 1)
+		if rolled_anim_scale_reverse == 0:
+			$AnimationPlayer.play("scale_reverse")
+		elif rolled_anim_scale_reverse == 1:
+			$AnimationPlayer.play("scale_reverse_v")
 	
 	await get_tree().create_timer(randf_range(2, 16), false).timeout
 	queue_free()
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:

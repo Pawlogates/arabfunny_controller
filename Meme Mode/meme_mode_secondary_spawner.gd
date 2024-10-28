@@ -1,5 +1,7 @@
 extends Node2D
 
+@onready var settings = $/root/example_rootScene/arabfunny_controller/Settings
+
 var color_rect_visible = false #DEBUG
 
 var meme_scene = preload("res://Meme Mode/memeMode_secondary.tscn")
@@ -91,7 +93,7 @@ func _ready():
 		$Timer3.start()
 		
 		
-		var sfx_total = 36
+		var sfx_total = settings.total_audio
 		var rolled_sfx = randi_range(1, sfx_total)
 		while sfx_total > 0:
 			if rolled_sfx == sfx_total:
@@ -108,7 +110,7 @@ func _ready():
 			sfx_total -= 1
 		
 		
-		var music_total = 5
+		var music_total = settings.total_music
 		var rolled_music = randi_range(1, music_total)
 		while music_total > 0:
 			if rolled_music == music_total:

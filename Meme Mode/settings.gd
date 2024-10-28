@@ -4,6 +4,18 @@ var main_rate : float = 1
 var secondary_rate : float = 1
 var major_greenscreen_rate : float = 1
 
+var total_pictures = 159
+var total_common = 63
+var total_audio = 87
+var total_music = 55
+var total_videos = 157
+var total_gifs = 153
+var total_common_gifs = 33
+var total_greenscreens = 91
+var total_major = 72
+var total_background_videos = 101
+
+
 @onready var label = $Label
 @onready var label2 = $Label2
 @onready var label3 = $Label3
@@ -32,9 +44,9 @@ func _process(_delta: float) -> void:
 		secondary_rate = clamp(secondary_rate, 0.05, 10)
 		major_greenscreen_rate = clamp(major_greenscreen_rate, 0.05, 10)
 		
-		label.text = "Main spawn rate: " + str(main_rate)
-		label2.text = "Secondary spawn rate: " + str(secondary_rate)
-		label3.text = "Major greenscreen spawn rate: " + str(major_greenscreen_rate)
+		label.text = "Main spawn delay: " + str(main_rate)
+		label2.text = "Secondary spawn delay: " + str(secondary_rate)
+		label3.text = "Greenscreen spawn delay: " + str(major_greenscreen_rate)
 	
 		$AnimationPlayer.stop()
 		$AnimationPlayer.play("fade_out")
@@ -55,9 +67,9 @@ func _process(_delta: float) -> void:
 		secondary_rate = clamp(secondary_rate, 0.05, 10)
 		major_greenscreen_rate = clamp(major_greenscreen_rate, 0.05, 10)
 	
-		label.text = "Main spawn rate: " + str(main_rate)
-		label2.text = "Secondary spawn rate: " + str(secondary_rate)
-		label3.text = "Major greenscreen spawn rate: " + str(major_greenscreen_rate)
+		label.text = "Main spawn delay: " + str(main_rate)
+		label2.text = "Secondary spawn delay: " + str(secondary_rate)
+		label3.text = "Greenscreen spawn delay: " + str(major_greenscreen_rate)
 	
 		$AnimationPlayer.stop()
 		$AnimationPlayer.play("fade_out")

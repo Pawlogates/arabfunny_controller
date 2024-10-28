@@ -26,6 +26,9 @@ func _ready() -> void:
 	
 	$delete_items_timer.wait_time = randf_range(3, 120)
 	$delete_items_timer.start()
+	
+	$image_static.wait_time = randf_range(0.25, 4)
+	$image_static.start()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -97,3 +100,35 @@ func _on_delete_items_timer_timeout() -> void:
 	
 	$delete_items_timer.wait_time = randf_range(3, 90)
 	$delete_items_timer.start()
+
+
+func _on_image_static_timeout() -> void:
+	var meme_spawner = preload("res://Meme Mode/memeMode_image_spawner.tscn").instantiate()
+	meme_spawner.randomize_all = false
+	meme_spawner.position = Vector2(spawn_around_this_node.position.x + randi_range(-800, 800), spawn_around_this_node.position.y + randi_range(-500, 500))
+	meme_spawner.only_one = true
+	meme_spawner.fall_down = false
+	meme_spawner.rotates = true
+	
+	var img_total = settings.total_common
+	var rolled_img = randi_range(1, img_total)
+	while img_total > 0:
+		if rolled_img == img_total:
+			var file_path = "res://Meme Mode/pictures/common/" + str(img_total)
+			var file_type : String
+			if ResourceLoader.exists(file_path + ".png"):
+				file_type = ".png"
+			elif ResourceLoader.exists(file_path + ".jpg"):
+				file_type = ".jpg"
+			elif ResourceLoader.exists(file_path + ".jpeg"):
+				file_type = ".jpeg"
+			
+			print("loading file: " + file_path + file_type)
+			meme_spawner.image_filepath = file_path + file_type
+		
+		img_total -= 1
+	
+	add_child(meme_spawner)
+	
+	$image_static.wait_time = randf_range(0.25, 8 * settings.main_rate)
+	$image_static.start()

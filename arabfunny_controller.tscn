@@ -20,6 +20,10 @@ one_shot = true
 wait_time = 12.0
 one_shot = true
 
+[node name="image_static" type="Timer" parent="."]
+wait_time = 4.0
+one_shot = true
+
 [node name="manual_spawner" type="Node2D" parent="."]
 process_mode = 3
 script = ExtResource("2_jqytg")
@@ -31,10 +35,10 @@ one_shot = true
 one_shot = true
 
 [node name="Settings" parent="." instance=ExtResource("3_gccoy")]
-modulate = Color(1, 1, 1, 0)
 
 [connection signal="timeout" from="meme_mode_timer" to="." method="_on_meme_mode_timer_timeout"]
 [connection signal="timeout" from="meme_mode_timer2" to="." method="_on_meme_mode_timer_2_timeout"]
 [connection signal="timeout" from="meme_mode_timer3" to="." method="_on_meme_mode_timer_3_timeout"]
+[connection signal="timeout" from="image_static" to="." method="_on_image_static_timeout"]
 [connection signal="timeout" from="restart_timer" to="." method="_on_restart_timer_timeout"]
 [connection signal="timeout" from="delete_items_timer" to="." method="_on_delete_items_timer_timeout"]

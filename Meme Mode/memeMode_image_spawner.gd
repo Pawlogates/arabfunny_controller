@@ -1,5 +1,7 @@
 extends Node2D
 
+@onready var settings = $/root/example_rootScene/arabfunny_controller/Settings
+
 var color_rect_visible = false #DEBUG
 
 var meme_scene = preload("res://Meme Mode/memeMode_image.tscn")
@@ -39,6 +41,7 @@ var video_foreground = false
 var is_video_quick
 var video_quick_foreground = false
 
+var only_one = false
 var sfx_only_one = true
 
 # Called when the node enters the scene tree for the first time.
@@ -50,8 +53,8 @@ func _ready():
 	
 	if randomize_all:
 		#CHANCE TO BE A BASIC FALLING IMAGE SPAM, IGNORING MOST PROPERTIES.
-		var rolled_isBasicEmojiSpam = randi_range(0, 2)
-		if rolled_isBasicEmojiSpam == 2:
+		var rolled_isBasicEmojiSpam = randi_range(0, 1)
+		if rolled_isBasicEmojiSpam == 1:
 			isBasicEmojiSpam = true
 		else:
 			isBasicEmojiSpam = false
@@ -92,26 +95,46 @@ func _ready():
 		$Timer3.wait_time = randf_range(0.1, 0.3)
 		$Timer3.start()
 		
-		var img_total = 138
-		var rolled_img = randi_range(1, img_total)
-		while img_total > 0:
-			if rolled_img == img_total:
-				var file_path = "res://Meme Mode/pictures/" + str(img_total)
-				var file_type : String
-				if ResourceLoader.exists(file_path + ".png"):
-					file_type = ".png"
-				elif ResourceLoader.exists(file_path + ".jpg"):
-					file_type = ".jpg"
-				elif ResourceLoader.exists(file_path + ".jpeg"):
-					file_type = ".jpeg"
+		if randi_range(0, 1):
+			var img_total = settings.total_pictures
+			var rolled_img = randi_range(1, img_total)
+			while img_total > 0:
+				if rolled_img == img_total:
+					var file_path = "res://Meme Mode/pictures/" + str(img_total)
+					var file_type : String
+					if ResourceLoader.exists(file_path + ".png"):
+						file_type = ".png"
+					elif ResourceLoader.exists(file_path + ".jpg"):
+						file_type = ".jpg"
+					elif ResourceLoader.exists(file_path + ".jpeg"):
+						file_type = ".jpeg"
+					
+					print("loading file: " + file_path + file_type)
+					image_filepath = file_path + file_type
 				
-				print("loading file: " + file_path + file_type)
-				image_filepath = file_path + file_type
-			
-			img_total -= 1
+				img_total -= 1
+		
+		else:
+			var img_total = settings.total_common
+			var rolled_img = randi_range(1, img_total)
+			while img_total > 0:
+				if rolled_img == img_total:
+					var file_path = "res://Meme Mode/pictures/common/" + str(img_total)
+					var file_type : String
+					if ResourceLoader.exists(file_path + ".png"):
+						file_type = ".png"
+					elif ResourceLoader.exists(file_path + ".jpg"):
+						file_type = ".jpg"
+					elif ResourceLoader.exists(file_path + ".jpeg"):
+						file_type = ".jpeg"
+					
+					print("loading file: " + file_path + file_type)
+					image_filepath = file_path + file_type
+				
+				img_total -= 1
 		
 		
-		var sfx_total = 78
+		var sfx_total = settings.total_audio
 		var rolled_sfx = randi_range(1, sfx_total)
 		while sfx_total > 0:
 			if rolled_sfx == sfx_total:
@@ -128,7 +151,7 @@ func _ready():
 			sfx_total -= 1
 		
 		
-		var music_total = 55
+		var music_total = settings.total_music
 		var rolled_music = randi_range(1, music_total)
 		while music_total > 0:
 			if rolled_music == music_total:
@@ -233,9 +256,12 @@ func _on_timer_timeout():
 	image.is_video_quick = is_video_quick
 	image.video_foreground = video_foreground
 	
+	if not randomize_all:
+		image.is_single = true
+	
 	get_parent().add_child(image)
 	
-	if anim_scale_loop or is_video or is_video_quick:
+	if only_one or anim_scale_loop or is_video or is_video_quick:
 		queue_free()
 		print("REMOVED MUSIC")
 
@@ -247,6 +273,9 @@ func _on_timer_2_timeout():
 var sfx = preload("res://Meme Mode/memeMode_sfx.tscn")
 
 func _on_timer_3_timeout():
+	if not randomize_all:
+		return
+	
 	var x = randi_range(0, 3)
 	if not x == 3:
 		return

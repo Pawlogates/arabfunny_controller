@@ -1,5 +1,7 @@
 extends VideoStreamPlayer
 
+@onready var settings = $/root/example_rootScene/arabfunny_controller/Settings
+
 var video_filepath = "res://background videos/1.ogv"
 
 # Called when the node enters the scene tree for the first time.
@@ -16,7 +18,7 @@ func _on_finished() -> void:
 	randomize_video()
 
 func randomize_video():
-	var video_total = 96
+	var video_total = settings.total_background_videos
 	var rolled_video = randi_range(1, video_total)
 	while video_total > 0:
 		if rolled_video == video_total:
