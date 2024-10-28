@@ -72,7 +72,7 @@ func _ready():
 			is_video_quick = false
 		
 		var rolled_video_foreground = randi_range(0, 2)
-		if rolled_video_foreground != 2:
+		if rolled_video_foreground == 2:
 			video_foreground = true
 		else:
 			video_foreground = false

@@ -10,10 +10,10 @@ var total_audio = 87
 var total_music = 55
 var total_videos = 157
 var total_gifs = 153
-var total_common_gifs = 33
-var total_greenscreens = 91
-var total_major = 72
-var total_background_videos = 101
+var total_common_gifs = 34
+var total_greenscreens = 89
+var total_major = 68
+var total_background_videos = 118
 
 
 @onready var label = $Label

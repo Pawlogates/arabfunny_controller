@@ -8,7 +8,6 @@
 [node name="example_rootScene" type="Node2D"]
 process_mode = 3
 script = ExtResource("1_0m63u")
-disable_showcase = true
 
 [node name="arabfunny_controller" parent="." instance=ExtResource("2_520pw")]
 
@@ -31,7 +30,6 @@ one_shot = true
 autostart = true
 
 [node name="deleteThis_info" type="Label" parent="."]
-visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -68,7 +66,6 @@ remains the same (\"1.png\", \"2.png\", etc.)."
 horizontal_alignment = 1
 
 [node name="deleteThis_info2" type="Label" parent="."]
-visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5

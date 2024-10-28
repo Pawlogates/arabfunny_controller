@@ -93,7 +93,7 @@ func _process(delta: float) -> void:
 		meme_spawner2.position = Vector2($arabfunny_controller.spawn_around_this_node.position.x + randi_range(-800, 800), $arabfunny_controller.spawn_around_this_node.position.y + randi_range(-500, 500))
 		$arabfunny_controller.add_child(meme_spawner2)
 	
-	elif Input.is_action_just_pressed("spawn3"):
+	elif Input.is_action_just_pressed("spawn3") or Input.is_action_just_pressed("MMB"):
 		var video = $arabfunny_controller.video_scene.instantiate()
 		video.major = true
 		video.pivot_offset = Vector2(video.size.x / 2, video.size.y / 2)

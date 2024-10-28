@@ -80,17 +80,17 @@ func _ready():
 		scale = Vector2(randf_range(0.4, 2), randf_range(0.4, 2))
 		
 		
-		if not randi_range(0, 4):
-			$AnimationPlayer.speed_scale = randf_range(0.1, 1.5)
+		if not randi_range(0, 9):
+			$AnimationPlayer.speed_scale = randf_range(0.05, 1)
 			
 			var rolled_anim_scale_reverse = randi_range(0, 3)
 			if rolled_anim_scale_reverse == 0:
 				$AnimationPlayer.play("scale_reverse")
 			elif rolled_anim_scale_reverse == 1:
 				$AnimationPlayer.play("scale_reverse2")
-			elif rolled_anim_scale_reverse == 1:
+			elif rolled_anim_scale_reverse == 2:
 				$AnimationPlayer.play("scale_reverse_v")
-			elif rolled_anim_scale_reverse == 1:
+			elif rolled_anim_scale_reverse == 3:
 				$AnimationPlayer.play("scale_reverse_v2")
 	
 	
@@ -201,7 +201,10 @@ func _ready():
 			video.pivot_offset = Vector2(video.size.x / 2, video.size.y / 2)
 		else:
 			video.pivot_offset = Vector2(0, 0)
-		if video_foreground : video.z_index = randi_range(50, 125)
+		if video_foreground:
+			video.z_index = randi_range(50, 125)
+		else:
+			video.z_index = randi_range(0, 25)
 		if video_filepath.contains("greenscreens"):
 			video.material = preload("res://Meme Mode/remove_green.tres")
 			video.scale += Vector2(2, 2)
@@ -266,8 +269,8 @@ func _ready():
 			$image.self_modulate.a = 0
 		
 		
-		if not randi_range(0, 4):
-			$AnimationPlayer.speed_scale = randf_range(0.1, 1.5)
+		if not randi_range(0, 9):
+			$AnimationPlayer.speed_scale = randf_range(0.05, 1)
 			
 			var rolled_anim_scale_reverse = randi_range(0, 3)
 			if rolled_anim_scale_reverse == 0:
