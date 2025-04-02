@@ -36,9 +36,18 @@ one_shot = true
 
 [node name="Settings" parent="." instance=ExtResource("3_gccoy")]
 
+[node name="rotating_effect_3d" type="Timer" parent="."]
+
+[node name="image_falling_down" type="Timer" parent="."]
+
+[node name="caption" type="Timer" parent="."]
+
 [connection signal="timeout" from="meme_mode_timer" to="." method="_on_meme_mode_timer_timeout"]
 [connection signal="timeout" from="meme_mode_timer2" to="." method="_on_meme_mode_timer_2_timeout"]
 [connection signal="timeout" from="meme_mode_timer3" to="." method="_on_meme_mode_timer_3_timeout"]
 [connection signal="timeout" from="image_static" to="." method="_on_image_static_timeout"]
 [connection signal="timeout" from="restart_timer" to="." method="_on_restart_timer_timeout"]
 [connection signal="timeout" from="delete_items_timer" to="." method="_on_delete_items_timer_timeout"]
+[connection signal="timeout" from="rotating_effect_3d" to="." method="_on_rotating_effect_3d_timeout"]
+[connection signal="timeout" from="image_falling_down" to="." method="_on_image_falling_down_timeout"]
+[connection signal="timeout" from="caption" to="." method="_on_caption_timeout"]

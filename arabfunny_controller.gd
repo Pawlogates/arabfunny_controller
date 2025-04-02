@@ -29,6 +29,12 @@ func _ready() -> void:
 	
 	$image_static.wait_time = randf_range(0.25, 4)
 	$image_static.start()
+	
+	$rotating_effect_3d.wait_time = randf_range(0.25, 12)
+	$rotating_effect_3d.start()
+	
+	$image_falling_down.wait_time = randf_range(0.25, 12)
+	$image_falling_down.start()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -132,3 +138,25 @@ func _on_image_static_timeout() -> void:
 	
 	$image_static.wait_time = randf_range(0.25, 8 * settings.main_rate)
 	$image_static.start()
+
+
+func _on_rotating_effect_3d_timeout() -> void:
+	$rotating_effect_3d.wait_time = randf_range(0.25, 12)
+	$rotating_effect_3d.start()
+	
+	var scene_rotating_effect_3d = preload("res://Meme Mode/rotating_effect_3d.tscn")
+	var rotating_effect_3d = scene_rotating_effect_3d.instantiate()
+	$"../SubViewportContainer/SubViewport".add_child(rotating_effect_3d)
+
+
+func _on_image_falling_down_timeout() -> void:
+	$image_falling_down.wait_time = randf_range(0.25, 12)
+	$image_falling_down.start()
+	
+	var scene_image_falling_down = preload("res://Meme Mode/image_falling_down.tscn")
+	var image_falling_down = scene_image_falling_down.instantiate()
+	add_child(image_falling_down)
+
+
+func _on_caption_timeout() -> void:
+	pass # Replace with function body.

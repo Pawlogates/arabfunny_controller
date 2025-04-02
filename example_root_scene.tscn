@@ -1,13 +1,15 @@
-[gd_scene load_steps=5 format=3 uid="uid://dues7c2js6d68"]
+[gd_scene load_steps=6 format=3 uid="uid://dues7c2js6d68"]
 
 [ext_resource type="Script" path="res://example_root_scene.gd" id="1_0m63u"]
 [ext_resource type="PackedScene" uid="uid://bit2t82mmllyc" path="res://example_player_scene.tscn" id="1_b6n0f"]
 [ext_resource type="PackedScene" uid="uid://defq0xnr3tmi6" path="res://arabfunny_controller.tscn" id="2_520pw"]
 [ext_resource type="PackedScene" uid="uid://cupokd1r3227d" path="res://Meme Mode/background_video_player.tscn" id="4_nvwlq"]
+[ext_resource type="Material" uid="uid://dy1plh3ya2wtn" path="res://Meme Mode/remove_black.tres" id="5_aj48g"]
 
 [node name="example_rootScene" type="Node2D"]
 process_mode = 3
 script = ExtResource("1_0m63u")
+disable_showcase = true
 
 [node name="arabfunny_controller" parent="." instance=ExtResource("2_520pw")]
 
@@ -80,6 +82,18 @@ grow_vertical = 2
 theme_override_font_sizes/font_size = 96
 text = "You can spawn stuff manually by clicking LEFT/RIGHT MOUSE BUTTON"
 horizontal_alignment = 1
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+material = ExtResource("5_aj48g")
+offset_left = -960.0
+offset_top = -540.0
+offset_right = 960.0
+offset_bottom = 540.0
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+handle_input_locally = false
+size = Vector2i(1920, 1080)
+render_target_update_mode = 4
 
 [connection signal="timeout" from="deleteThis_cameraZoom_delay" to="." method="_on_delete_this_camera_zoom_delay_timeout"]
 [connection signal="timeout" from="deleteThis_cameraBack_delay" to="." method="_on_delete_this_camera_back_delay_timeout"]
