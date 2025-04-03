@@ -5,6 +5,8 @@ extends Node2D
 @onready var player = $example_playerScene
 @onready var arabfunny_controller = $arabfunny_controller
 
+@onready var camera = $Camera2D
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	RenderingServer.set_default_clear_color(Color.BLACK)

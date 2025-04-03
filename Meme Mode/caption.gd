@@ -2,124 +2,25 @@ extends Node2D
 
 var text_main : String
 
-var text_moveUp = false
-var text_moveUp_delay = 1.0
-
-var position_offset = 0
-
-var anim = 0
-var anim_speed = 1.0
-var random_anim = false
-var anim_reverse = false
-
-var outline = true
-
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	randomize_text()
-	scale = Vector2(randf_range(0.5, 2), randf_range(0.25, 3))
-	anim_speed = randf_range(0.25, 3)
+	$ColorRect/Label.text = text_main
+	randomize_text()
+	$ColorRect2/Label.text = text_main
 	
-	var rolled_text_type = randi_range(0, 1)
-	if rolled_text_type == 1:
-		handleText_simple()
-	else:
-		handleText_advanced()
+	if not randi_range(0, 3):
+		$ColorRect.queue_free()
+	if not randi_range(0, 3):
+		$ColorRect2.queue_free()
 	
-	if not randi_range(0, 5):
-		$AnimationPlayer.speed_scale = randf_range(0.1, 2)
-		
-		var rolled_anim_scale_reverse = randi_range(0, 1)
-		if rolled_anim_scale_reverse == 0:
-			$AnimationPlayer.play("scale_reverse")
-		elif rolled_anim_scale_reverse == 1:
-			$AnimationPlayer.play("scale_reverse_v")
-	
-	await get_tree().create_timer(randf_range(2, 16), false).timeout
-	queue_free()
+	$Timer.wait_time = randf_range(0.5, 20)
+	$Timer.start()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	pass
-
-
-func handleText_simple():
-	$Label.text = text_main
-	$Label.set_visible(true)
-	
-	var rolled_outline = randi_range(0, 2)
-	if not rolled_outline:
-		outline = false
-	
-	anim = randi_range(0, 2)
-	
-	var rolled_anim_reverse = randi_range(0, 2)
-	if rolled_anim_reverse == 2:
-		anim_reverse = true
-	
-	var rolled_random_anim = randi_range(0, 6)
-	if rolled_random_anim == 6:
-		random_anim = true
-	
-	var rolled_text_moveUp = randi_range(0, 1)
-	if rolled_text_moveUp == 1:
-		text_moveUp = true
-		text_moveUp_delay = randf_range(0, 2)
-		$Label.set_visible(false)
-		
-		
-		var letter_count = text_main.length()
-		var current_letter = 0
-		var current_letter_reverse = letter_count - 1
-		
-		for character in text_main:
-			var letter = preload("res://Meme Mode/meme_mode_single_letter.tscn").instantiate()
-			
-			letter.text = text_main[current_letter]
-			letter.position.x = position_offset
-			position_offset += 19
-			if anim_reverse:
-				letter.delay = text_moveUp_delay + 0.05 * current_letter_reverse
-			else:
-				letter.delay = text_moveUp_delay + 0.05 * current_letter
-			letter.anim = anim
-			letter.anim_speed = anim_speed
-			letter.random_anim = random_anim
-			letter.outline = outline
-			
-			add_child(letter)
-			
-			current_letter += 1
-			current_letter_reverse -= 1
-
-func handleText_advanced():
-	var effect_code = "[none]"
-	var effect_closer = "[/none]"
-	
-	var rolled_effect = randi_range(0, 5)
-	if rolled_effect == 0:
-		effect_code = "[pulse freq=" + str(randf_range(1, 50)) + " color=#ffffff40 ease=-" + str(randf_range(1, 25)) + "]"
-		effect_closer = "[/pulse]"
-	elif rolled_effect == 1:
-		effect_code = "[wave amp=" + str(randf_range(20, 100)) + " freq=" + str(randf_range(1, 50)) + " connected=1]"
-		effect_closer = "[/wave]"
-	elif rolled_effect == 2:
-		effect_code = "[tornado radius=" + str(randf_range(1, 50)) + " freq=" + str(randf_range(1, 50)) + " connected=1]"
-		effect_closer = "[/tornado]"
-	elif rolled_effect == 3:
-		effect_code = "[shake rate=" + str(randf_range(1, 50)) + " level=" + str(randf_range(1, 50)) + " connected=1]"
-		effect_closer = "[/shake]"
-	elif rolled_effect == 4:
-		effect_code = "[fade start=" + str(randf_range(1, 50)) + " length=" + str(randf_range(1, 50)) + "]"
-		effect_closer = "[/fade]"
-	elif rolled_effect == 5:
-		effect_code = "[rainbow freq=" + str(randf_range(1, 50)) + " sat=" + str(randf_range(1, 50)) + " val=" + str(randf_range(1, 50)) + "]"
-		effect_closer = "[/rainbow]"
-	
-	$RichTextLabel.text = effect_code + text_main + effect_closer
-	$RichTextLabel.set_visible(true)
-
 
 func randomize_text():
 	var rolled_text = randi_range(0, 54)
@@ -233,3 +134,6 @@ func randomize_text():
 		text_main = "mineraft free donwload no virus 100% working"
 	elif rolled_text == 54:
 		text_main = "bottom Text"
+
+func _on_timer_timeout() -> void:
+	queue_free()

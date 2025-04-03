@@ -33,8 +33,16 @@ func _ready() -> void:
 	$rotating_effect_3d.wait_time = randf_range(0.25, 12)
 	$rotating_effect_3d.start()
 	
-	$image_falling_down.wait_time = randf_range(0.25, 12)
+	$image_falling_down.wait_time = randf_range(0.25, 16)
 	$image_falling_down.start()
+	
+	$caption.wait_time = randf_range(1, 90)
+	$caption.start()
+	
+	$camera_zoom.wait_time = randf_range(1, 75)
+	$camera_zoom.start()
+	
+	$camera_zoom_reset.wait_time = randf_range(0.1, 8)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -102,7 +110,8 @@ func _on_restart_timer_timeout() -> void:
 
 func _on_delete_items_timer_timeout() -> void:
 	for item in get_tree().get_nodes_in_group("spawner_main") + get_tree().get_nodes_in_group("spawner_secondary") + get_tree().get_nodes_in_group("item_main") + get_tree().get_nodes_in_group("item_secondary"):
-		item.queue_free()
+		if randi_range(0, 24):
+			item.queue_free()
 	
 	$delete_items_timer.wait_time = randf_range(3, 90)
 	$delete_items_timer.start()
@@ -150,7 +159,7 @@ func _on_rotating_effect_3d_timeout() -> void:
 
 
 func _on_image_falling_down_timeout() -> void:
-	$image_falling_down.wait_time = randf_range(0.25, 12)
+	$image_falling_down.wait_time = randf_range(0.25, 16)
 	$image_falling_down.start()
 	
 	var scene_image_falling_down = preload("res://Meme Mode/image_falling_down.tscn")
@@ -159,4 +168,26 @@ func _on_image_falling_down_timeout() -> void:
 
 
 func _on_caption_timeout() -> void:
-	pass # Replace with function body.
+	$caption.wait_time = randf_range(1, 90)
+	$caption.start()
+	
+	var scene_caption = preload("res://Meme Mode/caption.tscn")
+	var caption = scene_caption.instantiate()
+	add_child(caption)
+	print("CAPTION")
+
+func _on_camera_zoom_timeout() -> void:
+	$camera_zoom.wait_time = randf_range(1, 75)
+	$camera_zoom.start()
+	
+	var zoom = randf_range(0.8, 2.0)
+	get_parent().camera.zoom = Vector2(zoom, zoom)
+	get_parent().camera.position = Vector2(randi_range(-300, 300), randi_range(-300, 300))
+	
+	$camera_zoom_reset.wait_time = randf_range(0.1, 8)
+	$camera_zoom_reset.start()
+
+
+func _on_camera_zoom_reset_timeout() -> void:
+	get_parent().camera.zoom = Vector2(1, 1)
+	get_parent().camera.position = Vector2(0, 0)
