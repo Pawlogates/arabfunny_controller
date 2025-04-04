@@ -9,7 +9,6 @@
 [node name="example_rootScene" type="Node2D"]
 process_mode = 3
 script = ExtResource("1_0m63u")
-disable_showcase = true
 
 [node name="arabfunny_controller" parent="." instance=ExtResource("2_520pw")]
 

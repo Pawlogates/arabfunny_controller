@@ -87,7 +87,7 @@ func _ready():
 		
 		$Timer.wait_time = randf_range(0.5, 3)
 		$Timer.start()
-		$Timer2.wait_time = randf_range(1, 8)
+		$Timer2.wait_time = randf_range(0.25, 6)
 		$Timer2.start()
 		$Timer3.wait_time = randf_range(0.5, 2)
 		$Timer3.start()
