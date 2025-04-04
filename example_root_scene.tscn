@@ -26,7 +26,7 @@ one_shot = true
 autostart = true
 
 [node name="deleteThis_cameraBack_delay" type="Timer" parent="."]
-wait_time = 75.0
+wait_time = 90.0
 one_shot = true
 autostart = true
 
