@@ -73,3 +73,14 @@ func _process(_delta: float) -> void:
 	
 		$AnimationPlayer.stop()
 		$AnimationPlayer.play("fade_out")
+
+
+func randomize_rates():
+	main_rate = randf_range(0.25, 4)
+	secondary_rate = randf_range(0.25, 4)
+	major_greenscreen_rate = randf_range(0.25, 4)
+	
+	#$AnimationPlayer.play("fade_out")
+	#label.text = "Main spawn delay: " + str(main_rate)
+	#label2.text = "Secondary spawn delay: " + str(secondary_rate)
+	#label3.text = "Greenscreen spawn delay: " + str(major_greenscreen_rate)
