@@ -43,6 +43,9 @@ func _ready() -> void:
 	$camera_zoom.start()
 	
 	$camera_zoom_reset.wait_time = randf_range(0.1, 8)
+	
+	$randomize_rates.wait_time = randf_range(0.5, 90)
+	$randomize_rates.start()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -192,3 +195,9 @@ func _on_camera_zoom_reset_timeout() -> void:
 	get_parent().camera.zoom = Vector2(1, 1)
 	get_parent().camera.position = Vector2(0, 0)
 	print("camera reset")
+
+func _on_randomize_rates_timeout() -> void:
+	$Settings.randomize_rates()
+	
+	$randomize_rates.wait_time = randf_range(0.5, 90)
+	$randomize_rates.start()
