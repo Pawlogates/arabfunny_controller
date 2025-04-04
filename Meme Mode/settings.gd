@@ -8,6 +8,7 @@ var total_pictures = 159
 var total_common = 63
 var total_audio = 87
 var total_music = 55
+var total_common_music = 11
 var total_videos = 157
 var total_gifs = 153
 var total_common_gifs = 34
