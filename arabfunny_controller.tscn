@@ -54,6 +54,12 @@ one_shot = true
 [node name="randomize_rates" type="Timer" parent="."]
 one_shot = true
 
+[node name="image_moving_around" type="Timer" parent="."]
+one_shot = true
+
+[node name="image_pulse" type="Timer" parent="."]
+one_shot = true
+
 [connection signal="timeout" from="meme_mode_timer" to="." method="_on_meme_mode_timer_timeout"]
 [connection signal="timeout" from="meme_mode_timer2" to="." method="_on_meme_mode_timer_2_timeout"]
 [connection signal="timeout" from="meme_mode_timer3" to="." method="_on_meme_mode_timer_3_timeout"]
@@ -66,3 +72,5 @@ one_shot = true
 [connection signal="timeout" from="camera_zoom" to="." method="_on_camera_zoom_timeout"]
 [connection signal="timeout" from="camera_zoom_reset" to="." method="_on_camera_zoom_reset_timeout"]
 [connection signal="timeout" from="randomize_rates" to="." method="_on_randomize_rates_timeout"]
+[connection signal="timeout" from="image_moving_around" to="." method="_on_image_moving_around_timeout"]
+[connection signal="timeout" from="image_pulse" to="." method="_on_image_pulse_timeout"]

@@ -46,6 +46,12 @@ func _ready() -> void:
 	
 	$randomize_rates.wait_time = randf_range(0.5, 90)
 	$randomize_rates.start()
+	
+	$image_moving_around.wait_time = randf_range(1, 30)
+	$image_moving_around.start()
+	
+	$image_pulse.wait_time = randf_range(1, 30)
+	$image_pulse.start()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -177,7 +183,6 @@ func _on_caption_timeout() -> void:
 	var scene_caption = preload("res://Meme Mode/caption.tscn")
 	var caption = scene_caption.instantiate()
 	add_child(caption)
-	print("CAPTION")
 
 func _on_camera_zoom_timeout() -> void:
 	$camera_zoom.wait_time = randf_range(1, 75)
@@ -201,3 +206,19 @@ func _on_randomize_rates_timeout() -> void:
 	
 	$randomize_rates.wait_time = randf_range(0.5, 90)
 	$randomize_rates.start()
+
+func _on_image_moving_around_timeout() -> void:
+	$image_moving_around.wait_time = randf_range(1, 30)
+	$image_moving_around.start()
+	
+	var scene_image_moving_around = preload("res://Meme Mode/image_moving_around.tscn")
+	var image_moving_around = scene_image_moving_around.instantiate()
+	add_child(image_moving_around)
+
+func _on_image_pulse_timeout() -> void:
+	$image_pulse.wait_time = randf_range(1, 30)
+	$image_pulse.start()
+	
+	var scene_image_pulse = preload("res://Meme Mode/image_pulse_spawner.tscn")
+	var image_pulse = scene_image_pulse.instantiate()
+	add_child(image_pulse)
