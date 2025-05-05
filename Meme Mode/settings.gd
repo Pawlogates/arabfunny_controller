@@ -4,7 +4,7 @@ var main_rate : float = 1
 var secondary_rate : float = 1
 var major_greenscreen_rate : float = 1
 
-var total_pictures = 159
+var total_pictures = 155
 var total_common = 63
 var total_audio = 87
 var total_music = 55

@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://dues7c2js6d68"]
 
-[ext_resource type="Script" path="res://example_root_scene.gd" id="1_0m63u"]
+[ext_resource type="Script" uid="uid://c8m5tbvuafssc" path="res://example_root_scene.gd" id="1_0m63u"]
 [ext_resource type="PackedScene" uid="uid://bit2t82mmllyc" path="res://example_player_scene.tscn" id="1_b6n0f"]
 [ext_resource type="PackedScene" uid="uid://defq0xnr3tmi6" path="res://arabfunny_controller.tscn" id="2_520pw"]
 [ext_resource type="PackedScene" uid="uid://cupokd1r3227d" path="res://Meme Mode/background_video_player.tscn" id="4_nvwlq"]

@@ -185,6 +185,9 @@ func _on_caption_timeout() -> void:
 	add_child(caption)
 
 func _on_camera_zoom_timeout() -> void:
+	if not get_parent().disable_showcase:
+		return
+	
 	$camera_zoom.wait_time = randf_range(1, 75)
 	$camera_zoom.start()
 	
@@ -197,15 +200,20 @@ func _on_camera_zoom_timeout() -> void:
 
 
 func _on_camera_zoom_reset_timeout() -> void:
+	if not get_parent().disable_showcase:
+		return
+	
 	get_parent().camera.zoom = Vector2(1, 1)
 	get_parent().camera.position = Vector2(0, 0)
 	print("camera reset")
+
 
 func _on_randomize_rates_timeout() -> void:
 	$Settings.randomize_rates()
 	
 	$randomize_rates.wait_time = randf_range(0.5, 90)
 	$randomize_rates.start()
+
 
 func _on_image_moving_around_timeout() -> void:
 	$image_moving_around.wait_time = randf_range(1, 30)
@@ -214,6 +222,7 @@ func _on_image_moving_around_timeout() -> void:
 	var scene_image_moving_around = preload("res://Meme Mode/image_moving_around.tscn")
 	var image_moving_around = scene_image_moving_around.instantiate()
 	add_child(image_moving_around)
+
 
 func _on_image_pulse_timeout() -> void:
 	$image_pulse.wait_time = randf_range(1, 30)

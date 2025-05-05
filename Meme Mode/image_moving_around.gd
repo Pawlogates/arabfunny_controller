@@ -6,7 +6,9 @@ var image_filepath = "res://Meme Mode/pictures/5.jpg"
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	position = Vector2(randi_range(-500, 500), randi_range(-500, 500))
+	target_position = Vector2(randi_range(-400, 400), randi_range(-200, 200))
+	
+	position = target_position
 	
 	random_image()
 	$image.texture = load(image_filepath)
@@ -16,6 +18,7 @@ func _ready() -> void:
 
 
 var target_position = Vector2(0, 0)
+var target_offset = Vector2(0, 0)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -44,6 +47,7 @@ func _on_timer_timeout() -> void:
 	queue_free()
 
 func _on_timer_2_timeout() -> void:
-	target_position = Vector2(randi_range(-150, 150), randi_range(-150, 150))
+	target_offset = Vector2(randi_range(-150, 150), randi_range(-150, 150))
+	target_position = target_position + target_offset
 	var tween = get_tree().create_tween()
 	tween.tween_property(self, "position", target_position, 1)

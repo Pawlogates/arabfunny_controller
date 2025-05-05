@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://bit2t82mmllyc"]
 
-[ext_resource type="Script" path="res://example_player_scene.gd" id="1_7vd71"]
+[ext_resource type="Script" uid="uid://d374svkjebdup" path="res://example_player_scene.gd" id="1_7vd71"]
 [ext_resource type="Texture2D" uid="uid://drw6m3ikgboos" path="res://icon.svg" id="2_2ja63"]
 
 [sub_resource type="Animation" id="Animation_erks5"]
@@ -57,8 +57,8 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_pjlgk"]
 _data = {
-"RESET": SubResource("Animation_erks5"),
-"move": SubResource("Animation_18052")
+&"RESET": SubResource("Animation_erks5"),
+&"move": SubResource("Animation_18052")
 }
 
 [node name="example_playerScene" type="Node2D"]
