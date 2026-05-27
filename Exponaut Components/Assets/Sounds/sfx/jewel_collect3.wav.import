@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://d13vvmdls37y7"
+path="res://.godot/imported/jewel_collect3.wav-481674e404aa160601cf671b85f7f004.sample"
+
+[deps]
+
+source_file="res://Exponaut Components/Assets/Sounds/sfx/jewel_collect3.wav"
+dest_files=["res://.godot/imported/jewel_collect3.wav-481674e404aa160601cf671b85f7f004.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

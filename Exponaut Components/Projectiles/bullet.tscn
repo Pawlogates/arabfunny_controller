@@ -1,0 +1,189 @@
+[gd_scene load_steps=12 format=3 uid="uid://dfrnc1hre55bn"]
+
+[ext_resource type="PackedScene" uid="uid://wgtcgh1uo037" path="res://Other/Scenes/entity_base.tscn" id="1_1mgb4"]
+[ext_resource type="Texture2D" uid="uid://dg6jtka113eq1" path="res://Assets/Graphics/sprites/sprites_enemies.png" id="2_36cr0"]
+[ext_resource type="Texture2D" uid="uid://d0c1wtyv5l07k" path="res://Assets/Graphics/sprites/sprites_general.png" id="3_gjdax"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xy8t5"]
+atlas = ExtResource("2_36cr0")
+region = Rect2(0, 64, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jrs1w"]
+atlas = ExtResource("2_36cr0")
+region = Rect2(64, 64, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3fxs2"]
+atlas = ExtResource("2_36cr0")
+region = Rect2(128, 64, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8cr22"]
+atlas = ExtResource("2_36cr0")
+region = Rect2(192, 64, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_22m4t"]
+atlas = ExtResource("2_36cr0")
+region = Rect2(256, 64, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1mp07"]
+atlas = ExtResource("2_36cr0")
+region = Rect2(320, 64, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yengo"]
+atlas = ExtResource("3_gjdax")
+region = Rect2(1792, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_02o5y"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xy8t5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jrs1w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3fxs2")
+}],
+"loop": true,
+"name": &"attack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3fxs2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8cr22")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_22m4t")
+}],
+"loop": true,
+"name": &"damage",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_22m4t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8cr22")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3fxs2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1mp07")
+}],
+"loop": false,
+"name": &"dead",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3fxs2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8cr22")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_22m4t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1mp07")
+}],
+"loop": true,
+"name": &"flight",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yengo")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3fxs2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8cr22")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_22m4t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1mp07")
+}],
+"loop": false,
+"name": &"jump",
+"speed": 3.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xy8t5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jrs1w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xy8t5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jrs1w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xy8t5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jrs1w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xy8t5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jrs1w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xy8t5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1mp07")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jrs1w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3fxs2")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 10.0
+}]
+
+[node name="bullet" instance=ExtResource("1_1mgb4")]
+scale = Vector2(0.25, 0.25)
+on_death_effect_thrownAway = true
+effect_thrownAway_randomize_velocity_multiplier_x = 0.5
+effect_thrownAway_randomize_velocity_multiplier_y = 0.25
+collectable = false
+hittable = true
+health_value = 1
+movement_type = "move_x"
+speed = 500
+always_max_speed = true
+family = "none"
+can_move = true
+on_timeout_death = true
+on_timeout_death_cooldown = 1.5
+can_collect = true
+start_animation = "none"
+effect_shrink_target_scale = Vector2(0.5, 0.5)
+effect_shrink_delete = false
+entity_name = "fireball"
+entity_type = "projectile"
+
+[node name="sprite" parent="." index="1"]
+sprite_frames = SubResource("SpriteFrames_02o5y")

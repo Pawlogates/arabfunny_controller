@@ -1,0 +1,40 @@
+[gd_scene load_steps=2 format=3 uid="uid://b212itlhyclqg"]
+
+[ext_resource type="Script" uid="uid://b6fwx0e2fx6ei" path="res://Exponaut Components/Scripts/menu_general.gd" id="1_dyb5u"]
+
+[node name="menu_core" type="Control" groups=["menu_core"]]
+process_mode = 3
+z_index = 50
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+script = ExtResource("1_dyb5u")
+
+[node name="timer_destabilized" type="Timer" parent="."]
+wait_time = 4.0
+one_shot = true
+
+[node name="cooldown_debug_available" type="Timer" parent="."]
+wait_time = 1.25
+
+[node name="timer_buttons_blocked" type="Timer" parent="."]
+
+[node name="debug_real_size_container_buttons" type="ColorRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.15)
+
+[node name="cooldown_toggle_button_destabilize_modulate_reversed" type="Timer" parent="."]
+wait_time = 8.0
+autostart = true
+
+[connection signal="timeout" from="timer_destabilized" to="." method="_on_timer_destabilized_timeout"]
+[connection signal="timeout" from="cooldown_debug_available" to="." method="_on_cooldown_debug_available_timeout"]
+[connection signal="timeout" from="timer_buttons_blocked" to="." method="_on_timer_buttons_blocked_timeout"]
+[connection signal="timeout" from="cooldown_toggle_button_destabilize_modulate_reversed" to="." method="_on_cooldown_toggle_button_destabilize_modulate_reversed_timeout"]

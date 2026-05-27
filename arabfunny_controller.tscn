@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://cd25jmb0xbpio" path="res://Meme Mode/manual_spawner.gd" id="2_jqytg"]
 [ext_resource type="PackedScene" uid="uid://bj88bgbmum6t" path="res://Meme Mode/settings.tscn" id="3_gccoy"]
 
-[node name="arabfunny_controller" type="Node2D"]
+[node name="arabfunny_controller" type="Node2D" groups=["meme_mode"]]
 process_mode = 1
 script = ExtResource("1_uyb0v")
 

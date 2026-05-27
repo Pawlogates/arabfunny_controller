@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://ci8j4i2srfy2q"
+path="res://.godot/imported/spring.wav-254e21e1a3784647355e382dc1455082.sample"
+
+[deps]
+
+source_file="res://Exponaut Components/Assets/Sounds/sfx/spring.wav"
+dest_files=["res://.godot/imported/spring.wav-254e21e1a3784647355e382dc1455082.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

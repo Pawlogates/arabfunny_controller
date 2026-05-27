@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://m4x8f78vmnba"
+path="res://.godot/imported/pig_attack.wav-6d9239aef7bb8f8da8bc047d2b12a6a8.sample"
+
+[deps]
+
+source_file="res://Exponaut Components/Assets/Sounds/sfx/pig_attack.wav"
+dest_files=["res://.godot/imported/pig_attack.wav-6d9239aef7bb8f8da8bc047d2b12a6a8.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

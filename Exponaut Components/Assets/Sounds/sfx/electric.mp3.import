@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bu1qkqei0tak2"
+path="res://.godot/imported/electric.mp3-fb3942b1e1af6a1a7251a67bf7e0b54a.mp3str"
+
+[deps]
+
+source_file="res://Exponaut Components/Assets/Sounds/sfx/electric.mp3"
+dest_files=["res://.godot/imported/electric.mp3-fb3942b1e1af6a1a7251a67bf7e0b54a.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0.0
+bpm=0.0
+beat_count=0
+bar_beats=4

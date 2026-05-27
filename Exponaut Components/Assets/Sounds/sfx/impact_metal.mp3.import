@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cyayt3vgetwot"
+path="res://.godot/imported/impact_metal.mp3-cb19fa40ea40dff4e6e72b831e67f360.mp3str"
+
+[deps]
+
+source_file="res://Exponaut Components/Assets/Sounds/sfx/impact_metal.mp3"
+dest_files=["res://.godot/imported/impact_metal.mp3-cb19fa40ea40dff4e6e72b831e67f360.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

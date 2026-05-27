@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://47rvtyl4jo7s"
+path="res://.godot/imported/special.wav-443c4a2fd91bef143be9cfb737a7583e.sample"
+
+[deps]
+
+source_file="res://Exponaut Components/Assets/Sounds/sfx/special.wav"
+dest_files=["res://.godot/imported/special.wav-443c4a2fd91bef143be9cfb737a7583e.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

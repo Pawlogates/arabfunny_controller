@@ -1,0 +1,99 @@
+[gd_scene load_steps=6 format=3 uid="uid://dues7c2js6d68"]
+
+[ext_resource type="Script" uid="uid://btpgd2xxhk08i" path="res://Exponaut Components/Other/Game Modes/Meme Mode/example_root_scene.gd" id="1_0m63u"]
+[ext_resource type="PackedScene" uid="uid://bit2t82mmllyc" path="res://Exponaut Components/Other/Game Modes/Meme Mode/example_player_scene.tscn" id="1_b6n0f"]
+[ext_resource type="PackedScene" uid="uid://defq0xnr3tmi6" path="res://Exponaut Components/Other/Game Modes/Meme Mode/meme_mode_controller.tscn" id="2_520pw"]
+[ext_resource type="PackedScene" uid="uid://cupokd1r3227d" path="res://Exponaut Components/Other/Game Modes/Meme Mode/background_video_player.tscn" id="4_nvwlq"]
+[ext_resource type="Material" uid="uid://dy1plh3ya2wtn" path="res://Exponaut Components/Other/Game Modes/Meme Mode/remove_black.tres" id="5_aj48g"]
+
+[node name="example_rootScene" type="Node2D"]
+process_mode = 3
+script = ExtResource("1_0m63u")
+disable_showcase = true
+
+[node name="arabfunny_controller" parent="." instance=ExtResource("2_520pw")]
+
+[node name="example_playerScene" parent="." instance=ExtResource("1_b6n0f")]
+visible = false
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="background_video_player" parent="." instance=ExtResource("4_nvwlq")]
+process_mode = 1
+
+[node name="deleteThis_cameraZoom_delay" type="Timer" parent="."]
+wait_time = 30.0
+one_shot = true
+autostart = true
+
+[node name="deleteThis_cameraBack_delay" type="Timer" parent="."]
+wait_time = 90.0
+one_shot = true
+autostart = true
+
+[node name="deleteThis_info" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -384.0
+offset_top = -478.5
+offset_right = 384.0
+offset_bottom = 478.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 32
+text = "P / ESC = pause,
+R = restart,
+1 = spawn a main meme container,
+2 = spawn a secondary meme container,
+3 = spawn a major greenscreen,
+S / BACKSPACE = next background video.
+------------------------------------
+Delete the \"deleteThis\" timers to skip the
+zooming out the camera part.
+Or just click on the root node and toggle
+the disable_showcase property.
+------------------------------------------
+To replace randomized files, and the amount of
+files the randomizer chooses from,
+just find the \"Settings\" node's script, which contains
+variables holding the total amount of certain files in the folders.
+There will be a \"filetype_total\" variable
+which must match the amount
+of files of a certain type in each folder.
+You can replace the files as long as the name
+remains the same (\"1.png\", \"2.png\", etc.)."
+horizontal_alignment = 1
+
+[node name="deleteThis_info2" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1619.5
+offset_top = 840.0
+offset_right = 1619.5
+offset_bottom = 972.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 96
+text = "You can spawn stuff manually by clicking LEFT/RIGHT MOUSE BUTTON"
+horizontal_alignment = 1
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+material = ExtResource("5_aj48g")
+offset_left = -960.0
+offset_top = -540.0
+offset_right = 960.0
+offset_bottom = 540.0
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+handle_input_locally = false
+size = Vector2i(1920, 1080)
+render_target_update_mode = 4
+
+[connection signal="timeout" from="deleteThis_cameraZoom_delay" to="." method="_on_delete_this_camera_zoom_delay_timeout"]
+[connection signal="timeout" from="deleteThis_cameraBack_delay" to="." method="_on_delete_this_camera_back_delay_timeout"]

@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://bj7k1b4g32e6q"
+path="res://.godot/imported/moo.wav-37f77542fa2e10efc20b2a6218d1c11e.sample"
+
+[deps]
+
+source_file="res://Exponaut Components/Assets/Sounds/sfx/moo.wav"
+dest_files=["res://.godot/imported/moo.wav-37f77542fa2e10efc20b2a6218d1c11e.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

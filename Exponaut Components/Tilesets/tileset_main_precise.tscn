@@ -1,0 +1,31 @@
+[gd_scene load_steps=2 format=3 uid="uid://dfg7r4vdcruea"]
+
+[ext_resource type="TileSet" uid="uid://cvnxdkf18th3o" path="res://Tilesets/tileset_main_precise.tres" id="1_bdm3k"]
+
+[node name="tileset_main_precise" type="TileMap"]
+light_mask = 512
+z_index = -1
+texture_filter = 1
+tile_set = ExtResource("1_bdm3k")
+format = 2
+layer_0/name = "main"
+layer_0/z_index = 1
+layer_1/name = "bg"
+layer_2/name = "bg2"
+layer_2/z_index = -1
+layer_3/name = "fg"
+layer_3/z_index = 2
+layer_4/name = "fg2"
+layer_4/z_index = 3
+layer_5/name = "bg3"
+layer_5/z_index = -2
+layer_6/name = "fg3"
+layer_6/z_index = 4
+layer_7/name = "back"
+layer_7/z_index = -25
+layer_8/name = "front"
+layer_8/z_index = 100
+layer_9/name = "back2"
+layer_9/z_index = -26
+layer_10/name = "front2"
+layer_10/z_index = 101

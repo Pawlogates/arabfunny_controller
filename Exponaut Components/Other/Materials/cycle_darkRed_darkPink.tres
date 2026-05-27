@@ -1,0 +1,14 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://dwg2kvd7cw6l5"]
+
+[ext_resource type="Shader" uid="uid://dusauslpvytm6" path="res://Other/Shaders/palette_changeShader.gdshader" id="1_xiy2l"]
+[ext_resource type="Texture2D" uid="uid://b4owrlvxevem8" path="res://Assets/Graphics/other/gradients/darkRed_darkPink.tres" id="2_wfdr8"]
+
+[resource]
+shader = ExtResource("1_xiy2l")
+shader_parameter/disableProcessing = false
+shader_parameter/modulate = Color(1, 1, 1, 1)
+shader_parameter/palette = ExtResource("2_wfdr8")
+shader_parameter/cycleMode = 2
+shader_parameter/cycleRate = 5.0
+shader_parameter/cycleOffset = 0.0
+shader_parameter/colorBlending = true

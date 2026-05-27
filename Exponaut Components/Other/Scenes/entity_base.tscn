@@ -1,0 +1,216 @@
+[gd_scene load_steps=14 format=3 uid="uid://wgtcgh1uo037"]
+
+[ext_resource type="Script" uid="uid://bk66d2tjq15q" path="res://Scripts/entity.gd" id="1_wx0ek"]
+[ext_resource type="PackedScene" uid="uid://v151qvyxpbng" path="res://Other/Scenes/sprite.tscn" id="2_1y7wk"]
+[ext_resource type="PackedScene" uid="uid://b2a845i4npe34" path="res://Other/Scenes/animation_general.tscn" id="3_1y7wk"]
+[ext_resource type="PackedScene" uid="uid://dgb361xj37pqy" path="res://Other/Scenes/sfx_manager.tscn" id="3_c3p0q"]
+[ext_resource type="PackedScene" uid="uid://cd1ras6qhwjqa" path="res://Other/Scenes/animation_all.tscn" id="4_84r7y"]
+[ext_resource type="PackedScene" uid="uid://chhjmdc7imc7k" path="res://Other/Scenes/animation_color.tscn" id="5_fjle6"]
+[ext_resource type="Script" uid="uid://12wkcbpatg3w" path="res://Enemies/general_timers_core.gd" id="7_fjle6"]
+[ext_resource type="PackedScene" uid="uid://wn4ag4k6r2t5" path="res://Other/Entity Behaviors/scan_patrolling_vision.tscn" id="7_spxko"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ep4j2"]
+size = Vector2(62, 62)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c3p0q"]
+size = Vector2(32, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_84r7y"]
+size = Vector2(1024, 128)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fjle6"]
+size = Vector2(2048, 2048)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_spxko"]
+size = Vector2(64, 64)
+
+[node name="base" type="CharacterBody2D" groups=["entity", "persistent"]]
+z_index = 1
+collision_layer = 4
+floor_max_angle = 1.0472
+script = ExtResource("1_wx0ek")
+
+[node name="timeout_basic" type="Node2D" parent="."]
+
+[node name="cooldown_jump" type="Timer" parent="timeout_basic"]
+one_shot = true
+
+[node name="cooldown_change_direction_x" type="Timer" parent="timeout_basic"]
+one_shot = true
+
+[node name="cooldown_spawn_entity" type="Timer" parent="timeout_basic"]
+one_shot = true
+
+[node name="cooldown_death" type="Timer" parent="timeout_basic"]
+one_shot = true
+
+[node name="cooldown_change_ignore_gravity" type="Timer" parent="timeout_basic"]
+one_shot = true
+
+[node name="cooldown_change_invincible" type="Timer" parent="timeout_basic"]
+one_shot = true
+
+[node name="cooldown_change_movement_type" type="Timer" parent="timeout_basic"]
+one_shot = true
+
+[node name="sprite" parent="." instance=ExtResource("2_1y7wk")]
+
+[node name="animation_all" parent="sprite" instance=ExtResource("4_84r7y")]
+unique_name_in_owner = true
+
+[node name="animation_general" parent="sprite" instance=ExtResource("3_1y7wk")]
+unique_name_in_owner = true
+
+[node name="animation_color" parent="sprite" instance=ExtResource("5_fjle6")]
+unique_name_in_owner = true
+
+[node name="timer_state_attacking" type="Timer" parent="sprite"]
+one_shot = true
+
+[node name="timer_state_damage" type="Timer" parent="sprite"]
+one_shot = true
+
+[node name="cooldown_particles" type="Timer" parent="sprite"]
+
+[node name="container_effect_thrownAway" type="Node2D" parent="sprite"]
+
+[node name="collision_main" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_ep4j2")
+debug_color = Color(0, 0.595, 0.7, 0)
+
+[node name="hitbox" type="Area2D" parent="." groups=["entity_hitbox"]]
+collision_layer = 8
+collision_mask = 8
+monitoring = false
+monitorable = false
+
+[node name="collision_hitbox" type="CollisionShape2D" parent="hitbox"]
+shape = SubResource("RectangleShape2D_c3p0q")
+debug_color = Color(0, 0.595, 0.7, 0)
+
+[node name="text_container" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+
+[node name="scan_ledge" type="RayCast2D" parent="."]
+position = Vector2(32, 0)
+target_position = Vector2(0, 64)
+
+[node name="scan_stuck" type="RayCast2D" parent="."]
+position = Vector2(0, -32)
+target_position = Vector2(0, 64)
+
+[node name="cooldown_collidable" type="Timer" parent="."]
+wait_time = 0.25
+one_shot = true
+
+[node name="cooldown_remove_corpse" type="Timer" parent="."]
+
+[node name="cooldown_on_death_effect_thrownAway" type="Timer" parent="."]
+one_shot = true
+
+[node name="sfx_manager" parent="." instance=ExtResource("3_c3p0q")]
+
+[node name="scan_visible" type="VisibleOnScreenNotifier2D" parent="."]
+visible = false
+modulate = Color(1, 1, 1, 0.196078)
+position = Vector2(7.62939e-06, -1.52588e-05)
+scale = Vector2(51.2, 51.2)
+
+[node name="cooldown_sfx_idle" type="Timer" parent="."]
+wait_time = 2.0
+
+[node name="scan_patrolling_vision" parent="." instance=ExtResource("7_spxko")]
+
+[node name="collision_patrolling" type="CollisionShape2D" parent="scan_patrolling_vision"]
+position = Vector2(256, 0)
+shape = SubResource("RectangleShape2D_84r7y")
+debug_color = Color(0, 0.595, 0.7, 0)
+
+[node name="cooldown_patrolling_target_spotted_queue" type="Timer" parent="."]
+wait_time = 0.25
+one_shot = true
+
+[node name="cooldown_patrolling_target_spotted" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[node name="cooldown_patrolling_change_direction" type="Timer" parent="."]
+wait_time = 4.0
+one_shot = true
+
+[node name="scan_reset_puzzle_coverage" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 8
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="scan_reset_puzzle_coverage"]
+shape = SubResource("RectangleShape2D_fjle6")
+debug_color = Color(0, 0.644, 0.294, 0.01)
+
+[node name="scan_always_active" type="Area2D" parent="." groups=["scan_always_active"]]
+collision_layer = 8
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="scan_always_active"]
+shape = SubResource("RectangleShape2D_spxko")
+debug_color = Color(0.702762, 0.272784, 1, 0)
+
+[node name="general_timers_core" type="Node2D" parent="."]
+script = ExtResource("7_fjle6")
+
+[node name="t1" type="Timer" parent="general_timers_core"]
+one_shot = true
+
+[node name="t2" type="Timer" parent="general_timers_core"]
+one_shot = true
+
+[node name="t3" type="Timer" parent="general_timers_core"]
+one_shot = true
+
+[node name="t4" type="Timer" parent="general_timers_core"]
+one_shot = true
+
+[node name="t5" type="Timer" parent="general_timers_core"]
+one_shot = true
+
+[node name="t6" type="Timer" parent="general_timers_core"]
+one_shot = true
+
+[node name="cooldown_attack_limit" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="timeout_basic/cooldown_jump" to="." method="_on_cooldown_jump_timeout"]
+[connection signal="timeout" from="timeout_basic/cooldown_change_direction_x" to="." method="_on_cooldown_change_direction_x_timeout"]
+[connection signal="timeout" from="timeout_basic/cooldown_spawn_entity" to="." method="_on_cooldown_spawn_scene_timeout"]
+[connection signal="timeout" from="timeout_basic/cooldown_death" to="." method="_on_cooldown_death_timeout"]
+[connection signal="timeout" from="timeout_basic/cooldown_change_ignore_gravity" to="." method="_on_cooldown_change_ignore_gravity_timeout"]
+[connection signal="timeout" from="timeout_basic/cooldown_change_invincible" to="." method="_on_cooldown_change_invincible_timeout"]
+[connection signal="timeout" from="timeout_basic/cooldown_change_movement_type" to="." method="_on_cooldown_change_movement_type_timeout"]
+[connection signal="animation_looped" from="sprite" to="." method="_on_sprite_animation_looped"]
+[connection signal="timeout" from="sprite/timer_state_attacking" to="." method="_on_timer_state_attacking_timeout"]
+[connection signal="timeout" from="sprite/timer_state_damage" to="." method="_on_timer_state_damage_timeout"]
+[connection signal="timeout" from="sprite/cooldown_particles" to="." method="_on_cooldown_particles_timeout"]
+[connection signal="area_entered" from="hitbox" to="." method="_on_hitbox_area_entered"]
+[connection signal="area_exited" from="hitbox" to="." method="_on_hitbox_area_exited"]
+[connection signal="timeout" from="cooldown_collidable" to="." method="_on_cooldown_collidable_timeout"]
+[connection signal="timeout" from="cooldown_remove_corpse" to="." method="_on_cooldown_remove_corpse_timeout"]
+[connection signal="timeout" from="cooldown_on_death_effect_thrownAway" to="." method="_on_cooldown_on_death_effect_thrownAway_timeout"]
+[connection signal="screen_entered" from="scan_visible" to="." method="_on_scan_visible_screen_entered"]
+[connection signal="screen_exited" from="scan_visible" to="." method="_on_scan_visible_screen_exited"]
+[connection signal="timeout" from="cooldown_sfx_idle" to="." method="_on_cooldown_sfx_idle_timeout"]
+[connection signal="area_entered" from="scan_patrolling_vision" to="." method="_on_scan_patrolling_area_entered"]
+[connection signal="area_exited" from="scan_patrolling_vision" to="." method="_on_scan_patrolling_area_exited"]
+[connection signal="timeout" from="cooldown_patrolling_target_spotted_queue" to="." method="_on_cooldown_patrolling_target_spotted_queue_timeout"]
+[connection signal="timeout" from="cooldown_patrolling_target_spotted" to="." method="_on_cooldown_patrolling_target_spotted_timeout"]
+[connection signal="timeout" from="cooldown_patrolling_change_direction" to="." method="_on_cooldown_patrolling_change_direction_timeout"]
+[connection signal="area_entered" from="scan_reset_puzzle_coverage" to="." method="_on_scan_reset_puzzle_coverage_area_entered"]
+[connection signal="timeout" from="general_timers_core/t1" to="." method="t1_trigger"]
+[connection signal="timeout" from="general_timers_core/t2" to="." method="t2_trigger"]
+[connection signal="timeout" from="general_timers_core/t3" to="." method="t3_trigger"]
+[connection signal="timeout" from="general_timers_core/t4" to="." method="t4_trigger"]
+[connection signal="timeout" from="general_timers_core/t5" to="." method="t5_trigger"]
+[connection signal="timeout" from="general_timers_core/t6" to="." method="t6_trigger"]
+[connection signal="timeout" from="cooldown_attack_limit" to="." method="_on_cooldown_attack_limit_timeout"]

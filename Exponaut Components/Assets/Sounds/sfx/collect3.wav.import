@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://bptgfsgsmkddo"
+path="res://.godot/imported/collect3.wav-bc6f9451337e2da9c1271b17933b00e3.sample"
+
+[deps]
+
+source_file="res://Exponaut Components/Assets/Sounds/sfx/collect3.wav"
+dest_files=["res://.godot/imported/collect3.wav-bc6f9451337e2da9c1271b17933b00e3.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

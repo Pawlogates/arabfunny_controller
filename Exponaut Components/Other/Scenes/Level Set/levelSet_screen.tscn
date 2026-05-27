@@ -1,0 +1,86 @@
+[gd_scene load_steps=10 format=3 uid="uid://1yrqwkydp78d"]
+
+[ext_resource type="Script" uid="uid://bgd2v1alhdml" path="res://Scripts/levelSet_screen.gd" id="2_7kq8d"]
+[ext_resource type="AudioStream" uid="uid://bwf4nucobwg4x" path="res://Assets/Sounds/music/intense1.mp3" id="3_e37xu"]
+[ext_resource type="Theme" uid="uid://8i27k6tj1d3o" path="res://Other/Themes/basic.tres" id="3_icvp0"]
+
+[sub_resource type="Gradient" id="Gradient_uas2u"]
+colors = PackedColorArray(0.618933, 1.73271e-06, 3.85046e-07, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_agkmp"]
+gradient = SubResource("Gradient_uas2u")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6dhn4"]
+resource_local_to_scene = true
+size = Vector2(1920, 720)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_axjjw"]
+resource_local_to_scene = true
+size = Vector2(1296, 2688)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hirpx"]
+resource_local_to_scene = true
+size = Vector2(3456, 912)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8nxm7"]
+resource_local_to_scene = true
+size = Vector2(1552, 1792)
+
+[node name="Level Set Screen" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("2_7kq8d")
+
+[node name="Camera2D" type="Camera2D" parent="." groups=["camera"]]
+position = Vector2(960, 540)
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_e37xu")
+autoplay = true
+
+[node name="background" type="TextureRect" parent="."]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.407843)
+z_index = -5
+custom_minimum_size = Vector2(1920, 1080)
+layout_mode = 0
+mouse_filter = 2
+texture = SubResource("GradientTexture1D_agkmp")
+expand_mode = 1
+
+[node name="level_icon_container" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_left = 960.0
+offset_top = 540.0
+offset_right = 960.0
+offset_bottom = 540.0
+
+[node name="blocked_zone" type="Area2D" parent="." groups=["blocked_zone_display"]]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="blocked_zone"]
+position = Vector2(960, 1432)
+shape = SubResource("RectangleShape2D_6dhn4")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="blocked_zone"]
+position = Vector2(2552, 448)
+shape = SubResource("RectangleShape2D_axjjw")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="blocked_zone"]
+position = Vector2(192, -440)
+shape = SubResource("RectangleShape2D_hirpx")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="blocked_zone"]
+position = Vector2(-760, 896)
+shape = SubResource("RectangleShape2D_8nxm7")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 96.0
+offset_top = 64.0
+offset_right = 518.0
+offset_bottom = 97.5
+theme = ExtResource("3_icvp0")
+text = "hover over a level icon to see its info"

@@ -11,6 +11,8 @@ extends Node2D
 func _ready() -> void:
 	RenderingServer.set_default_clear_color(Color.BLACK)
 	$deleteThis_info.queue_free()
+	await get_tree().create_timer(4.0, true).timeout
+	if Globals.random_bool(3, 1) : Globals.message("Click to spawn a thing. Press - and + to change the meme spawn rate. If you hold 1/2/3 while doing that, only one category will be affected. inshallah")
 
 var deleteThis_anim_cancel = false
 func _process(delta: float) -> void:
@@ -28,25 +30,25 @@ func _process(delta: float) -> void:
 			player.animplayer.play("RESET")
 			player.visible = false
 	
-	if Input.is_action_just_pressed("ui_cancel"):
-		if Input.is_action_pressed("ui_up"):
+	#if Input.is_action_just_pressed("ui_cancel"):
+		#if Input.is_action_pressed("ui_up"):
+			#get_tree().reload_current_scene()
+			#return
+		#
+		#if get_tree().paused == true:
+			#get_tree().paused = false
+		#elif get_tree().paused == false:
+			#get_tree().paused = true
+	
+	if Input.is_action_just_pressed("restart"):
 			get_tree().reload_current_scene()
 			return
-		
-		if get_tree().paused == true:
-			get_tree().paused = false
-		elif get_tree().paused == false:
-			get_tree().paused = true
 	
-	elif Input.is_action_just_pressed("restart"):
-			get_tree().reload_current_scene()
-			return
-	
-	elif Input.is_action_just_pressed("pause"):
-		if get_tree().paused == true:
-			get_tree().paused = false
-		elif get_tree().paused == false:
-			get_tree().paused = true
+	#elif Input.is_action_just_pressed("pause"):
+		#if get_tree().paused == true:
+			#get_tree().paused = false
+		#elif get_tree().paused == false:
+			#get_tree().paused = true
 	
 	elif Input.is_action_just_pressed("ui_accept"):
 		if Input.is_action_pressed("ui_up"):

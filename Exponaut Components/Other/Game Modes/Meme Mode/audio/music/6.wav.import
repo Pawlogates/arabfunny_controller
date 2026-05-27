@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://ulh57x3banua"
+path="res://.godot/imported/6.wav-16a7e8cfa25e6948641aa32632a5842a.sample"
+
+[deps]
+
+source_file="res://Exponaut Components/Other/Game Modes/Meme Mode/audio/music/6.wav"
+dest_files=["res://.godot/imported/6.wav-16a7e8cfa25e6948641aa32632a5842a.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

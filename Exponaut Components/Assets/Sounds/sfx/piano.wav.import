@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://cwyd16lu3kan6"
+path="res://.godot/imported/piano.wav-b9d39c95722c739f1d56d0adddb2abf9.sample"
+
+[deps]
+
+source_file="res://Exponaut Components/Assets/Sounds/sfx/piano.wav"
+dest_files=["res://.godot/imported/piano.wav-b9d39c95722c739f1d56d0adddb2abf9.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

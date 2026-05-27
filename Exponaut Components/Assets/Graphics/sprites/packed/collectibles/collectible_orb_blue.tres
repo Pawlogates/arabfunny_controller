@@ -1,0 +1,18 @@
+[gd_resource type="SpriteFrames" load_steps=3 format=3 uid="uid://c7v0pqujkeomb"]
+
+[ext_resource type="Texture2D" uid="uid://d0c1wtyv5l07k" path="res://Exponaut Components/Assets/Graphics/sprites/sprites_general.png" id="1_3bwap"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3bwap"]
+atlas = ExtResource("1_3bwap")
+region = Rect2(192, 32, 32, 32)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3bwap")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 10.0
+}]

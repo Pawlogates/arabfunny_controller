@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://tp8q266no1r6"
+path="res://.godot/imported/rabbit_attack.wav-2230c999f4b0f914afaf3b5c9c1e48c1.sample"
+
+[deps]
+
+source_file="res://Exponaut Components/Assets/Sounds/sfx/rabbit_attack.wav"
+dest_files=["res://.godot/imported/rabbit_attack.wav-2230c999f4b0f914afaf3b5c9c1e48c1.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

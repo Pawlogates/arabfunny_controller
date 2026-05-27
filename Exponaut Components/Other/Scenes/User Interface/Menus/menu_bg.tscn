@@ -1,0 +1,70 @@
+[gd_scene load_steps=3 format=3 uid="uid://bk3vsi6vqnc1q"]
+
+[ext_resource type="Script" uid="uid://bysy0jt7g3pcd" path="res://Exponaut Components/Other/Scenes/User Interface/Menus/menu_bg.gd" id="1_0ro24"]
+[ext_resource type="Theme" uid="uid://8i27k6tj1d3o" path="res://Exponaut Components/Other/Themes/basic.tres" id="2_5nujj"]
+
+[node name="menu_bg" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_0ro24")
+
+[node name="fill" type="ColorRect" parent="."]
+z_index = -10
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.835294)
+
+[node name="outline_left" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 8.0
+grow_vertical = 2
+
+[node name="outline_right" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -8.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="outline_bottom" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -8.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="outline_top" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 8.0
+grow_horizontal = 2
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(968, 506)
+zoom = Vector2(0.7, 0.7)
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 1298.0
+offset_top = -118.0
+offset_right = 2100.0
+offset_bottom = -27.0
+theme = ExtResource("2_5nujj")
+text = "Press ALT + 1 to randomize deco"

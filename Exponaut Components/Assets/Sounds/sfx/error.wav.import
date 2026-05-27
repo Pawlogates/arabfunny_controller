@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://3d1nmtav7ssc"
+path="res://.godot/imported/error.wav-800cda7752e1e5c7c9e61922f4be5e53.sample"
+
+[deps]
+
+source_file="res://Exponaut Components/Assets/Sounds/sfx/error.wav"
+dest_files=["res://.godot/imported/error.wav-800cda7752e1e5c7c9e61922f4be5e53.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

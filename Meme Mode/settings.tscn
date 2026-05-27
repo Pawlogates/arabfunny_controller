@@ -109,7 +109,7 @@ _data = {
 &"fade_out": SubResource("Animation_axqeg")
 }
 
-[node name="Settings" type="Node2D"]
+[node name="Settings" type="Node2D" groups=["meme_mode_settings"]]
 modulate = Color(1, 1, 1, 0)
 z_index = 500
 scale = Vector2(2, 2)
@@ -150,7 +150,7 @@ visible_ratio = 1.11538
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_l61ko")
+&"": SubResource("AnimationLibrary_l61ko")
 }
 
 [node name="Label4" type="Label" parent="."]

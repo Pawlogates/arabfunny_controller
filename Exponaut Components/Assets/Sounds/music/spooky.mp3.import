@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://crtb5rw2ikpr7"
+path="res://.godot/imported/spooky.mp3-471f6492853e0600d3944ac69afe5935.mp3str"
+
+[deps]
+
+source_file="res://Exponaut Components/Assets/Sounds/music/spooky.mp3"
+dest_files=["res://.godot/imported/spooky.mp3-471f6492853e0600d3944ac69afe5935.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

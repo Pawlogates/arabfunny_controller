@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://cvlxrixprvn3c"
+path="res://.godot/imported/crunch.wav-d9835a7954285c05900830171d404e14.sample"
+
+[deps]
+
+source_file="res://Exponaut Components/Assets/Sounds/sfx/crunch.wav"
+dest_files=["res://.godot/imported/crunch.wav-d9835a7954285c05900830171d404e14.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

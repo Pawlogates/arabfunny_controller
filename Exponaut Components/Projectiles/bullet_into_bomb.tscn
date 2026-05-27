@@ -1,0 +1,32 @@
+[gd_scene load_steps=3 format=3 uid="uid://6rqn4cllqylw"]
+
+[ext_resource type="PackedScene" uid="uid://wgtcgh1uo037" path="res://Other/Scenes/entity_base.tscn" id="1_nib33"]
+[ext_resource type="SpriteFrames" uid="uid://fvwbdon5rq11" path="res://Assets/Graphics/sprites/packed/projectiles/fireball.tres" id="2_cqwhi"]
+
+[node name="bullet_into_bomb" instance=ExtResource("1_nib33")]
+on_death_effect_thrownAway = true
+on_death_effect_thrownAway_cooldown = 1.0
+effect_thrownAway_randomize_velocity_multiplier_x = 0.25
+effect_thrownAway_randomize_velocity_multiplier_y = 0.5
+collectable = false
+hittable = true
+health_value = 1
+movement_type = "move_x"
+speed = 500
+always_max_speed = true
+family = "none"
+can_move = true
+on_timeout_death = true
+on_timeout_death_cooldown = 1.5
+on_death_spawn_entity = true
+on_death_spawn_entity_scene_filepath = "uid://oxvewjp1soes"
+can_collect = true
+start_animation = "none"
+effect_shrink_target_scale = Vector2(0.5, 0.5)
+effect_shrink_delete = false
+entity_name = "fireball"
+entity_type = "projectile"
+
+[node name="sprite" parent="." index="1"]
+sprite_frames = ExtResource("2_cqwhi")
+animation = &"anim"

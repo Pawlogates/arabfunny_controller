@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://kadmgekic7s0"
+path="res://.godot/imported/frog_attack.wav-4cf3a6bcc0294172223c7304439cbbf5.sample"
+
+[deps]
+
+source_file="res://Exponaut Components/Assets/Sounds/sfx/frog_attack.wav"
+dest_files=["res://.godot/imported/frog_attack.wav-4cf3a6bcc0294172223c7304439cbbf5.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

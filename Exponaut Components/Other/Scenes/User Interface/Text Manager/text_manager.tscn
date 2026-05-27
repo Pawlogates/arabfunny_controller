@@ -1,0 +1,32 @@
+[gd_scene load_steps=2 format=3 uid="uid://iqc2mtwkiuud"]
+
+[ext_resource type="Script" uid="uid://cnwuviale8kcj" path="res://Scripts/text_manager.gd" id="1_0cl1k"]
+
+[node name="text_manager" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_0cl1k")
+
+[node name="row1" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="cooldown_debug_available" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="cooldown_create_message" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="cooldown_debug_available" to="." method="_on_cooldown_debug_available_timeout"]

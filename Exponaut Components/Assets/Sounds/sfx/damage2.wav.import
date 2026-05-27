@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://4csbon3qcc33"
+path="res://.godot/imported/damage2.wav-a0bcd6efbc082a0a4b1caf53bd1cb306.sample"
+
+[deps]
+
+source_file="res://Exponaut Components/Assets/Sounds/sfx/damage2.wav"
+dest_files=["res://.godot/imported/damage2.wav-a0bcd6efbc082a0a4b1caf53bd1cb306.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

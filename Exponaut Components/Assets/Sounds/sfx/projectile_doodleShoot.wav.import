@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dt0iqeflwnxvw"
+path="res://.godot/imported/projectile_doodleShoot.wav-e222f17a6ce069aa23731f8334cf564e.sample"
+
+[deps]
+
+source_file="res://Exponaut Components/Assets/Sounds/sfx/projectile_doodleShoot.wav"
+dest_files=["res://.godot/imported/projectile_doodleShoot.wav-e222f17a6ce069aa23731f8334cf564e.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

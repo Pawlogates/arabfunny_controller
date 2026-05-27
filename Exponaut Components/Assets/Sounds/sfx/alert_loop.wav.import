@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://cke3v4dxdahkn"
+path="res://.godot/imported/alert_loop.wav-b40e47474224d7170099e6201024ee1c.sample"
+
+[deps]
+
+source_file="res://Exponaut Components/Assets/Sounds/sfx/alert_loop.wav"
+dest_files=["res://.godot/imported/alert_loop.wav-b40e47474224d7170099e6201024ee1c.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

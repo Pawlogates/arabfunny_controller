@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://d2w8jwk47ik8x"
+path="res://.godot/imported/projectile_eggHit.wav-17bfe8c1c148c41f9350a5ae5cb9447e.sample"
+
+[deps]
+
+source_file="res://Exponaut Components/Assets/Sounds/sfx/projectile_eggHit.wav"
+dest_files=["res://.godot/imported/projectile_eggHit.wav-17bfe8c1c148c41f9350a5ae5cb9447e.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

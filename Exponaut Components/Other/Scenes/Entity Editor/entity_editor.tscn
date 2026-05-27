@@ -1,0 +1,52 @@
+[gd_scene load_steps=3 format=3 uid="uid://b5wkfwqag4nd7"]
+
+[ext_resource type="Script" uid="uid://cpbay8ywvd0rd" path="res://Other/Scenes/Entity Editor/entity_editor.gd" id="1_jb7cl"]
+[ext_resource type="Theme" uid="uid://8i27k6tj1d3o" path="res://Other/Themes/basic.tres" id="2_a0mot"]
+
+[node name="entity_editor" type="Control" groups=["entity_editor"]]
+z_index = 100
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -800.0
+offset_top = -450.0
+offset_right = 800.0
+offset_bottom = 450.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_jb7cl")
+
+[node name="container_behavior_buttons" type="GridContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+columns = 10
+
+[node name="bg" type="ColorRect" parent="."]
+z_index = -1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.341176)
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 180.0
+offset_top = 786.0
+offset_right = 1377.0
+offset_bottom = 853.0
+theme = ExtResource("2_a0mot")
+theme_override_font_sizes/font_size = 48
+text = "Press Q or MIDDLEMOUSE to close the entity editor!"

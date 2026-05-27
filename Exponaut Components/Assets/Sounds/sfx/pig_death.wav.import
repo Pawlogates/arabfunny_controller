@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dlxotk6tqrgv4"
+path="res://.godot/imported/pig_death.wav-fcedf17032ce742db51b6fc3218f8059.sample"
+
+[deps]
+
+source_file="res://Exponaut Components/Assets/Sounds/sfx/pig_death.wav"
+dest_files=["res://.godot/imported/pig_death.wav-fcedf17032ce742db51b6fc3218f8059.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

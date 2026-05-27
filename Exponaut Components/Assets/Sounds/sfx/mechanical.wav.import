@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dobkvhhp18xkw"
+path="res://.godot/imported/mechanical.wav-87713d1440672cb9dde4f5e2a91cc8ef.sample"
+
+[deps]
+
+source_file="res://Exponaut Components/Assets/Sounds/sfx/mechanical.wav"
+dest_files=["res://.godot/imported/mechanical.wav-87713d1440672cb9dde4f5e2a91cc8ef.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

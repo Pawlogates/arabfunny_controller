@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://b5onnei6gn30p"]
+
+[ext_resource type="AnimationLibrary" uid="uid://oqwyjsjb12x8" path="res://Other/Animations/ui.tres" id="1_vcmyq"]
+
+[node name="animation_ui" type="AnimationPlayer"]
+reset_on_save = false
+libraries = {
+&"": ExtResource("1_vcmyq")
+}

@@ -1,0 +1,1252 @@
+class_name entity_basic
+extends CharacterBody2D
+
+@onready var World = Globals.reassign_general()[0]
+@onready var Player = Globals.reassign_general()[1]
+
+@onready var sprite = $sprite
+
+@onready var t_state_attacking: Timer = $sprite/timer_state_attacking
+@onready var t_state_damage: Timer = $sprite/timer_state_damage
+
+@onready var c_jump: Timer = $timeout_basic/cooldown_jump
+@onready var c_spawn_entity: Timer = $timeout_basic/cooldown_spawn_entity
+@onready var c_death: Timer = $timeout_basic/cooldown_death
+@onready var c_change_ignore_gravity: Timer = $timeout_basic/cooldown_change_ignore_gravity
+@onready var c_change_invincible: Timer = $timeout_basic/cooldown_change_invincible
+@onready var c_change_direction_x: Timer = $timeout_basic/cooldown_change_direction_x
+@onready var c_change_movement_type: Timer = $timeout_basic/cooldown_change_movement_type
+
+@onready var c_collidable: Timer = $cooldown_collidable
+@onready var c_on_death_effect_thrownAway: Timer = $cooldown_on_death_effect_thrownAway
+
+@onready var c_attack_limit: Timer = $cooldown_attack_limit
+
+@onready var general_timers_core: Node2D = $general_timers_core
+
+@onready var scan_ledge = $scan_ledge
+@onready var scan_stuck = $scan_stuck
+
+@onready var animation_all: AnimationPlayer = %animation_all
+@onready var animation_general: AnimationPlayer = %animation_general
+@onready var animation_color: AnimationPlayer = %animation_color
+
+@onready var collision_main: CollisionShape2D = $collision_main
+@onready var hitbox: Area2D = $hitbox
+@onready var collision_hitbox: CollisionShape2D = $hitbox/collision_hitbox
+
+@onready var scan_visible: VisibleOnScreenNotifier2D = $scan_visible
+
+@onready var container_effect_thrownAway: Node2D = $sprite/container_effect_thrownAway
+
+@onready var cooldown_sfx_idle: Timer = $cooldown_sfx_idle
+
+@onready var text_container: Control = $text_container
+
+
+# Patrolling - [START]
+var block_spawn_entity = false
+var master_node : Node = self
+
+@onready var scan_patrolling_vision: Area2D = $scan_patrolling_vision
+@onready var collision_patrolling: CollisionShape2D = $scan_patrolling_vision/collision_patrolling
+@onready var c_patrolling_target_spotted_queue: Timer = $cooldown_patrolling_target_spotted_queue
+@onready var c_patrolling_target_spotted: Timer = $cooldown_patrolling_target_spotted
+@onready var c_patrolling_change_direction: Timer = $cooldown_patrolling_change_direction
+
+var patrolling_target_spotted_active = false
+var patrolling_target_spotted_queued = false
+
+@export var patrolling_anim_while_queued = false
+
+# Patrolling - [END]
+
+@onready var scan_always_active: Area2D = $scan_always_active
+
+# Reset puzzle - [START]
+@onready var scan_reset_puzzle_coverage: Area2D = $scan_reset_puzzle_coverage
+@onready var scan_reset_puzzle_coverage_collision: CollisionShape2D = $scan_reset_puzzle_coverage/CollisionShape2D
+# Reset puzzle - [END]
+
+# Sound effects.
+@onready var sfx_manager = $sfx_manager # The sound effects manager should be called every time a sound should play. Example: "sfx_manager.sfx_play(Globals.sfx_player_jump, 1.0, 0.0)"
+@onready var sfx = $sfx_manager/sfx # If a sound effect is already being played, another sound player will play the next one. No more than 5 sounds at a time can be played by an entity.
+@onready var sfx1 = $sfx_manager/sfx1
+@onready var sfx2 = $sfx_manager/sfx2
+@onready var sfx3 = $sfx_manager/sfx3
+@onready var sfx4 = $sfx_manager/sfx4
+
+
+var active = false # It becomes "true" if the entity enters the camera view.
+var enabled = true # It becomes "false" when set by various other objects, such as the "inactive_until_player" trigger. Prevents "basic_on_active()" from being executed.
+
+# States an entity can be in, used mainly for managing sprite animations. Note that an entity can be in multiple states at the same time.
+var attacked = false
+var attacking = false
+
+var can_turn = true
+
+var movement_type_id = 0
+
+var gravity = Globals.gravity
+
+var rng = RandomNumberGenerator.new()
+
+# Active direction can't ever be equal to 0.
+var direction_active_x = 1
+var direction_active_y = -1
+
+# Last velocity cannot be equal to any value between -25 and 25 (used for behavior like bouncing).
+var velocity_last_x = 25
+var velocity_last_y = -25
+
+var start_pos = Vector2(-1, -1) # If equal to Vector2(-1, -1), it will be assigned at _ready().
+var start_scale = Vector2(-1, -1)
+
+var sprite_start_pos = Vector2(-1, -1)
+var sprite_start_scale = Vector2(-1, -1)
+
+var collected = false
+var dead = false
+var destroyed = false
+
+var rotten = false
+
+var only_visual = false
+
+var removable = false
+
+var always_active = false
+
+signal collected_majorCollectible_module
+signal collected_majorCollectible_key
+
+var random_position_offset = Vector2(randf_range(0, 250), randf_range(0, 250))
+
+var effect_grow = false
+var effect_shrink = false
+
+var wall_normal = Vector2(99, 99)
+var floor_normal = Vector2(99, 99)
+
+
+# Reset Puzzle (an entity that resets all entities in its zone, used for retrying puzzles). - [START]
+var reset_puzzle_inside_zone = false # Right after the level is loaded, a "reset_puzzle" entity will look for nodes inside its coverage area ("scan_reset_puzzle_coverage" : "area2D") and add them all to the list ("reset_puzzle_nodes_inside_zone") which should NEVER change after that, for the entire playthrough.
+var reset_puzzle_delete_node_queued = false
+var reset_puzzle_nodes_inside_zone : Array
+var reset_puzzle_scan_active = true
+var reset_puzzle_block_movement = false
+var reset_puzzle_restored = false
+var reset_puzzle_first_time = true
+var reset_puzzle_saved_score = -1 # The score value that will replace the player's overworld score when the puzzle gets reset. Note: It's needed so you can't abuse the fact that entities can respawn infinitely, to get infinite score.
+var reset_puzzle_line_visible = false
+var reset_puzzle_master_node : Node
+
+signal reset_puzzle_activated
+# Reset Puzzle (an entity that resets all entities in its zone, used for retrying puzzles). - [END]
+
+
+var effect_collected_multiple_active = false
+
+
+# Start of properties.
+@export_group("Main interactions.") # Section start.
+
+@export var collectable = true
+@export var hittable = false
+@export var collidable = false
+
+@export_group("") # Section end.
+
+
+#---------------------------------------------------------------------------#
+
+
+@export_group("Main information.") # Section start.
+
+@export var health_value = 30
+@export var damage_value = 10
+@export var score_value = 25
+
+@export_enum("normal", "move_x", "move_y", "move_xy", "follow_player_x", "follow_player_y", "follow_player_xy", "follow_player_x_if_spotted", "follow_player_y_if_spotted", "follow_player_xy_if_spotted", "chase_player_x", "chase_player_y", "chase_player_xy", "chase_player_x_if_spotted", "chase_player_y_if_spotted", "chase_player_xy_if_spotted", "wave_x", "wave_y", "move_around_startPosition_x", "move_around_startPosition_y", "move_around_startPosition_xy", "move_around_startPosition_x_if_not_spotted", "move_around_startPosition_y_if_not_spotted", "move_around_startPosition_xy_if_not_spotted") var movement_type : String = "normal"
+
+@export var speed = 250
+@export var jump_velocity_y = -600
+@export var jump_velocity_x = 400 # This is only used when a modified jump is executed, and is ignored when the normal jump is activated (which is most of the time, an exception being one of the general timer behaviors for example).
+@export var acceleration = 200
+@export var friction = 400
+@export var fall_speed = 1000
+
+@export var always_max_speed = false
+@export var on_spawn_max_speed = false
+
+@export_enum("Player", "enemy", "none", "all") var family : String = "all"
+
+@export var damage_from_entity = true
+@export var damage_from_entity_contact = true
+@export var damage_from_player = true
+@export var damage_from_player_contact = false
+
+@export var damage_to_entity = true
+@export var damage_to_entity_contact = true
+@export var damage_to_player = true
+@export var damage_to_player_contact = true
+
+@export var pushable_by_entity = true
+@export var pushable_by_player = true
+
+@export var cooldown_attack_limit : float = 1.5
+
+@export var set_player_attack_cooldown = false
+@export var set_player_attack_cooldown_value = 1.5
+
+@export_group("") # Section end.
+
+
+#---------------------------------------------------------------------------#
+
+
+@export_group("Movement specifics.") # Section start.
+
+@export var can_move = false
+@export var can_move_x = true
+@export var can_move_y = true
+
+@export var reflect_straight = false # The word "reflect" refers to an alternative method of an entity being affected by colliding with tiles, used mostly for gravity-independent behavior.
+@export var reflect_slope = false
+
+@export var ignore_gravity = true
+@export var on_death_ignore_gravity_stop = true
+
+@export var ignore_collision = false
+@export var on_death_change_ignore_collision = true
+
+@export var can_jump_in_air : bool = true
+
+@export var speed_multiplier_x = 1.0
+@export var speed_multiplier_y = 1.0
+@export var acceleration_multiplier_x = 1.0
+@export var acceleration_multiplier_y = 1.0
+@export var friction_multiplier_x = 1.0
+@export var friction_multiplier_y = 1.0
+@export var gravity_multiplier_x = 1.0
+@export var gravity_multiplier_y = 1.0
+
+# Behavior triggered on touching the wall:
+@export var on_wall_change_direction_x = true
+@export var on_wall_change_direction_y = false
+
+@export var on_wall_change_speed = false
+@export var on_wall_change_speed_multiplier = 0.5
+
+@export var on_wall_change_velocity_x = true
+@export var on_wall_change_velocity_y = false
+@export var on_wall_change_velocity_value : Vector2 = Vector2(0, -250) # Disabled if equal to "-1".
+@export var on_wall_change_velocity_multiplier = Vector2(0.5, 0.5)
+@export var on_wall_float = false
+@export var on_wall_death = false
+
+# Behavior triggered on touching the floor:
+@export var on_floor_change_direction_x = false
+@export var on_floor_change_direction_y = false
+
+@export var on_floor_reverse_velocity_x = false
+@export var on_floor_reverse_velocity_y = false
+
+@export var on_floor_change_speed = false
+@export var on_floor_change_speed_multiplier = 0.5
+
+@export var on_floor_change_velocity = false
+@export var on_floor_change_velocity_x = true
+@export var on_floor_change_velocity_y = true
+@export var on_floor_change_velocity_value : Vector2 = Vector2(0, -250) # Disabled if equal to "-1".
+@export var on_floor_change_velocity_multiplier = Vector2(0.5, 0.5)
+@export var on_floor_float = false
+@export var on_floor_death = false
+
+@export var on_ledge_turn = false
+@export var on_ledge_speed_multiplier = 1.0
+@export var on_ledge_death = false
+
+# Behavior triggered on touching the wall:
+@export var on_hit_change_direction_x_copy_entity = false
+@export var on_hit_change_direction_y_copy_entity = false
+@export var on_hit_change_direction_x = false
+@export var on_hit_change_direction_y = false
+@export var on_hit_change_speed = false
+@export var on_hit_change_speed_multiplier = 0.5
+
+@export var on_hit_change_velocity_x_copy_entity = true
+@export var on_hit_change_velocity_y_copy_entity = false
+@export var on_hit_change_velocity_x_copy_entity_multiplier : float = 0.5
+@export var on_hit_change_velocity_y_copy_entity_multiplier : float = 0.5
+@export var on_hit_change_velocity_x = false
+@export var on_hit_change_velocity_y = true
+@export var on_hit_change_velocity_value : Vector2 = Vector2(0, -400) # Disabled if equal to "-1".
+@export var on_hit_change_velocity_multiplier = Vector2(0.5, 0.5)
+@export var on_hit_float = false
+@export var on_hit_death = false
+
+@export var ascending = false
+
+@export var copy_direction_x_player = false
+@export var copy_direction_x_active_player = false
+@export var on_spawn_copy_direction_x_player = false
+@export var on_spawn_copy_direction_x_active_player = false
+
+
+# These properties affect all "on_[event]_spawn_entity" type behaviors.
+@export var spawn_entity_delay_range : Array = [0.0, 0.0]
+@export var spawn_entity_add_scale_range : Array = [Vector2(0.0, 1.0), Vector2(0.0, 1.0)]
+@export var spawn_entity_add_scale_range_keep_equal : bool = true # If equal to "true", the entity's "scale.y" will copy its "scale.x".
+@export var spawn_entity_family_copy_entity : bool = false # Should be disabled if the entity spawns collectibles.
+@export var spawn_entity_direction_copy_entity : bool = false
+@export var spawn_entity_add_z_index : int = 0
+
+@export var limit_spawn_entity_cooldown = false
+@export var limit_spawn_entity_repeat = false
+
+
+# Timer-based behavior:
+@export var on_timeout_jump = false
+@export var on_timeout_jump_cooldown = 4.0
+@export var on_timeout_jump_velocity : float = -400
+
+@export var on_timeout_change_ignore_gravity = false
+@export var on_timeout_change_ignore_gravity_cooldown = 2.5
+
+@export var on_timeout_death = false
+@export var on_timeout_death_cooldown = 2.5
+
+@export var on_timeout_spawn_entity = false
+@export var on_timeout_spawn_entity_cooldown = 2.5
+@export_file("*.tscn") var on_timeout_spawn_entity_scene_filepath = "res://Enemies/togglebot.tscn"
+@export var on_timeout_spawn_entity_quantity = 1
+@export var on_timeout_spawn_entity_pos_offset : Vector2 = Vector2(0, 0)
+@export var on_timeout_spawn_entity_pos_offset_range : Array = [Vector2(-32, -32), Vector2(32, 32)]
+@export var on_timeout_spawn_entity_add_velocity : Vector2 = Vector2(0, 0)
+@export var on_timeout_spawn_entity_add_velocity_range : Array = [Vector2(-800, -800), Vector2(800, -50)]
+
+@export var on_timeout_change_direction_x = false
+@export var on_timeout_change_direction_x_cooldown = 2.5
+
+@export var on_timeout_change_invincible = false
+@export var on_timeout_change_invincible_cooldown = 2.5
+
+@export var on_timeout_change_movement_type = false
+@export var on_timeout_change_movement_type_cooldown = 2.5
+@export_enum("normal", "move_x", "move_y", "move_xy", "follow_player_x", "follow_player_y", "follow_player_xy", "follow_player_x_if_spotted", "follow_player_y_if_spotted", "follow_player_xy_if_spotted", "chase_player_x", "chase_player_y", "chase_player_xy", "chase_player_x_if_spotted", "chase_player_y_if_spotted", "chase_player_xy_if_spotted", "wave_H", "wave_V", "move_around_startPosition_x", "move_around_startPosition_y", "move_around_startPosition_xy", "move_around_startPosition_x_if_not_spotted", "move_around_startPosition_y_if_not_spotted", "move_around_startPosition_xy_if_not_spotted") var on_timeout_change_movement_type_name : String = "normal"
+
+
+@export var collidable_cooldown = 0.1
+
+
+# Behavior triggered on entity death:
+@export var on_death_spawn_entity = false
+@export_file("*.tscn") var on_death_spawn_entity_scene_filepath = "res://Enemies/togglebot.tscn"
+@export var on_death_spawn_entity_quantity = 1
+@export var on_death_spawn_entity_pos_offset : Vector2 = Vector2(0, 0)
+@export var on_death_spawn_entity_pos_offset_range : Array = [Vector2(-32, -32), Vector2(32, 32)]
+@export var on_death_spawn_entity_add_velocity : Vector2 = Vector2(0, 0)
+@export var on_death_spawn_entity_add_velocity_range : Array = [Vector2(-800, -800), Vector2(800, -50)]
+@export var on_death_spawn_entity_cooldown = 0.5
+
+@export var on_death_spawn_entity2 = false
+@export_file("*.tscn") var on_death_spawn_entity2_scene_filepath = "res://Enemies/togglebot.tscn"
+@export var on_death_spawn_entity2_quantity = 1
+@export var on_death_spawn_entity2_pos_offset : Vector2 = Vector2(0, 0)
+@export var on_death_spawn_entity2_pos_offset_range : Array = [Vector2(-32, -32), Vector2(32, 32)]
+@export var on_death_spawn_entity2_add_velocity : Vector2 = Vector2(0, 0)
+@export var on_death_spawn_entity2_add_velocity_range : Array = [Vector2(-800, -800), Vector2(800, -50)]
+@export var on_death_spawn_entity2_cooldown = 0.5
+
+@export var on_death_spawn_entity3 = false
+@export_file("*.tscn") var on_death_spawn_entity3_scene_filepath = "res://Enemies/togglebot.tscn"
+@export var on_death_spawn_entity3_quantity = 1
+@export var on_death_spawn_entity3_pos_offset : Vector2 = Vector2(0, 0)
+@export var on_death_spawn_entity3_pos_offset_range : Array = [Vector2(-32, -32), Vector2(32, 32)]
+@export var on_death_spawn_entity3_add_velocity : Vector2 = Vector2(0, 0)
+@export var on_death_spawn_entity3_add_velocity_range : Array = [Vector2(-800, -800), Vector2(800, -50)]
+@export var on_death_spawn_entity3_cooldown = 0.5
+
+@export var on_death_toggle_toggleBlocks = false
+@export var on_death_toggle_toggleBlocks_id = 0
+
+@export var on_death_delete_instantly = false # Spawns some particles and removes the entity right after.
+
+# Behavior triggered on entity hit:
+@export var on_hit_spawn_entity = false
+@export_file("*.tscn") var on_hit_spawn_entity_scene_filepath = "res://Enemies/togglebot.tscn"
+@export var on_hit_spawn_entity_quantity = 1
+@export var on_hit_spawn_entity_pos_offset : Vector2 = Vector2(0, 0)
+@export var on_hit_spawn_entity_pos_offset_range : Array = [Vector2(-32, -32), Vector2(32, 32)]
+@export var on_hit_spawn_entity_add_velocity : Vector2 = Vector2(0, 0)
+@export var on_hit_spawn_entity_add_velocity_range : Array = [Vector2(-800, -800), Vector2(800, -50)]
+@export var on_hit_spawn_entity_cooldown = 0.5
+
+@export var on_hit_spawn_entity2 = false
+@export_file("*.tscn") var on_hit_spawn_entity2_scene_filepath = "res://Enemies/togglebot.tscn"
+@export var on_hit_spawn_entity2_quantity = 1
+@export var on_hit_spawn_entity2_pos_offset : Vector2 = Vector2(0, 0)
+@export var on_hit_spawn_entity2_pos_offset_range : Array = [Vector2(-32, -32), Vector2(32, 32)]
+@export var on_hit_spawn_entity2_add_velocity : Vector2 = Vector2(0, 0)
+@export var on_hit_spawn_entity2_add_velocity_range : Array = [Vector2(-800, -800), Vector2(800, -50)]
+@export var on_hit_spawn_entity2_cooldown = 0.5
+
+@export var on_hit_spawn_entity3 = false
+@export_file("*.tscn") var on_hit_spawn_entity3_scene_filepath = "res://Enemies/togglebot.tscn"
+@export var on_hit_spawn_entity3_quantity = 1
+@export var on_hit_spawn_entity3_pos_offset : Vector2 = Vector2(0, 0)
+@export var on_hit_spawn_entity3_pos_offset_range : Array = [Vector2(-32, -32), Vector2(32, 32)]
+@export var on_hit_spawn_entity3_add_velocity : Vector2 = Vector2(0, 0)
+@export var on_hit_spawn_entity3_add_velocity_range : Array = [Vector2(-800, -800), Vector2(800, -50)]
+@export var on_hit_spawn_entity3_cooldown = 0.5
+
+
+# Behavior triggered on entity spotting a "target" entity:
+@export var patrolling = false
+@export var patrolling_targets = ["Player"] # A valid target is a node with either a matching group name, entity_type or family.
+@export var patrolling_vision_size = Vector2(384, 64)
+@export var patrolling_vision_pos = Vector2(192, 0)
+
+@export_enum("Player", "enemy", "none", "all") var on_patrolling_spotted_spawn_entity_family: String = "enemy"
+@export var patrolling_change_direction_cooldown : float = 4.0
+@export var on_patrolling_show_text : bool = true
+
+@export var on_patrolling_spotted_jump : bool = false
+@export var on_patrolling_spotted_jump_and_move : bool = false
+
+@export var on_patrolling_spotted_spawn_entity = false
+@export_file("*.tscn") var on_patrolling_spotted_spawn_entity_scene_filepath = "res://Enemies/togglebot.tscn"
+@export var on_patrolling_spotted_spawn_entity_quantity = 1
+@export var on_patrolling_spotted_spawn_entity_pos_offset : Vector2 = Vector2(0, 0)
+@export var on_patrolling_spotted_spawn_entity_pos_offset_range : Array = [Vector2(-32, -32), Vector2(32, 32)]
+@export var on_patrolling_spotted_spawn_entity_add_velocity : Vector2 = Vector2(0, 0)
+@export var on_patrolling_spotted_spawn_entity_add_velocity_range : Array = [Vector2(-800, -800), Vector2(800, -50)]
+@export var on_patrolling_spotted_spawn_entity_cooldown = 0.5
+
+@export var on_patrolling_spotted_spawn_entity2 = false
+@export_file("*.tscn") var on_patrolling_spotted_spawn_entity2_scene_filepath = "res://Enemies/togglebot.tscn"
+@export var on_patrolling_spotted_spawn_entity2_quantity = 1
+@export var on_patrolling_spotted_spawn_entity2_pos_offset : Vector2 = Vector2(0, 0)
+@export var on_patrolling_spotted_spawn_entity2_pos_offset_range : Array = [Vector2(-32, -32), Vector2(32, 32)]
+@export var on_patrolling_spotted_spawn_entity2_add_velocity : Vector2 = Vector2(0, 0)
+@export var on_patrolling_spotted_spawn_entity2_add_velocity_range : Array = [Vector2(-800, -800), Vector2(800, -50)]
+@export var on_patrolling_spotted_spawn_entity2_cooldown = 0.5
+
+@export var on_patrolling_spotted_spawn_entity3 = false
+@export_file("*.tscn") var on_patrolling_spotted_spawn_entity3_scene_filepath = "res://Enemies/togglebot.tscn"
+@export var on_patrolling_spotted_spawn_entity3_quantity = 1
+@export var on_patrolling_spotted_spawn_entity3_pos_offset : Vector2 = Vector2(0, 0)
+@export var on_patrolling_spotted_spawn_entity3_pos_offset_range : Array = [Vector2(-32, -32), Vector2(32, 32)]
+@export var on_patrolling_spotted_spawn_entity3_add_velocity : Vector2 = Vector2(0, 0)
+@export var on_patrolling_spotted_spawn_entity3_add_velocity_range : Array = [Vector2(-800, -800), Vector2(800, -50)]
+@export var on_patrolling_spotted_spawn_entity3_cooldown = 0.5
+
+
+# Behavior triggered as long as the entity currently satisfies a condition:
+@export var when_atStartPosition_x_stop = false
+@export var when_atStartPosition_y_stop = false
+
+@export var start_position_leniency_x = 15
+@export var start_position_leniency_y = 15
+
+# Behavior triggered on spawn:
+@export var on_spawn_offset_position = Vector2(0, 0)
+@export var on_spawn_offset_position_random = false
+@export var on_spawn_offset_position_random_variance = Vector2(randi_range(-200, 200), randi_range(-200, 200)) # Maximum variance.
+
+@export var on_spawn_sfx_death : bool = false
+@export var on_spawn_show_text : bool = false
+
+# Behaviour triggered on player touching the entity.
+@export var on_touch_modulate = Color(1, 1, 1, 1)
+
+@export_group("") # Section end.
+
+
+#---------------------------------------------------------------------------#
+
+
+@export_group("Other properties (behavior).") # Section start.
+
+@export var can_affect_player = false
+@export var can_collect = false
+@export var look_at_player_x = false
+@export var look_at_player_y = false
+@export var look_at_player_rotate = false
+@export var look_at_player_rotate_offset = 0
+
+@export var force_direction_x : bool = false
+@export var force_direction_y : bool = false
+
+@export var on_entityEntered_change_direction_copyEntity = false
+@export var on_entityEntered_change_direction_basedOnPosition = false
+
+@export var enteredFromAboveAndNotMoving_enable = true
+@export var enteredFromAboveAndNotMoving_velocity = -800
+
+
+@export var rng_custom = -1 # Set to -1 for random.
+
+
+@export var collectable_multiple = false
+@export var collectable_multiple_health = 4 # Set to "-1" for infinite.
+
+
+# Breakable: - [START]
+# If an entity is breakable, the player can bounce off of it, and gains greater height if the jump button is pressed during the bounce, making it a "box" in most cases.
+@export var breakable = false
+
+# On death:
+@export var breakable_on_death_player_velocity_y = -200
+@export var breakable_on_death_player_velocity_y_jump = -600
+
+# On hit:
+@export var breakable_on_hit_player_velocity_y = -400
+@export var breakable_on_hit_player_velocity_y_jump = -600
+
+# Only breakable while these conditions are satisfied.
+@export var breakable_requires_velocity_x = true
+@export var breakable_requires_velocity_y = true
+
+# Velocity ranges in which a box can be broken. Note: Set to -1 for "never".
+# Single range:
+@export var breakable_requires_velocity_x_range = Vector2(-1, -1)
+@export var breakable_requires_velocity_y_range = Vector2(400, 100000)
+
+# Multiple ranges:
+# Example: 1 - [Vector2(-100000, -400) and 2 - [Vector2(400, 100000)] will make the box break only if an entity (or the player) moves into it very fast horizontally.
+@export var breakable_requires_velocity_x_range2 = Vector2(-1, -1)
+@export var breakable_requires_velocity_y_range2 = Vector2(-1, -1)
+
+
+# Advanced breakable:
+# Advanced box is an entity that gained movement after being hit or killed. An example of an advanced box would be the large gem that floats until hit by the player, after which it gains physics-based movement, and can be broken again, opening a level portal.
+@export_enum("normal", "move_x", "move_y", "move_xy", "follow_player_x", "follow_player_y", "follow_player_xy", "follow_player_x_if_spotted", "follow_player_y_if_spotted", "follow_player_xy_if_spotted", "chase_player_x", "chase_player_y", "chase_player_xy", "chase_player_x_if_spotted", "chase_player_y_if_spotted", "chase_player_xy_if_spotted", "wave_H", "wave_V", "move_around_startPosition_x", "move_around_startPosition_y", "move_around_startPosition_xy", "move_around_startPosition_x_if_not_spotted", "move_around_startPosition_y_if_not_spotted", "move_around_startPosition_xy_if_not_spotted") var on_hit_gain_movement : String = "none"
+@export_enum("normal", "move_x", "move_y", "move_xy", "follow_player_x", "follow_player_y", "follow_player_xy", "follow_player_x_if_spotted", "follow_player_y_if_spotted", "follow_player_xy_if_spotted", "chase_player_x", "chase_player_y", "chase_player_xy", "chase_player_x_if_spotted", "chase_player_y_if_spotted", "chase_player_xy_if_spotted", "wave_H", "wave_V", "move_around_startPosition_x", "move_around_startPosition_y", "move_around_startPosition_xy", "move_around_startPosition_x_if_not_spotted", "move_around_startPosition_y_if_not_spotted", "move_around_startPosition_xy_if_not_spotted") var on_death_gain_movement : String = "none"
+@export var on_death_prevent_death = 0 # How many times an entity death will be prevented.
+@export var on_death_prevent_score = 0 # How many times an entity death will not grant any score.
+
+@export var score_value2 = 125
+@export var score_value3 = 125
+@export var score_value4 = 125
+@export var score_value5 = 125
+
+# Level portal:
+@export var breakable_advanced_portal_on_death_open = false
+@export var breakable_advanced_portal_particle_quantity = 25
+@export var breakable_advanced_portal_level_id = "none" # Example: "MAIN_1"
+@export var breakable_advanced_portal_checkpoint_offset = Vector2(320, -64)
+
+@export var breakable_advanced_on_touch_modulate = Color(1, 1, 1, 1)
+# Breakable: - [END]
+
+
+# Major collectibles have a special pickup animation. An example would be the projectile upgrade modules.
+@export var majorCollectible_module = false
+@export var majorCollectible_key = false
+
+# A temporary powerup will grant an ability for a short time, as well as a score multiplier of x2. Note: Set the ability to "none" for a simple score multiplier powerup.
+@export var temporaryPowerup = false
+@export_enum("none", "higher_jump", "increased_speed", "teleport_forward_on_airJump") var temporary_powerup = "none"
+@export var temporary_powerup_duration = 10
+
+@export var inventory_item = false
+@export var inventory_item_scene_filepath = "res://Enemies/togglebot.tscn"
+@export var inventory_item_is_hidden = false
+
+@export var is_healthItem = false
+@export var rotting = false
+@export var fall_when_button_pressed = false
+
+@export var transform_player = false
+@export var transform_player_scene_filepath = "res://Enemies/togglebot.tscn"
+
+@export var on_collected_effect_special = false
+
+@export var immortal = false
+
+
+# General timers. Each one can have an action assigned to it, which will be executed on the matching timer's timeout.
+@export var general_timers_enabled = false
+
+@export var t1_cooldown = 3.0
+@export var t2_cooldown = 3.0
+@export var t3_cooldown = 3.0
+@export var t4_cooldown = 3.0
+@export var t5_cooldown = 3.0
+@export var t6_cooldown = 3.0
+
+@export var t1_on_timeout_randomize_cooldown = false
+@export var t2_on_timeout_randomize_cooldown = false
+@export var t3_on_timeout_randomize_cooldown = false
+@export var t4_on_timeout_randomize_cooldown = false
+@export var t5_on_timeout_randomize_cooldown = false
+@export var t6_on_timeout_randomize_cooldown = false
+
+@export var t_randomize_cooldown_min = 0.5
+@export var t_randomize_cooldown_max = 6
+
+@export var t1_on_spawn_randomize = false
+@export var t2_on_spawn_randomize = false
+@export var t3_on_spawn_randomize = false
+@export var t4_on_spawn_randomize = false
+@export var t5_on_spawn_randomize = false
+@export var t6_on_spawn_randomize = false
+
+# Actions that can be performed when their respective general timers finish. Note that "t_trigger_[action]" stands for: GENERAL TIMER (t) _ TRIGGER ON TIMEOUT (trigger) _ BEHAVIOR ([action]).
+# The values (int) of these properties correspond to a specific general timer, which will look for a behavior matching its ID number on timeout.
+# A value of -1 means that this behavior will not match any general timer.
+@export var t_trigger_jump = -1
+@export var t_trigger_jump_and_move = -1
+@export var t_trigger_change_direction = -1
+@export var t_trigger_self_destruct = -1
+@export var t_trigger_self_destruct_and_spawn_entity = -1
+@export var t_trigger_self_destruct_and_spawn_entity2 = -1
+@export var t_trigger_self_destruct_and_spawn_entity3 = -1
+@export var t_trigger_sfx = -1
+@export var t_trigger_randomize_speed_and_jump_velocity = -1
+@export var t_trigger_ascend = -1
+
+@export var t_trigger_spawn_entity = -1
+@export_file("*.tscn") var t_trigger_spawn_entity_scene_filepath = "res://Enemies/togglebot.tscn"
+@export var t_trigger_spawn_entity_quantity = 1
+@export var t_trigger_spawn_entity_pos_offset : Vector2 = Vector2(0, 0)
+@export var t_trigger_spawn_entity_pos_offset_range : Array = [Vector2(-32, -32), Vector2(32, 32)]
+@export var t_trigger_spawn_entity_add_velocity : Vector2 = Vector2(0, 0)
+@export var t_trigger_spawn_entity_add_velocity_range : Array = [Vector2(-800, -800), Vector2(800, -50)]
+@export var t_trigger_spawn_entity_cooldown = 0.5
+
+@export var t_trigger_spawn_entity2 = -1
+@export_file("*.tscn") var t_trigger_spawn_entity2_scene_filepath = "res://Enemies/togglebot.tscn"
+@export var t_trigger_spawn_entity2_quantity = 1
+@export var t_trigger_spawn_entity2_pos_offset : Vector2 = Vector2(0, 0)
+@export var t_trigger_spawn_entity2_pos_offset_range : Array = [Vector2(-32, -32), Vector2(32, 32)]
+@export var t_trigger_spawn_entity2_add_velocity : Vector2 = Vector2(0, 0)
+@export var t_trigger_spawn_entity2_add_velocity_range : Array = [Vector2(-800, -800), Vector2(800, -50)]
+@export var t_trigger_spawn_entity2_cooldown = 0.5
+
+@export var t_trigger_spawn_entity3 = -1
+@export_file("*.tscn") var t_trigger_spawn_entity3_scene_filepath = "res://Enemies/togglebot.tscn"
+@export var t_trigger_spawn_entity3_quantity = 1
+@export var t_trigger_spawn_entity3_pos_offset : Vector2 = Vector2(0, 0)
+@export var t_trigger_spawn_entity3_pos_offset_range : Array = [Vector2(-32, -32), Vector2(32, 32)]
+@export var t_trigger_spawn_entity3_add_velocity : Vector2 = Vector2(0, 0)
+@export var t_trigger_spawn_entity3_add_velocity_range : Array = [Vector2(-800, -800), Vector2(800, -50)]
+@export var t_trigger_spawn_entity3_cooldown = 0.5
+
+
+# These properties decide whether or not a specific particle will be spawned:
+@export var particle_star = true
+@export var particle_orb = true
+@export var particle_splash = true
+@export var particle_leaf = true
+@export var particle_star_fast = true
+@export var effect_hit_enemy = true
+@export var effect_kill_enemy = true
+@export var effect_oneShot_enemy = true
+
+#UNFINISHED
+# General particles. These properties control when, where, how many and what kind of particle/effect is supposed to spawn.
+# Note that this behavior is very similar to how GENERAL TIMERS work.
+@export var p_particle_star = -1
+@export var p_particle_orb = -1
+@export var p_particle_splash = -1
+@export var p_particle_leaf = -1
+#UNFINISHED
+
+
+@export var heal_player = false # Will heal the player even if collected by an entity.
+@export var heal_value = 1
+@export var heal_entity = false
+
+@export var award_score = true
+@export var on_collected_award_score = true
+@export var on_hit_award_score = false
+@export var on_death_award_score = false
+
+@export var reset_puzzle = false
+@export var on_collected_reset_puzzle = false
+@export var on_hit_reset_puzzle = false
+@export var on_death_reset_puzzle = false
+@export var scan_reset_puzzle_coverage_collision_size : Vector2 = Vector2(-1, -1)
+
+@export var on_collected_spawn_entity = false
+@export_file("*.tscn") var on_collected_spawn_entity_scene_filepath = "res://Enemies/togglebot.tscn"
+@export var on_collected_spawn_entity_quantity = 1
+@export var on_collected_spawn_entity_pos_offset : Vector2 = Vector2(0, 0)
+@export var on_collected_spawn_entity_pos_offset_range : Array = [Vector2(-32, -32), Vector2(32, 32)]
+@export var on_collected_spawn_entity_add_velocity : Vector2 = Vector2(0, 0)
+@export var on_collected_spawn_entity_add_velocity_range : Array = [Vector2(-800, -800), Vector2(800, -50)]
+@export var on_collected_spawn_entity_cooldown = 0.5
+
+@export var on_collected_spawn_entity2 = false
+@export_file("*.tscn") var on_collected_spawn_entity2_scene_filepath = "res://Enemies/togglebot.tscn"
+@export var on_collected_spawn_entity2_quantity = 1
+@export var on_collected_spawn_entity2_pos_offset : Vector2 = Vector2(0, 0)
+@export var on_collected_spawn_entity2_pos_offset_range : Array = [Vector2(-32, -32), Vector2(32, 32)]
+@export var on_collected_spawn_entity2_add_velocity : Vector2 = Vector2(0, 0)
+@export var on_collected_spawn_entity2_add_velocity_range : Array = [Vector2(-800, -800), Vector2(800, -50)]
+@export var on_collected_spawn_entity2_cooldown = 0.5
+
+@export var on_collected_spawn_entity3 = false
+@export_file("*.tscn") var on_collected_spawn_entity3_scene_filepath = "res://Enemies/togglebot.tscn"
+@export var on_collected_spawn_entity3_quantity = 1
+@export var on_collected_spawn_entity3_pos_offset : Vector2 = Vector2(0, 0)
+@export var on_collected_spawn_entity3_pos_offset_range : Array = [Vector2(-32, -32), Vector2(32, 32)]
+@export var on_collected_spawn_entity3_add_velocity : Vector2 = Vector2(0, 0)
+@export var on_collected_spawn_entity3_add_velocity_range : Array = [Vector2(-800, -800), Vector2(800, -50)]
+@export var on_collected_spawn_entity3_cooldown = 0.5
+
+@export var remove_delay = 1.0
+
+@export var on_floor_bounce = false
+@export var on_floor_bounce_velocity_multiplier : float = 0.5
+@export var on_wall_bounce = true
+@export var on_wall_bounce_velocity_multiplier : float = 0.5
+
+@export var on_landed_spawn_entity : bool = false
+@export_file("*.tscn") var on_landed_spawn_entity_scene_filepath = "res://Enemies/togglebot.tscn"
+@export var on_landed_spawn_entity_quantity = 1
+@export var on_landed_spawn_entity_pos_offset : Vector2 = Vector2(0, 0)
+@export var on_landed_spawn_entity_pos_offset_range : Array = [Vector2(-32, -32), Vector2(32, 32)]
+@export var on_landed_spawn_entity_add_velocity : Vector2 = Vector2(0, 0)
+@export var on_landed_spawn_entity_add_velocity_range : Array = [Vector2(-800, -800), Vector2(800, -50)]
+@export var on_landed_spawn_entity_cooldown = 0.5
+
+@export var on_floor_spawn_entity : bool = false
+@export_file("*.tscn") var on_floor_spawn_entity_scene_filepath = "res://Enemies/togglebot.tscn"
+@export var on_floor_spawn_entity_quantity = 1
+@export var on_floor_spawn_entity_pos_offset : Vector2 = Vector2(0, 0)
+@export var on_floor_spawn_entity_pos_offset_range : Array = [Vector2(-32, -32), Vector2(32, 32)]
+@export var on_floor_spawn_entity_add_velocity : Vector2 = Vector2(0, 0)
+@export var on_floor_spawn_entity_add_velocity_range : Array = [Vector2(-800, -800), Vector2(800, -50)]
+@export var on_floor_spawn_entity_cooldown = 0.5
+
+@export var variable_speed = false
+
+@export var anim_alternate_walk = false
+@export var anim_alternate_walk_hittable_only_during = false
+
+@export_group("") # End of section.
+
+
+#---------------------------------------------------------------------------#
+
+
+@export_group("Other properties (visual).") # Section start.
+
+@export_enum("none", "general/loop_up_down", "general/loop_up_down_slight", "general/loop_scale", "gear/rotate") var start_animation = "general/loop_up_down"
+@export_enum("none", "general/fade_out_up", "general/rotate_around_y_fade_out", "general/reflect_straight") var on_collected_anim_name : String = "general/fade_out_up"
+
+@export var can_change_sprite_anim : bool = false
+@export var sprite_anim_speed_copy_velocity_x : bool = false
+@export var sprite_rotation_copy_velocity_x : bool = false
+
+@export var disable_sprite_anims = ["none"]
+@export var disable_anims = ["none"]
+
+@export var override_death_type : String = "none"
+
+@export var idle_sfx = false
+@export var idle_sfx_cooldown = 4.0
+@export var idle_sfx_randomize_cooldown = false
+
+@export var on_collected_spawn_star : bool = true
+@export var on_collected_spawn_star2 : bool = true
+@export var on_collected_spawn_orb_orange : bool = true
+@export var on_collected_spawn_orb_blue : bool = true
+@export var on_collected_spawn_homing_square_yellow : bool = true
+@export var on_collected_spawn_dust : bool = false
+
+@export var text_message : String = "none"
+@export var text_message_visible : String = "none"
+@export var text_spawn_cooldown : float = 0.5
+@export var text_delete_cooldown : float = 4.0
+@export var text_anim_speed_scale : float = 1.0
+@export var text_anim_backwards : bool = false
+@export var text_anim_add_offset : float = 0.0
+@export var text_next_character_cooldown : float = 0.05
+@export var text_add_scale : Vector2 = Vector2(0, 0)
+@export var text_add_pos : Vector2 = Vector2(48, -120)
+
+@export var on_alt_walk_alt_show_text : bool = false
+@export var on_alt_walk_alt_text_message : String = "none"
+@export var on_alt_walk_alt_text_message_visible : String = "none"
+@export var on_alt_walk_alt_text_spawn_cooldown : float = 0.0
+@export var on_alt_walk_alt_text_delete_cooldown : float = 4.0
+@export var on_alt_walk_alt_text_anim_speed_scale : float = 1.0
+@export var on_alt_walk_alt_text_anim_backwards : bool = false
+@export var on_alt_walk_alt_text_anim_add_offset : float = 0.0
+@export var on_alt_walk_alt_text_next_character_cooldown : float = 0.05
+@export var on_alt_walk_alt_text_add_scale : Vector2 = Vector2(0, 0)
+@export var on_alt_walk_alt_text_add_pos : Vector2 = Vector2(48, -120)
+
+@export var on_alt_walk_show_text : bool = false
+@export var on_alt_walk_text_message : String = "none"
+@export var on_alt_walk_text_message_visible : String = "none"
+@export var on_alt_walk_text_spawn_cooldown : float = 0.0
+@export var on_alt_walk_text_delete_cooldown : float = 4.0
+@export var on_alt_walk_text_anim_speed_scale : float = 1.0
+@export var on_alt_walk_text_anim_backwards : bool = false
+@export var on_alt_walk_text_anim_add_offset : float = 0.0
+@export var on_alt_walk_text_next_character_cooldown : float = 0.05
+@export var on_alt_walk_text_add_scale : Vector2 = Vector2(0, 0)
+@export var on_alt_walk_text_add_pos : Vector2 = Vector2(48, -120)
+
+# Sound effects - [START]
+
+# With alternatives for when the effect is inflicted on another entity:
+@export_file("*.mp3", "*.wav") var sfx_self_collected_filepath = Globals.d_sfx + "/" + "jewel_collect.wav" # The "self" refers to the sfx playing on ITSELF having died, been collected, killing another entity, etc. So the main sfx properties are the ones with "self" in the middle.
+@export_file("*.mp3", "*.wav") var sfx_self_hit_filepath = Globals.d_sfx + "/" + "player_attack.wav"
+@export_file("*.mp3", "*.wav") var sfx_self_shot_filepath = Globals.d_sfx + "/" + "laser_shot.wav"
+@export_file("*.mp3", "*.wav") var sfx_self_death_filepath = Globals.d_sfx + "/" + "laser_shot.wav"
+@export_file("*.mp3", "*.wav") var sfx_self_bounced_filepath = Globals.d_sfx + "/" + "count.wav"
+@export_file("*.mp3", "*.wav") var sfx_self_spotted_filepath = Globals.d_sfx + "/" + "error.wav"
+
+# Without the alternatives:
+@export_file("*.mp3", "*.wav") var sfx_self_reflected_straight_filepath = Globals.d_sfx + "/" + "laser_shot.wav"
+@export_file("*.mp3", "*.wav") var sfx_self_reflected_slope_filepath = Globals.d_sfx + "/" + "error.wav"
+
+# The alternatives:
+@export_file("*.mp3", "*.wav") var sfx_collected_filepath = Globals.d_sfx + "/" + "jewel_collect.wav"
+@export_file("*.mp3", "*.wav") var sfx_hit_filepath = Globals.d_sfx + "/" + "player_attack.wav"
+@export_file("*.mp3", "*.wav") var sfx_shot_filepath = Globals.d_sfx + "/" + "laser_shot.wav"
+@export_file("*.mp3", "*.wav") var sfx_death_filepath = Globals.d_sfx + "/" + "laser_shot.wav"
+@export_file("*.mp3", "*.wav") var sfx_bounced_filepath = Globals.d_sfx + "/" + "error.wav"
+@export_file("*.mp3", "*.wav") var sfx_spotted_filepath = Globals.d_sfx + "/" + "beam_enabled.mp3"
+
+# Sound effects - [END]
+
+
+@export var on_spawn_effect_grow = true
+@export var effect_grow_target_scale = Vector2(-1, -1) # Uses the "start_scale" property's value if set to "Vector2(-1, -1)".
+@export var effect_grow_speed_multiplier : float = 1.0
+
+@export var on_death_effect_shrink = true
+@export var effect_shrink_target_scale = Vector2(0.01, 0.01)
+@export var effect_shrink_speed_multiplier : float = 1.0
+@export var effect_shrink_delete : bool = true
+
+@export var on_wall_sprite_anim_reflect_straight : bool = false
+@export var on_hit_disable_anim : bool = false
+
+@export var block_effect_dead : bool = false
+
+
+@export_group("") # End of section.
+
+
+@export var entity_name = "none"
+@export_enum("collectible", "enemy", "projectile", "box", "block") var entity_type : String = "collectible"
+@export var direction_x = 1
+@export var direction_y = 0
+
+@export var on_spawn_randomize_everything = false
+# End of properties.
+
+
+func _on_attacking_timer_timeout():
+	attacking = false
+
+func _on_attacked_timer_timeout():
+	attacked = false
+
+func _on_dead_timer_timeout():
+	dead = false
+
+
+var particle_buffer = false
+
+func _on_particle_limiter_timeout():
+	particle_buffer = false
+
+
+func remove_if_corpse():
+	await get_tree().create_timer(0.2, false).timeout
+	
+	if dead or collected or destroyed:
+		Globals.dm("Attempting to remove a dead entity on it leaving the screen.", 1)
+		if len(container_effect_thrownAway.get_children()):
+			Globals.dm("The dead entity has a potentially still visible segments. Waiting additional 4 seconds.", 2)
+			await get_tree().create_timer(4, false).timeout
+		
+		delete_entity()
+		Globals.dm("The dead entity has been deleted.", 3)
+
+
+# Executes on entity being added to the scene tree.
+func basic_on_spawn():
+	if direction_active_x < 0 : scan_ledge.position.x = -32
+	elif direction_active_x > 0 : scan_ledge.position.x = 32
+	
+	basic_on_inactive()
+	
+	delete_unneeded_nodes()
+	
+	if on_timeout_jump:
+		c_jump.wait_time = on_timeout_jump_cooldown
+		c_jump.start()
+	if on_timeout_spawn_entity:
+		c_spawn_entity.wait_time = on_timeout_spawn_entity_cooldown
+		c_spawn_entity.start()
+	if on_timeout_death:
+		c_death.wait_time = on_timeout_death_cooldown
+		c_death.start()
+	if on_timeout_change_ignore_gravity:
+		c_change_ignore_gravity.wait_time = on_timeout_change_ignore_gravity_cooldown
+		c_change_ignore_gravity.start()
+	if on_timeout_change_invincible:
+		c_change_invincible.wait_time = on_timeout_change_invincible_cooldown
+		c_change_invincible.start()
+	if on_timeout_change_direction_x:
+		c_change_direction_x.wait_time = on_timeout_change_direction_x_cooldown
+		c_change_direction_x.start()
+	if on_timeout_change_movement_type:
+		c_change_movement_type.wait_time = on_timeout_change_movement_type_cooldown
+		c_change_movement_type.start()
+	#if on_timeout_action:
+		#c_action.wait_time = on_timeout_action_cooldown
+		#c_action.start()
+	
+	
+	if collidable_cooldown != -1.0 and collidable_cooldown != 0.0:
+		c_collidable.wait_time = collidable_cooldown
+		c_collidable.start()
+	
+	if idle_sfx:
+		if idle_sfx_cooldown : cooldown_sfx_idle.wait_time = idle_sfx_cooldown # If "idle_sfx_cooldown" is not equal to "0".
+		if idle_sfx_randomize_cooldown : cooldown_sfx_idle.wait_time = randf_range(0.5, 8)
+		cooldown_sfx_idle.start()
+	
+	if on_timeout_death:
+		c_death.wait_time = on_timeout_death_cooldown
+		c_death.start()
+	
+	if on_timeout_change_ignore_gravity:
+		c_change_ignore_gravity.wait_time = on_timeout_change_ignore_gravity_cooldown
+		c_change_ignore_gravity.start()
+
+
+# Executes on entity entering the camera view.
+func basic_on_inactive():
+	if always_active : return
+	
+	active = false
+	
+	Globals.dm(str("Entity %s has been made INACTIVE." % entity_name), "ORANGE_RED")
+	
+	set_process(false)
+	set_physics_process(false)
+	
+	set_process_input(false)
+	set_process_internal(false)
+	set_process_unhandled_input(false)
+	set_process_unhandled_key_input(false)
+	
+	sprite.pause()
+	sprite.visible = false
+	
+	collision_main.disabled = true
+	
+	t_state_attacking.set_paused(true)
+	t_state_damage.set_paused(true)
+	
+	for node in get_children():
+		if node is Timer:
+			node.set_paused(true)
+	
+	remove_if_corpse()
+	
+	animation_general.advance(abs(position[0]) / 100)
+	
+	hitbox.set_monitorable(false)
+	hitbox.set_monitoring(false)
+
+
+# Executes on entity leaving the camera view.
+func basic_on_active():
+	if dead or collected : return
+	if not enabled : return
+	
+	Globals.dm(str("Entity %s has been made ACTIVE." % entity_name), "ORANGE")
+	
+	set_process(true)
+	set_physics_process(true)
+	
+	#set_process_input(true)
+	#set_process_internal(true)
+	#set_process_unhandled_input(true)
+	#set_process_unhandled_key_input(true)
+	
+	sprite.play()
+	sprite.visible = true
+	
+	if not ignore_collision : collision_main.disabled = false
+	
+	t_state_attacking.set_paused(false)
+	t_state_damage.set_paused(false)
+	
+	for node in get_children():
+		if node is Timer:
+			node.set_paused(false)
+	
+	synchronize_animation()
+	
+	await get_tree().create_timer(0.25, false).timeout
+	
+	if reset_puzzle_restored:
+		await Globals.World.reset_puzzle_all_nodes_ready
+		reset_puzzle_block_movement = false
+	
+	hitbox.set_monitorable(true)
+	hitbox.set_monitoring(true)
+	
+	reset_puzzle_restored = false
+	
+	
+	active = true
+
+
+func enemy_stunned():
+	hitbox.monitoring = false
+	hitbox.monitorable = false
+	await get_tree().create_timer(0.75, false).timeout
+	hitbox.monitoring = true
+	hitbox.monitorable = true
+
+func basic_sprite_flipDirection():
+	if dead : return
+	
+	if direction_active_x > 0:
+		sprite.flip_h = false
+	else:
+		sprite.flip_h = true
+	
+	if look_at_player_x:
+		if position.x < Player.position.x:
+			sprite.flip_h = true
+		else:
+			sprite.flip_h = false
+	
+	if look_at_player_y:
+		if position.y < Player.position.y:
+			sprite.flip_v = true
+		else:
+			sprite.flip_v = false
+
+
+# Randomize every single property.
+func randomize_everything():
+	# prepare lists
+	#list_sprite = prepare_list_all("Assets/Graphics/sprites/packed/enemies", [])
+	#list_collectible = prepare_list_all("Collectibles", [])
+	#list_enemy = prepare_list_all("Enemies", [])
+	#list_box = prepare_list_all("Boxes", [])
+	#list_projectile = prepare_list_all("Projectiles", ["charged", "lethalBall"])
+	#
+	#var list_every_object = list_collectible + list_box + list_enemy
+	#var list_without_enemies = list_collectible + list_box
+	#
+	#list_onDeath_item_scene = list_every_object
+	#list_onDeath_item_blacklist_enemy_scene = list_without_enemies
+	#list_onDeath_projectile_scene = list_projectile
+	#list_onDeath_secondaryProjectile_scene = list_projectile
+	#list_onHit_item_scene = list_every_object
+	#list_onHit_item_blacklist_enemy_scene = list_without_enemies
+	#list_onSpotted_item_scene = list_every_object
+	#list_onSpotted_item_blacklist_enemy_scene = list_without_enemies
+	#list_onSpotted_projectile_scene = list_projectile
+	#list_onSpotted_secondaryProjectile_scene = list_projectile
+	#list_onTimer_item_scene = list_every_object
+	#list_onTimer_item_blacklist_enemy_scene = list_without_enemies
+	#list_onTimer_projectile_scene = list_projectile
+	#list_onTimer_secondaryProjectile_scene = list_projectile
+	#list_bonusBox_item_scene = list_every_object
+	#list_bonusBox_item_blacklist_enemy_scene = list_without_enemies
+	
+	# randomize and apply property values
+	#hp = randi_range(1, 10)
+	#if applyRandom_falseTrue(12, 1):
+		#SPEED = randi_range(-800, 0)
+	#else:
+		#SPEED = randi_range(0, 1200)
+	#JUMP_VELOCITY = randi_range(400, -1200)
+	#ACCELERATION = randi_range(0, 3)
+	#if applyRandom_falseTrue(1,3):
+		#movementType = applyRandom_fromList("list_movementType", -1)
+	#else:
+		#movementType = applyRandom_fromList("list_movementType_limited", -1)
+	#give_score_onDeath = applyRandom_falseTrue(1, 9)
+	#scoreValue = randi_range(0, 100000)
+	#turnOnLedge = applyRandom_falseTrue(1, 2)
+	#turnOnWall = applyRandom_falseTrue(1, 4)
+	#floating = applyRandom_falseTrue(6, 1)
+	#patroling = applyRandom_falseTrue(1,9)
+	#afterDelay_changeDirection = applyRandom_falseTrue(3, 1)
+	#afterDelay_jump = applyRandom_falseTrue(3, 1)
+	#directionTimer_time = randf_range(0.5, 12)
+	#jumpTimer_time = randf_range(0.5, 12)
+	#onDeath_spawnObject = applyRandom_falseTrue(1, 6)
+	#onDeath_spawnObject_objectAmount = randi_range(1, 8)
+	#onDeath_spawnObject_throwAround = applyRandom_falseTrue(1, 3)
+	#
+	#if onDeath_spawnObject_objectAmount > 4:
+		#onDeath_spawnObject_objectPath = load(applyRandom_fromList("list_onDeath_item_blacklist_enemy_scene", -1))
+	#else:
+		#onDeath_spawnObject_objectPath = load(applyRandom_fromList("list_onDeath_item_scene", -1))
+	#
+	#look_at_player = applyRandom_falseTrue(6,1)
+	#immortal = applyRandom_falseTrue(9, 1)
+	#shootProjectile_whenSpotted = applyRandom_falseTrue(1, 4)
+	#dropProjectile_whenSpotted = applyRandom_falseTrue(1, 4)
+	#shootProjectile_cooldown = randf_range(0.5, 6)
+	#dropProjectile_cooldown = randf_range(0.5, 6)
+	#scene_shootProjectile = load(applyRandom_fromList("list_onSpotted_projectile_scene", -1))
+	#scene_dropProjectile = load(applyRandom_fromList("list_onSpotted_secondaryProjectile_scene", -1))
+	#altDropMethod = applyRandom_falseTrue(1, 2)
+	#projectile_isBouncingBall = applyRandom_falseTrue(1, 2)
+	#shootProjectile_offset_X = randi_range(-120, 120)
+	#shootProjectile_offset_Y = randi_range(-120, 120)
+	#shootProjectile_player = applyRandom_falseTrue(3, 1)
+	#shootProjectile_enemy = applyRandom_falseTrue(1, 6)
+	#toggle_toggleBlocks_onDeath = applyRandom_falseTrue(1, 3)
+	#whenAt_startPosition_X_stop = applyRandom_falseTrue(1, 4)
+	#whenAt_startPosition_Y_stop = applyRandom_falseTrue(1, 4)
+	#start_pos_leniency_X = randi_range(16, 128)
+	#start_pos_leniency_Y = randi_range(16, 128)
+	#onSpawn_offset_position = Vector2(randi_range(-64, 64), randi_range(-64, 64))
+	#bouncy_Y = applyRandom_falseTrue(4, 1)
+	#bouncy_X = applyRandom_falseTrue(1, 1)
+	#ascending = applyRandom_falseTrue(1, 3)
+	#damageTo_player = applyRandom_falseTrue(1, 7)
+	#damageTo_enemies = applyRandom_falseTrue(1, 1)
+	#stationary_disable_jump_anim = applyRandom_falseTrue(6, 1)
+	#patrolRectStatic = applyRandom_falseTrue(9, 1)
+	#force_static_H = applyRandom_falseTrue(12, 1)
+	#force_static_V = applyRandom_falseTrue(12, 1)
+	#onDeath_disappear_instantly = applyRandom_falseTrue(6, 1)
+	#is_bonusBox = applyRandom_falseTrue(1, 9)
+	#bonusBox_spawn_item_onDeath = applyRandom_falseTrue(1, 4)
+	#bonusBox_collectibleAmount = randi_range(1, 8)
+	#bonusBox_throw_around = applyRandom_falseTrue(1, 3)
+	#bonusBox_spread_position = applyRandom_falseTrue(1, 3)
+	#
+	#if bonusBox_collectibleAmount > 4:
+		#bonusBox_item_scene = load(applyRandom_fromList("list_bonusBox_item_blacklist_enemy_scene", -1))
+	#else:
+		#bonusBox_item_scene = load(applyRandom_fromList("list_bonusBox_item_scene", -1))
+	#
+	#bonusBox_requiresVelocity = applyRandom_falseTrue(1, 1)
+	#bonusBox_minimalVelocity = randi_range(50, 300)
+	#particles_star = applyRandom_falseTrue(1, 2)
+	#particles_golden = applyRandom_falseTrue(1, 2)
+	#particles_splash = applyRandom_falseTrue(1, 2)
+	#enable_generalTimers = applyRandom_falseTrue(1, 6)
+	#generalTimer1_cooldown = randf_range(0.5, 12)
+	#generalTimer2_cooldown = randf_range(2, 12)
+	#generalTimer3_cooldown = randf_range(4, 12)
+	#generalTimer1_randomize_cooldown = applyRandom_falseTrue(5, 1)
+	#generalTimer2_randomize_cooldown = applyRandom_falseTrue(5, 1)
+	#generalTimer3_randomize_cooldown = applyRandom_falseTrue(5, 1)
+	#generalTimer_min_cooldown = randf_range(0.5, 4)
+	#generalTimer_max_cooldown = randf_range(4, 12)
+	#t_item_amount = randi_range(1, 4)
+	#t_throw_around = applyRandom_falseTrue(1, 1)
+	#t_spread_position = applyRandom_falseTrue(1, 1)
+	#
+	#if t_item_amount > 4:
+		#t_item_scene = load(applyRandom_fromList("list_onTimer_item_blacklist_enemy_scene", -1))
+	#else:
+		#t_item_scene = load(applyRandom_fromList("list_onTimer_item_scene", -1))
+	#
+	#t_afterDelay_jump = applyRandom_falseTrue(1, 1)
+	#t_afterDelay_jump_timerID = randi_range(1, 6)
+	#t_afterDelay_jumpAndMove = applyRandom_falseTrue(1, 1)
+	#t_afterDelay_jumpAndMove_timerID = randi_range(1, 6)
+	#t_afterDelay_changeDirection = applyRandom_falseTrue(1, 1)
+	#t_afterDelay_changeDirection_timerID = randi_range(1, 6)
+	#t_afterDelay_spawnObject = applyRandom_falseTrue(1, 1)
+	#t_afterDelay_spawnObject_timerID = randi_range(1, 6)
+	#t_afterDelay_selfDestruct = applyRandom_falseTrue(1, 1)
+	#t_afterDelay_selfDestruct_timerID = randi_range(1, 6)
+	#t_afterDelay_selfDestructAndSpawnObject = applyRandom_falseTrue(1, 1)
+	#t_afterDelay_selfDestructAndSpawnObject_timerID = randi_range(1, 6)
+	#t_afterDelay_idleSound = applyRandom_falseTrue(1, 1)
+	#t_afterDelay_idleSound_timerID = randi_range(1, 6)
+	#t_afterDelay_randomize_speedAndJumpVelocity = applyRandom_falseTrue(1, 1)
+	#t_afterDelay_randomize_speedAndJumpVelocity_timerID = randi_range(1, 6)
+	#t_afterDelay_spawn_collectibles = applyRandom_falseTrue(1, 1)
+	#t_afterDelay_spawn_collectibles_timerID = randi_range(1, 6)
+	
+	modulate.r = randf_range(0, 1)
+	modulate.g = randf_range(0, 1)
+	modulate.b = randf_range(0, 1)
+	modulate.a = randf_range(0.75, 1)
+	
+	await get_tree().create_timer(1, false).timeout
+	#print(movementType)
+	
+	sprite.sprite_frames = load(Globals.random_from_list("list_sprite", -1))
+	collision_main.get_shape().size = sprite.sprite_frames.get_frame_texture(sprite.animation, sprite.frame).get_size()
+	sprite.material.set_shader_parameter("Shift_Hue", randf_range(0, 1))
+	if Globals.random_bool(3, 1):
+		scale.x = randf_range(0.1, 2)
+		scale.y = scale.x
+	if Globals.random_bool(4, 1) : sprite.material = null
+
+
+func synchronize_animation():
+	animation_all.advance(position.x / 500)
+
+
+func delete_entity():
+	return
+	if reset_puzzle_delete_node_queued : return
+	queue_free()
+
+
+func set_hitbox(active : bool, deferred : bool = true):
+	if deferred:
+		hitbox.set_deferred("monitoring", active)
+		hitbox.set_deferred("monitorable", active)
+	
+	else:
+		hitbox.set_monitorable(active)
+		hitbox.set_monitoring(active)
+
+
+func delete_unneeded_nodes():
+	if not patrolling:
+		$scan_patrolling_vision.queue_free()
+		$cooldown_patrolling_target_spotted_queue.queue_free()
+		$cooldown_patrolling_target_spotted.queue_free()
+		$cooldown_patrolling_change_direction.queue_free()
+	
+	if not reset_puzzle:
+		$scan_reset_puzzle_coverage.queue_free()
+	
+	if not on_ledge_turn:
+		$scan_ledge.queue_free()
+	
+	if not can_move:
+		$scan_stuck.queue_free()
+
+
+func save():
+	var save_dict = {
+		"filename" : get_scene_file_path(),
+		"parent" : get_parent().get_path(),
+		"pos_x" : position.x, # Note: Unfortunately, Vector2 is not supported by JSON.
+		"pos_y" : position.y,
+		"start_pos_x" : start_pos.x,
+		"start_pos_y" : start_pos.y,
+		"test" : [position.x, position.y],
+		"collected" : collected,
+		"dead" : dead,
+		"destroyed" : destroyed,
+		"health_value" : health_value,
+	
+	}
+	return save_dict

@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3 uid="uid://cbt6crrcy7rqj"]
+
+[ext_resource type="Script" uid="uid://yfrvtjvesfn0" path="res://Scripts/trigger_positional.gd" id="1_q443k"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v5wis"]
+size = Vector2(64, 64)
+
+[node name="trigger_positional" type="Area2D"]
+collision_layer = 8
+collision_mask = 8
+script = ExtResource("1_q443k")
+
+[node name="shape" type="CollisionShape2D" parent="."]
+unique_name_in_owner = true
+shape = SubResource("RectangleShape2D_v5wis")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[node name="Label" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 22.3333
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

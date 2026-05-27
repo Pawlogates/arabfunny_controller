@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3 uid="uid://bb52wg803hnl8"]
+
+[ext_resource type="PackedScene" uid="uid://wgtcgh1uo037" path="res://Other/Scenes/entity_base.tscn" id="1_yvjy2"]
+[ext_resource type="SpriteFrames" uid="uid://dnk24klf8y4dl" path="res://Assets/Graphics/sprites/packed/enemies/enemy_bat.tres" id="2_xhf0r"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yvjy2"]
+size = Vector2(62, 31)
+
+[node name="batron" instance=ExtResource("1_yvjy2")]
+texture_filter = 3
+collision_layer = 0
+collectable = false
+hittable = true
+score_value = 75
+movement_type = "move_x"
+speed = 150
+family = "enemy"
+pushable_by_entity = false
+pushable_by_player = false
+can_move = true
+on_hit_change_velocity_y = false
+start_animation = "none"
+can_change_sprite_anim = true
+on_death_effect_shrink = false
+entity_name = "batron"
+entity_type = "enemy"
+
+[node name="sprite" parent="." index="1"]
+sprite_frames = ExtResource("2_xhf0r")
+
+[node name="collision_main" parent="." index="2"]
+shape = SubResource("RectangleShape2D_yvjy2")

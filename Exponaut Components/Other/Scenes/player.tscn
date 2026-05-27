@@ -1,0 +1,210 @@
+[gd_scene load_steps=11 format=3 uid="uid://q4y4u3wm2et6"]
+
+[ext_resource type="Script" uid="uid://bvqjdy74r3ptq" path="res://Scripts/player.gd" id="1_gy5p5"]
+[ext_resource type="SpriteFrames" uid="uid://cuvnanch0b4tb" path="res://Assets/Graphics/sprites/packed/player.tres" id="2_2jh15"]
+[ext_resource type="PackedScene" uid="uid://dgb361xj37pqy" path="res://Other/Scenes/sfx_manager.tscn" id="3_x8fgr"]
+[ext_resource type="PackedScene" uid="uid://r7qbmuile5vd" path="res://Other/Scenes/animation_player_sprite_general.tscn" id="4_x8fgr"]
+[ext_resource type="PackedScene" uid="uid://bvu4du1j206i3" path="res://Other/Scenes/animation_player_sprite_color.tscn" id="5_2jh15"]
+[ext_resource type="PackedScene" uid="uid://bhjuxvebimqov" path="res://Other/Scenes/User Interface/combo_manager.tscn" id="6_2jh15"]
+[ext_resource type="PackedScene" uid="uid://cnl3u7qcwj0nk" path="res://Other/Scenes/camera.tscn" id="7_1fkbh"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fshcs"]
+size = Vector2(40, 112)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ct51a"]
+size = Vector2(32, 80)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_q480c"]
+size = Vector2(40, 112)
+
+[node name="Player" type="CharacterBody2D" groups=["Player", "player_root"]]
+texture_filter = 6
+collision_layer = 2
+floor_constant_speed = true
+floor_max_angle = 1.0472
+floor_snap_length = 10.0
+safe_margin = 0.1
+script = ExtResource("1_gy5p5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_fshcs")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -24)
+scale = Vector2(0.5, 0.5)
+sprite_frames = ExtResource("2_2jh15")
+animation = &"idle"
+
+[node name="cooldown_crouch_walk" type="Timer" parent="AnimatedSprite2D"]
+wait_time = 0.4
+one_shot = true
+
+[node name="cooldown_crouch_walk_correct_collision" type="Timer" parent="AnimatedSprite2D"]
+wait_time = 0.1
+one_shot = true
+
+[node name="animation_player_sprite_general" parent="AnimatedSprite2D" instance=ExtResource("4_x8fgr")]
+unique_name_in_owner = true
+
+[node name="animation_player_sprite_color" parent="AnimatedSprite2D" instance=ExtResource("5_2jh15")]
+unique_name_in_owner = true
+
+[node name="sfx_manager" parent="." instance=ExtResource("3_x8fgr")]
+
+[node name="Combo Manager" parent="." instance=ExtResource("6_2jh15")]
+
+[node name="timer_leniency_jump" type="Timer" parent="."]
+wait_time = 0.15
+one_shot = true
+
+[node name="timer_leniency_wall_jump" type="Timer" parent="."]
+wait_time = 0.15
+one_shot = true
+
+[node name="camera" parent="." instance=ExtResource("7_1fkbh")]
+
+[node name="hitbox_main" type="Area2D" parent="." groups=["Player", "player_hitbox"]]
+position = Vector2(0, 8)
+collision_layer = 8
+collision_mask = 8
+input_pickable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox_main"]
+shape = SubResource("RectangleShape2D_ct51a")
+debug_color = Color(0.984314, 0, 0.329412, 0.419608)
+
+[node name="hitbox_dash_scan_solid" type="Area2D" parent="." groups=["player_exact"]]
+input_pickable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox_dash_scan_solid"]
+shape = SubResource("RectangleShape2D_q480c")
+debug_color = Color(0.611765, 0.537255, 0, 0.419608)
+
+[node name="raycast_top" type="RayCast2D" parent="."]
+position = Vector2(0, -56)
+target_position = Vector2(40, 0)
+hit_from_inside = true
+
+[node name="raycast_bottom" type="RayCast2D" parent="."]
+position = Vector2(0, 56)
+target_position = Vector2(40, 0)
+hit_from_inside = true
+
+[node name="raycast_middle" type="RayCast2D" parent="."]
+target_position = Vector2(40, 0)
+hit_from_inside = true
+
+[node name="stuck_check" type="Timer" parent="."]
+wait_time = 6.0
+autostart = true
+
+[node name="stuck_confirm" type="Timer" parent="stuck_check"]
+wait_time = 6.0
+one_shot = true
+
+[node name="timer_dash" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[node name="timer_dash_speed_block" type="Timer" parent="timer_dash"]
+wait_time = 0.1
+one_shot = true
+
+[node name="cooldown_dash_end_slowdown_enable" type="Timer" parent="timer_dash"]
+wait_time = 0.3
+one_shot = true
+
+[node name="cooldown_dash_end_slowdown_disable" type="Timer" parent="timer_dash"]
+wait_time = 0.1
+one_shot = true
+
+[node name="timer_dash_await_jump" type="Timer" parent="timer_dash"]
+unique_name_in_owner = true
+wait_time = 0.66
+one_shot = true
+
+[node name="dash_check" type="Timer" parent="timer_dash"]
+wait_time = 0.2
+autostart = true
+
+[node name="timer_await_jump" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 0.1
+one_shot = true
+
+[node name="cooldown_effect_dust" type="Timer" parent="."]
+wait_time = 8.0
+one_shot = true
+
+[node name="cooldown_attack" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 1.5
+one_shot = true
+
+[node name="cooldown_secondaryAttack" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 1.5
+one_shot = true
+
+[node name="timer_recently_landed" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 0.2
+one_shot = true
+
+[node name="timer_recently_bounced" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[node name="timer_recently_left_wind" type="Timer" parent="."]
+wait_time = 1.2
+one_shot = true
+
+[node name="timer_powerUp" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
+[node name="block_movement_full" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[node name="timer_invincible" type="Timer" parent="."]
+
+[node name="timer_state_shoot" type="Timer" parent="."]
+wait_time = 0.75
+one_shot = true
+
+[node name="timer_state_damage" type="Timer" parent="."]
+one_shot = true
+
+[node name="cooldown_state_idle" type="Timer" parent="."]
+wait_time = 0.25
+one_shot = true
+
+[connection signal="timeout" from="AnimatedSprite2D/cooldown_crouch_walk" to="." method="_on_cooldown_crouch_walk_timeout"]
+[connection signal="timeout" from="AnimatedSprite2D/cooldown_crouch_walk_correct_collision" to="." method="_on_cooldown_crouch_walk_correct_collision_timeout"]
+[connection signal="timeout" from="timer_leniency_jump" to="." method="_on_timer_leniency_jump_timeout"]
+[connection signal="timeout" from="timer_leniency_wall_jump" to="." method="_on_timer_leniency_wall_jump_timeout"]
+[connection signal="area_entered" from="hitbox_main" to="." method="_on_hitbox_main_area_entered"]
+[connection signal="body_entered" from="hitbox_dash_scan_solid" to="." method="_on_hitbox_dash_scan_solid_body_entered"]
+[connection signal="body_exited" from="hitbox_dash_scan_solid" to="." method="_on_hitbox_dash_scan_solid_body_exited"]
+[connection signal="timeout" from="stuck_check" to="." method="_on_stuck_check_timeout"]
+[connection signal="timeout" from="stuck_check/stuck_confirm" to="." method="_on_stuck_confirm_timeout"]
+[connection signal="timeout" from="timer_dash" to="." method="_on_timer_dash_timeout"]
+[connection signal="timeout" from="timer_dash/timer_dash_speed_block" to="." method="_on_timer_dash_speed_block_timeout"]
+[connection signal="timeout" from="timer_dash/cooldown_dash_end_slowdown_enable" to="." method="_on_cooldown_dash_end_slowdown_enable_timeout"]
+[connection signal="timeout" from="timer_dash/cooldown_dash_end_slowdown_disable" to="." method="_on_cooldown_dash_end_slowdown_disable_timeout"]
+[connection signal="timeout" from="timer_dash/timer_dash_await_jump" to="." method="_on_await_jump_timer_timeout"]
+[connection signal="timeout" from="timer_dash/dash_check" to="." method="_on_dash_check_timeout"]
+[connection signal="timeout" from="timer_await_jump" to="." method="_on_timer_await_jump_timeout"]
+[connection signal="timeout" from="cooldown_effect_dust" to="." method="_on_cooldown_effect_dust_timeout"]
+[connection signal="timeout" from="cooldown_attack" to="." method="_on_cooldown_attack_timeout"]
+[connection signal="timeout" from="cooldown_secondaryAttack" to="." method="_on_cooldown_secondaryAttack_timeout"]
+[connection signal="timeout" from="timer_recently_landed" to="." method="_on_timer_recently_landed_timeout"]
+[connection signal="timeout" from="timer_recently_bounced" to="." method="_on_timer_recently_bounced_timeout"]
+[connection signal="timeout" from="timer_recently_left_wind" to="." method="_on_timer_recently_left_wind_timeout"]
+[connection signal="timeout" from="timer_powerUp" to="." method="_on_powerup_timer_timeout"]
+[connection signal="timeout" from="block_movement_full" to="." method="_on_block_movement_full_timeout"]
+[connection signal="timeout" from="timer_invincible" to="." method="_on_timer_invincible_timeout"]
+[connection signal="timeout" from="timer_state_shoot" to="." method="_on_timer_state_shoot_timeout"]
+[connection signal="timeout" from="timer_state_damage" to="." method="_on_timer_state_damage_timeout"]
+[connection signal="timeout" from="cooldown_state_idle" to="." method="_on_cooldown_state_idle_timeout"]

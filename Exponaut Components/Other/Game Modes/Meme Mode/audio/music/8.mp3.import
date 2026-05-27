@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://c37f4mktu2lkt"
+path="res://.godot/imported/8.mp3-e4c6822d15a6d730f3bd99f8391b62a1.mp3str"
+
+[deps]
+
+source_file="res://Exponaut Components/Other/Game Modes/Meme Mode/audio/music/8.mp3"
+dest_files=["res://.godot/imported/8.mp3-e4c6822d15a6d730f3bd99f8391b62a1.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

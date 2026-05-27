@@ -1,0 +1,96 @@
+[gd_scene load_steps=12 format=3 uid="uid://durmwd8klls41"]
+
+[ext_resource type="PackedScene" uid="uid://pu6px63ietmi" path="res://Other/Scenes/world.tscn" id="1_y83vn"]
+[ext_resource type="PackedScene" uid="uid://bfhyvn1kymwxp" path="res://Levels/DEBUG_3.tscn" id="2_7qxut"]
+[ext_resource type="PackedScene" uid="uid://b6sm67hlya8p" path="res://Tilesets/tileset_main.tscn" id="2_d11j7"]
+[ext_resource type="PackedScene" uid="uid://cdppta5y51e08" path="res://Tilesets/tileset_objects.tscn" id="3_ht1a8"]
+[ext_resource type="PackedScene" uid="uid://dfg7r4vdcruea" path="res://Tilesets/tileset_main_precise.tscn" id="4_ooxb1"]
+[ext_resource type="PackedScene" uid="uid://oswqe4x5q4gm" path="res://Tilesets/tileset_objects_precise.tscn" id="5_7qxut"]
+[ext_resource type="PackedScene" uid="uid://bk1o70r1mo5kw" path="res://Triggers/trigger_bg_change.tscn" id="6_bxor4"]
+[ext_resource type="PackedScene" uid="uid://wq51rhe2d7iu" path="res://Triggers/trigger_bg_move.tscn" id="7_ht1a8"]
+[ext_resource type="PackedScene" uid="uid://dfnugj71ly62a" path="res://Triggers/trigger_music_change.tscn" id="8_ooxb1"]
+[ext_resource type="PackedScene" uid="uid://cvwfwuqqw6vpo" path="res://Triggers/trigger_camera.tscn" id="9_7qxut"]
+[ext_resource type="PackedScene" uid="uid://bpxd8r4jkw7uh" path="res://Objects/sign_message.tscn" id="10_ooxb1"]
+
+[node name="World" instance=ExtResource("1_y83vn")]
+level_type = "debug"
+next_level = ExtResource("2_7qxut")
+levelSet_id = "DEBUG"
+level_number = 2
+
+[node name="tileset_main" parent="." index="0" instance=ExtResource("2_d11j7")]
+layer_0/tile_data = PackedInt32Array(65536, 0, 10, 131071, 0, 10, 131070, 0, 10, 131069, 0, 10, 131068, 0, 10, 131067, 0, 10, 131066, 0, 10, 131065, 0, 10, 65537, 0, 10, 65538, 0, 10, 65539, 0, 10, 65540, 0, 10, 65541, 0, 10, 65529, 0, 10, -7, 0, 10, -65543, 0, 10, -131079, 0, 10, -196615, 0, 10, -262151, 0, 10, -327687, 0, 10, -393223, 0, 10, -458759, 0, 10, -524295, 0, 10, -589831, 0, 10, -655367, 0, 10, -720903, 0, 10, -786439, 0, 10, 65542, 0, 10, 65543, 0, 10, 65544, 0, 10, 65545, 0, 10, 65546, 0, 10, 65547, 0, 10, 65548, 0, 10, 65549, 0, 10, 65550, 0, 10, 65551, 0, 10, 65552, 0, 10, 65553, 0, 10, 65554, 0, 10, 65555, 0, 10, 65556, 0, 10, 65557, 0, 10, 65558, 0, 10, 65559, 0, 10, 65560, 0, 10, 65561, 0, 10, 65562, 0, 10, 65563, 0, 10, 13, 0, 10, -65523, 0, 10, -131059, 0, 10, -131058, 0, 10, -131057, 0, 10, -131056, 0, 10, -131055, 0, 10, -131054, 0, 10, -131053, 0, 10, -131052, 0, 10, -131051, 0, 10, -131050, 0, 10, -131049, 0, 10, -131048, 0, 10, -131047, 0, 10, -131046, 0, 10, -131045, 0, 10, -65509, 0, 10, 27, 0, 10, 9, 0, 10, -327661, 0, 10, -327660, 0, 10, -327659, 0, 10, -393195, 0, 10, -458731, 0, 10, -524267, 0, 10, -393197, 0, 10, -458733, 0, 10, -524269, 0, 10, -589805, 0, 10, -655341, 0, 10, -720877, 0, 10, -786413, 0, 10, -851949, 0, 10, -917485, 0, 10, -589803, 0, 10, -655339, 0, 10, -720875, 0, 10, -786411, 0, 10, -851947, 0, 10, -917483, 0, 10, -983019, 0, 10, -1048555, 0, 10, -983021, 0, 10, 28, 0, 10, 29, 0, 10, 30, 0, 10, 31, 0, 10, 32, 0, 10, 33, 0, 10, 34, 0, 10, 35, 0, 10, 36, 0, 10, 37, 0, 10, 38, 0, 10, 65564, 0, 10, 39, 0, 10, 40, 0, 10, -196575, 0, 10, -196574, 0, 10, -327642, 0, 10, -262106, 0, 10, -196570, 0, 10, 41, 0, 10, 42, 0, 10, 43, 0, 10, 44, 0, 10, 45, 0, 10, -327635, 0, 10, -327636, 0, 10, -327637, 0, 10, -327638, 0, 10, -327639, 0, 10, -327640, 0, 10, -327641, 0, 10, -262099, 0, 10, -196563, 0, 10, -131027, 0, 10, -65491, 0, 10, -196569, 0, 10, -196568, 0, 10, -196567, 0, 10, -196566, 0, 10, -131030, 0, 10, -65494, 0, 10, -524237, 0, 10, -589773, 0, 10, -655309, 0, 10, -851915, 0, 10, -786379, 0, 10, -720843, 0, 10, -655307, 0, 10, -589771, 0, 10, -524235, 0, 10, -131024, 0, 10, -196560, 0, 10, -393168, 0, 10, -458704, 0, 10, -524240, 0, 10, -589776, 0, 10, -655312, 0, 10, -982992, 0, 10, -1048528, 0, 10, -1048527, 0, 10, -1048526, 0, 10, -1048525, 0, 10, -1048524, 0, 10, -982988, 0, 10, -917452, 0, 10, 65581, 0, 10, 131117, 0, 10, 131118, 0, 10, 131119, 0, 10, 131120, 0, 10, 131121, 0, 10, 131122, 0, 10, 131123, 0, 10, 131124, 0, 10, 131125, 0, 10, 131126, 0, 10, 131127, 0, 10, 131128, 0, 10, 131129, 0, 10, 131130, 0, 10, 131131, 0, 10, 131132, 0, 10, 131133, 0, 10, 131134, 0, 10, 131135, 0, 10, 131136, 0, 10, 131137, 0, 10, 131138, 0, 10, 131139, 0, 10, 131140, 0, 10, 131141, 0, 10, 131142, 0, 10, 131143, 0, 10, 131144, 0, 10, 131145, 0, 10, 131146, 0, 10, 131147, 0, 10, 131148, 0, 10, -655313, 0, 10, -655316, 0, 10, -786388, 0, 10, -851924, 0, 10, -917460, 0, 10, -917451, 0, 10, -982993, 0, 10, -982994, 0, 10, -982995, 0, 10, -982996, 0, 10, -720849, 0, 10, -786389, 0, 10, -786390, 0, 10, -786391, 0, 10, -786392, 0, 10, -720856, 0, 10, -655320, 0, 10, -655319, 0, 10, -655318, 0, 10, -655317, 0, 10, -720848, 0, 10, -720847, 0, 10, -720846, 0, 10, -720845, 0, 10, 65612, 0, 10, 76, 0, 10, -65460, 0, 10, -130996, 0, 10, -196532, 0, 10, -262068, 0, 10, -327604, 0, 10, -393140, 0, 10, -458676, 0, 10, -524212, 0, 10, -589748, 0, 10, -196542, 0, 10, -65467, 0, 10, 65608, 0, 10, 72, 0, 10, -65464, 0, 10, -131000, 0, 10, -196536, 0, 10, -262072, 0, 10, -327608, 0, 10, -655284, 0, 10, -720820, 0, 10, -786356, 0, 10, -851892, 0, 10, -917428, 0, 10, -982964, 0, 10, -1048500, 0, 10, -1114036, 0, 10, -1179572, 0, 10, -1245108, 0, 10, -1310644, 0, 10, -1376180, 0, 10, -1441716, 0, 10, -196556, 0, 10, 65592, 0, 10)
+layer_1/tile_data = PackedInt32Array(-720850, 917504, 12, -720851, 786432, 12, -720852, 917504, 14, -720853, 851968, 14, -720854, 851968, 14, -720855, 786432, 14)
+
+[node name="tileset_objects" parent="." index="1" instance=ExtResource("3_ht1a8")]
+layer_0/tile_data = PackedInt32Array(-262128, 1, 196608, -262120, 1, 196608, -262119, 1, 196608, -327655, 1, 131072, -327656, 1, 131072, -327657, 1, 131072, -327663, 1, 131072, -327664, 1, 131072, -327665, 1, 131072, -262129, 1, 196608, -262130, 1, 196608, -327666, 1, 196608, -327654, 1, 196608, -262118, 1, 196608, -393202, 1, 196608, -393201, 1, 196608, -393200, 1, 196608, -393192, 1, 196608, -393191, 1, 196608, -393190, 1, 196608, -196588, 2, 131072, -65527, 2, 131072, -65505, 2, 65536, -131025, 4, 524288, -131026, 4, 458752, -524236, 4, 524288, -720855, 2, 65536, -720851, 3, 327680, -720850, 3, 327680, -720852, 3, 262144, -655315, 4, 655360, -655314, 4, 655360, -786382, 1, 655360, -786385, 1, 655360, -786384, 1, 655360, -786383, 1, 655360, -786381, 1, 655360, -786386, 1, 655360, -786387, 1, 655360, 65590, 5, 65536, 65586, 5, 65536, -393171, 3, 262144, -458707, 3, 262144, -524243, 3, 262144, -589779, 3, 262144, -196562, 1, 65536, -262097, 1, 65536, -327634, 1, 65536, -393169, 1, 65536, -393170, 1, 196608, -327633, 1, 196608, -262098, 1, 196608, -131031, 1, 131072, -131032, 1, 131072, -65496, 1, 131072, -65497, 1, 131072, -131033, 1, 131072, -131034, 1, 131072, -65498, 1, 131072, -65495, 1, 393216, -458709, 1, 458752, -458711, 1, 458752, -851935, 1, 327680, -786399, 1, 327680, -786398, 1, 327680, -851934, 1, 327680, -917470, 1, 327680, -917471, 1, 327680, -327647, 1, 196608, -327646, 1, 196608, -65541, 1, 65536, -5, 1, 65536, -4, 1, 65536, -65540, 1, 65536, -262078, 2, 131072, -131003, 2, 131072, 65593, 2, 65536, -196539, 1, 196608, -327614, 1, 196608, -393144, 2, 131072, 65609, 3, 131072, 65610, 3, 131072, 65611, 3, 131072, -589768, 1, 65536, -589769, 1, 393216, -655304, 1, 393216, -589767, 1, 393216, -524232, 1, 393216, -1245109, 1, 327680, -1245110, 1, 327680, -1245111, 1, 327680, -1310647, 1, 327680, -1376183, 1, 327680, -1376182, 1, 327680, -1310646, 1, 327680, -1310645, 1, 327680, -1376181, 1, 327680, -1441719, 1, 327680, -1507254, 1, 327680, -1572790, 1, 327680, -1441718, 1, 327680, -1441717, 1, 327680, -1507253, 1, 327680, -1572789, 1, 327680, -1572791, 1, 327680, -1507255, 1, 327680, -786366, 1, 327680, -917435, 1, 327680, -1048504, 1, 327680, -1179579, 1, 327680, -1310651, 1, 327680, -65475, 1, 131072, -65474, 1, 131072, 62, 1, 131072, 63, 1, 131072, -65473, 1, 131072, 61, 1, 131072, -65472, 1, 131072, 64, 1, 131072, -65493, 10, 196608, -65492, 10, 196608, -262105, 2, 131072, -262092, 5, 65536, 65588, 10, 262144, 65591, 10, 196608, 65589, 5, 65536, 65587, 5, 65536, -655306, 5, 65536, -589770, 4, 458752, -589774, 4, 524288, -655310, 1, 655360, 65585, 5, 65536, 65584, 5, 65536, 65583, 5, 65536, 65582, 5, 65536)
+
+[node name="tileset_main_precise" parent="." index="2" instance=ExtResource("4_ooxb1")]
+
+[node name="tileset_objects_precise" parent="." index="3" instance=ExtResource("5_7qxut")]
+
+[node name="triggers" type="Node2D" parent="." index="4"]
+
+[node name="trigger_bgChange" parent="triggers" index="0" instance=ExtResource("6_bxor4")]
+bg_main_filepath = "uid://bkk75jx3w12t5"
+bg_front_filepath = "uid://2faeksb7ftqh"
+bg_front2_filepath = "uid://mb1sy1wnniyj"
+
+[node name="trigger_bgMove" parent="triggers" index="1" instance=ExtResource("7_ht1a8")]
+
+[node name="trigger_musicChange" parent="triggers" index="2" instance=ExtResource("8_ooxb1")]
+music_file = "uid://cbm5sgx3jfj23"
+
+[node name="trigger_musicChange2" parent="triggers" index="3" instance=ExtResource("8_ooxb1")]
+position = Vector2(3008, -16)
+music_file = "uid://cgkthaj3tv7ut"
+
+[node name="objects" type="Node2D" parent="." index="5"]
+
+[node name="zones" type="Node2D" parent="." index="6"]
+
+[node name="info_sign" parent="." index="15" instance=ExtResource("10_ooxb1")]
+position = Vector2(256, 32)
+message_text = "Press X or LEFT MOUSE BUTTON to shoot your projectile!"
+camera_target_offset = Vector2(4500, 64)
+camera_start_speed_multiplier = 0.001
+
+[node name="info_sign2" parent="." index="16" instance=ExtResource("10_ooxb1")]
+position = Vector2(4544, 96)
+message_text = "Press the TILDE key (~), if you dare!"
+camera_target_offset = Vector2(64, -5000)
+
+[node name="trigger_positional" parent="." index="17" instance=ExtResource("9_7qxut")]
+position = Vector2(3056, 0)
+scale = Vector2(8, 4)
+maxOffset = 0
+camera_baseOffset_Y = 1000
+minOffset_Y = -1000
+maxOffset_Y = -250
+
+[node name="trigger_positional2" parent="." index="18" instance=ExtResource("9_7qxut")]
+position = Vector2(3904, 0)
+scale = Vector2(8, 4)
+RESET_OFFSET = true
+RESET_ZOOM = true
+maxOffset = 0
+camera_baseOffset_Y = 1000
+minOffset_Y = -1000
+maxOffset_Y = -250
+
+[node name="trigger_positional3" parent="." index="19" instance=ExtResource("9_7qxut")]
+position = Vector2(3008, -256)
+scale = Vector2(2, 2)
+camera_baseOffset = 500
+minOffset = -500
+maxOffset = 0
+camera_baseOffset_Y = 0
+minOffset_Y = 0
+maxOffset_Y = 0
+camera_baseZoom = 4.0
+minZoom = 4.0
+maxZoom = 4.0
+
+[connection signal="area_entered" from="tileset_objects/LevelExit" to="tileset_objects/LevelExit" method="_on_area_entered"]
+[connection signal="area_entered" from="tileset_objects/@Area2D@52029" to="tileset_objects/@Area2D@52029" method="_on_area_entered"]
+[connection signal="area_entered" from="tileset_objects/@Area2D@52030" to="tileset_objects/@Area2D@52030" method="_on_area_entered"]
